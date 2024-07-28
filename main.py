@@ -87,7 +87,9 @@ app.layout = html.Div([
     html.Button('Calcola Efficient Frontier', id='efficient-frontier-button', n_clicks=0, style={'marginTop': '20px'}),
     dcc.Graph(id='efficient-frontier-graph'),
     dcc.Graph(id='optimal-portfolio-performance-graph'),
-    html.Div(id='pie-charts', style={'display': 'flex', 'justifyContent': 'space-between'})
+    html.Div(id='pie-charts', style={'display': 'flex', 'justifyContent': 'space-between'}),
+    dcc.Graph(id='comparison-chart')
+
 ], style={'padding': '20px'})
 
 
@@ -247,7 +249,8 @@ def update_graph(rows, benchmark_rows, start_date, end_date):
 @app.callback(
     [Output('efficient-frontier-graph', 'figure'),
      Output('optimal-portfolio-performance-graph', 'figure'),
-     Output('pie-charts', 'children')],
+     Output('pie-charts', 'children'),
+     Output('comparison-chart', 'figure')],
     [Input('efficient-frontier-button', 'n_clicks')],
     [State('portfolio-table', 'data'),
      State('benchmark-table', 'data'),
@@ -256,7 +259,9 @@ def update_graph(rows, benchmark_rows, start_date, end_date):
 )
 def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end_date):
     if not rows or not start_date or not end_date or n_clicks == 0:
-        return go.Figure(), go.Figure(), []
+        # Restituisci figure vuote e liste vuote se non ci sono dati
+        empty_fig = go.Figure()
+        return empty_fig, empty_fig, [], empty_fig
 
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -380,7 +385,55 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
 
     pie_charts = create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights)
 
-    return ef_fig, perf_fig, pie_charts
+    portfolio_data = {}
+    portfolios = {
+        'Max Sharpe': max_sharpe_weights,
+        'Min Volatility': min_vol_weights,
+        'Max Return': max_return_weights,
+        'Current Portfolio': current_weights
+    }
+    for name, weights in portfolios.items():
+        portfolio_return = (common_data * weights).sum(axis=1)
+        cagr = calculate_cagr(portfolio_return)
+        volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
+        portfolio_data[name] = {'CAGR': cagr, 'Volatility': volatility}
+
+    comparison_fig = create_comparison_chart(portfolio_data)
+
+    return ef_fig, perf_fig, pie_charts, comparison_fig
+
+
+def calculate_cagr(data):
+    start_value = data.iloc[0]
+    end_value = data.iloc[-1]
+    n_years = len(data) / 252  # Assumendo 252 giorni di trading all'anno
+    cagr = (end_value / start_value) ** (1 / n_years) - 1
+    return cagr
+
+
+def create_comparison_chart(portfolio_data):
+    portfolios = list(portfolio_data.keys())
+    cagr_values = [data['CAGR'] for data in portfolio_data.values()]
+    volatility_values = [data['Volatility'] for data in portfolio_data.values()]
+
+    fig = go.Figure(data=[
+        go.Bar(name='CAGR', x=portfolios, y=cagr_values),
+        go.Bar(name='Volatility', x=portfolios, y=volatility_values)
+    ])
+
+    fig.update_layout(
+        title='Confronto CAGR e Volatilità',
+        barmode='group',
+        xaxis_title='Portafogli',
+        yaxis_title='Valore',
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF')
+    )
+    fig.update_xaxes(gridcolor='#3C3C3C')
+    fig.update_yaxes(gridcolor='#3C3C3C')
+
+    return fig
 
 
 def create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights):
