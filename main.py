@@ -398,15 +398,15 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
     for name, weights in portfolios.items():
         portfolio_return = (common_data * weights).sum(axis=1)
         cagr = calculate_cagr(portfolio_return)
-        volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
-        sharpe_ratio = (cagr - risk_free_rate) / volatility
-        portfolio_data[name] = {'CAGR': cagr, 'Volatility': volatility, 'Sharpe Ratio': sharpe_ratio}
+        annualized_volatility = calculate_annualized_volatility(portfolio_return)
+        sharpe_ratio = (cagr - risk_free_rate) / annualized_volatility
+        portfolio_data[name] = {'CAGR': cagr, 'Volatility': annualized_volatility, 'Sharpe Ratio': sharpe_ratio}
 
     # Calculate CAGR, Volatility, and Sharpe Ratio for the benchmark
     benchmark_name = benchmark_rows[0]['benchmark']  # Assume there's only one benchmark
     benchmark_return = benchmark_data[benchmark_name]
     benchmark_cagr = calculate_cagr(benchmark_return)
-    benchmark_volatility = benchmark_return.pct_change().std() * np.sqrt(252)
+    benchmark_volatility = calculate_annualized_volatility(benchmark_return)
     benchmark_sharpe_ratio = (benchmark_cagr - risk_free_rate) / benchmark_volatility
     benchmark_data = {
         'CAGR': benchmark_cagr,
@@ -424,6 +424,14 @@ def calculate_cagr(data):
     n_years = len(data) / 252  # Assumendo 252 giorni di trading all'anno
     cagr = (end_value / start_value) ** (1 / n_years) - 1
     return cagr
+
+def calculate_annualized_volatility(returns):
+    """
+    Calcola la volatilità annualizzata dei ritorni annualizzati.
+    """
+    annual_returns = returns.resample('Y').last().pct_change().dropna()
+    annual_volatility = annual_returns.std()
+    return annual_volatility
 
 
 def create_comparison_chart(portfolio_data, benchmark_data):
