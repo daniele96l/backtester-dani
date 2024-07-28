@@ -416,16 +416,36 @@ def create_comparison_chart(portfolio_data):
     cagr_values = [data['CAGR'] for data in portfolio_data.values()]
     volatility_values = [data['Volatility'] for data in portfolio_data.values()]
 
-    fig = go.Figure(data=[
-        go.Bar(name='CAGR', x=portfolios, y=cagr_values),
-        go.Bar(name='Volatility', x=portfolios, y=volatility_values)
-    ])
+    # Definiamo colori diversi per ogni portfolio
+    colors = ['red', 'blue', 'green', 'purple']
+
+    fig = go.Figure()
+
+    # Aggiungiamo le barre per CAGR
+    for i, portfolio in enumerate(portfolios):
+        fig.add_trace(go.Bar(
+            name=portfolio,
+            x=['CAGR'],
+            y=[portfolio_data[portfolio]['CAGR']],
+            marker_color=colors[i % len(colors)]
+        ))
+
+    # Aggiungiamo le barre per Volatility
+    for i, portfolio in enumerate(portfolios):
+        fig.add_trace(go.Bar(
+            name=portfolio,
+            x=['Volatility'],
+            y=[portfolio_data[portfolio]['Volatility']],
+            marker_color=colors[i % len(colors)],
+            showlegend=False
+        ))
 
     fig.update_layout(
         title='Confronto CAGR e Volatilità',
         barmode='group',
-        xaxis_title='Portafogli',
+        xaxis_title='Metriche',
         yaxis_title='Valore',
+        legend_title='Portafogli',
         paper_bgcolor='#1E1E1E',
         plot_bgcolor='#1E1E1E',
         font=dict(color='#FFFFFF')
