@@ -398,7 +398,14 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
         volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
         portfolio_data[name] = {'CAGR': cagr, 'Volatility': volatility}
 
-    comparison_fig = create_comparison_chart(portfolio_data)
+    # Calcola CAGR e Volatility per il benchmark
+    benchmark_name = benchmark_rows[0]['benchmark']  # Assumiamo che ci sia solo un benchmark
+    benchmark_return = benchmark_data[benchmark_name]
+    benchmark_cagr = calculate_cagr(benchmark_return)
+    benchmark_volatility = benchmark_return.pct_change().std() * np.sqrt(252)
+    benchmark_data = {'CAGR': benchmark_cagr, 'Volatility': benchmark_volatility}
+
+    comparison_fig = create_comparison_chart(portfolio_data, benchmark_data)
 
     return ef_fig, perf_fig, pie_charts, comparison_fig
 
@@ -411,13 +418,13 @@ def calculate_cagr(data):
     return cagr
 
 
-def create_comparison_chart(portfolio_data):
-    portfolios = list(portfolio_data.keys())
-    cagr_values = [data['CAGR'] for data in portfolio_data.values()]
-    volatility_values = [data['Volatility'] for data in portfolio_data.values()]
+def create_comparison_chart(portfolio_data, benchmark_data):
+    portfolios = list(portfolio_data.keys()) + ['Benchmark']
+    cagr_values = [data['CAGR'] for data in portfolio_data.values()] + [benchmark_data['CAGR']]
+    volatility_values = [data['Volatility'] for data in portfolio_data.values()] + [benchmark_data['Volatility']]
 
-    # Definiamo colori diversi per ogni portfolio
-    colors = ['red', 'blue', 'green', 'purple']
+    # Definiamo colori diversi per ogni portfolio e il benchmark
+    colors = ['red', 'blue', 'green', 'purple', 'orange']  # Aggiungi un colore per il benchmark
 
     fig = go.Figure()
 
@@ -426,7 +433,7 @@ def create_comparison_chart(portfolio_data):
         fig.add_trace(go.Bar(
             name=portfolio,
             x=['CAGR'],
-            y=[portfolio_data[portfolio]['CAGR']],
+            y=[cagr_values[i]],
             marker_color=colors[i % len(colors)]
         ))
 
@@ -435,13 +442,13 @@ def create_comparison_chart(portfolio_data):
         fig.add_trace(go.Bar(
             name=portfolio,
             x=['Volatility'],
-            y=[portfolio_data[portfolio]['Volatility']],
+            y=[volatility_values[i]],
             marker_color=colors[i % len(colors)],
             showlegend=False
         ))
 
     fig.update_layout(
-        title='Confronto CAGR e Volatilità',
+        title='Confronto CAGR e Volatilità (incluso Benchmark)',
         barmode='group',
         xaxis_title='Metriche',
         yaxis_title='Valore',
