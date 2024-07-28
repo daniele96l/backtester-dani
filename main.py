@@ -392,23 +392,31 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
         'Max Return': max_return_weights,
         'Current Portfolio': current_weights
     }
+
+    risk_free_rate = 0.02  # Assume a 2% risk-free rate, you may want to make this dynamic
+
     for name, weights in portfolios.items():
         portfolio_return = (common_data * weights).sum(axis=1)
         cagr = calculate_cagr(portfolio_return)
         volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
-        portfolio_data[name] = {'CAGR': cagr, 'Volatility': volatility}
+        sharpe_ratio = (cagr - risk_free_rate) / volatility
+        portfolio_data[name] = {'CAGR': cagr, 'Volatility': volatility, 'Sharpe Ratio': sharpe_ratio}
 
-    # Calcola CAGR e Volatility per il benchmark
-    benchmark_name = benchmark_rows[0]['benchmark']  # Assumiamo che ci sia solo un benchmark
+    # Calculate CAGR, Volatility, and Sharpe Ratio for the benchmark
+    benchmark_name = benchmark_rows[0]['benchmark']  # Assume there's only one benchmark
     benchmark_return = benchmark_data[benchmark_name]
     benchmark_cagr = calculate_cagr(benchmark_return)
     benchmark_volatility = benchmark_return.pct_change().std() * np.sqrt(252)
-    benchmark_data = {'CAGR': benchmark_cagr, 'Volatility': benchmark_volatility}
+    benchmark_sharpe_ratio = (benchmark_cagr - risk_free_rate) / benchmark_volatility
+    benchmark_data = {
+        'CAGR': benchmark_cagr,
+        'Volatility': benchmark_volatility,
+        'Sharpe Ratio': benchmark_sharpe_ratio
+    }
 
     comparison_fig = create_comparison_chart(portfolio_data, benchmark_data)
 
     return ef_fig, perf_fig, pie_charts, comparison_fig
-
 
 def calculate_cagr(data):
     start_value = data.iloc[0]
@@ -420,35 +428,26 @@ def calculate_cagr(data):
 
 def create_comparison_chart(portfolio_data, benchmark_data):
     portfolios = list(portfolio_data.keys()) + ['Benchmark']
-    cagr_values = [data['CAGR'] for data in portfolio_data.values()] + [benchmark_data['CAGR']]
-    volatility_values = [data['Volatility'] for data in portfolio_data.values()] + [benchmark_data['Volatility']]
+    metrics = ['CAGR', 'Volatility', 'Sharpe Ratio']
 
     # Definiamo colori diversi per ogni portfolio e il benchmark
-    colors = ['red', 'blue', 'green', 'purple', 'orange']  # Aggiungi un colore per il benchmark
+    colors = ['red', 'blue', 'green', 'purple', 'orange']  # Add a color for the benchmark
 
     fig = go.Figure()
 
-    # Aggiungiamo le barre per CAGR
     for i, portfolio in enumerate(portfolios):
-        fig.add_trace(go.Bar(
-            name=portfolio,
-            x=['CAGR'],
-            y=[cagr_values[i]],
-            marker_color=colors[i % len(colors)]
-        ))
-
-    # Aggiungiamo le barre per Volatility
-    for i, portfolio in enumerate(portfolios):
-        fig.add_trace(go.Bar(
-            name=portfolio,
-            x=['Volatility'],
-            y=[volatility_values[i]],
-            marker_color=colors[i % len(colors)],
-            showlegend=False
-        ))
+        data = portfolio_data[portfolio] if portfolio != 'Benchmark' else benchmark_data
+        for metric in metrics:
+            fig.add_trace(go.Bar(
+                name=portfolio,
+                x=[metric],
+                y=[data[metric]],
+                marker_color=colors[i % len(colors)],
+                showlegend=True if metric == 'CAGR' else False
+            ))
 
     fig.update_layout(
-        title='Confronto CAGR e Volatilità (incluso Benchmark)',
+        title='Confronto CAGR, Volatilità e Sharpe Ratio (incluso Benchmark)',
         barmode='group',
         xaxis_title='Metriche',
         yaxis_title='Valore',
@@ -461,7 +460,6 @@ def create_comparison_chart(portfolio_data, benchmark_data):
     fig.update_yaxes(gridcolor='#3C3C3C')
 
     return fig
-
 
 def create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights):
     tickers = [row['ticker'] for row in rows]
