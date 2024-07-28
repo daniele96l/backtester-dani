@@ -140,7 +140,7 @@ def update_portfolio(add_clicks, remove_clicks, ticker, percentage, rows, select
 def update_benchmark(add_clicks, remove_clicks, benchmark, rows, selected_rows):
     ctx = dash.callback_context
     if not ctx.triggered:
-        return rows, '', []
+        return rows if rows else [{'benchmark': '^GSPC'}], '', []
 
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
@@ -149,7 +149,11 @@ def update_benchmark(add_clicks, remove_clicks, benchmark, rows, selected_rows):
     elif button_id == 'remove-benchmark-button' and selected_rows:
         rows = [row for i, row in enumerate(rows) if i not in selected_rows]
 
+    if not rows:
+        rows.append({'benchmark': '^GSPC'})
+
     return rows, '', []
+
 
 
 @app.callback(
@@ -172,6 +176,10 @@ def update_graph(rows, benchmark_rows, start_date, end_date):
         ticker = row['ticker']
         data = yf.download(ticker, start=start_date, end=end_date)
         data_dict[ticker] = data['Close']
+
+    # Scarichiamo i dati per il benchmark
+    if not benchmark_rows:
+        benchmark_rows = [{'benchmark': '^GSPC'}]  # Default to S&P 500 if no benchmark is selected
 
     # Scarichiamo i dati per il benchmark
     for row in benchmark_rows:
@@ -272,6 +280,11 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
         ticker = row['ticker']
         data = yf.download(ticker, start=start_date, end=end_date)
         data_dict[ticker] = data['Close']
+
+
+    # Scarichiamo i dati per il benchmark
+    if not benchmark_rows:
+        benchmark_rows = [{'benchmark': '^GSPC'}]
 
     # Scarichiamo i dati per il benchmark
     benchmark_data = {}
