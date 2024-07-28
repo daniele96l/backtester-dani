@@ -399,19 +399,22 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
         portfolio_return = (common_data * weights).sum(axis=1)
         cagr = calculate_cagr(portfolio_return)
         annualized_volatility = calculate_annualized_volatility(portfolio_return)
+        annualized_down_volatility = calculate_annualized_down_volatility(portfolio_return)
         sharpe_ratio = (cagr - risk_free_rate) / annualized_volatility
-        portfolio_data[name] = {'CAGR': cagr, 'Volatility': annualized_volatility, 'Sharpe Ratio': sharpe_ratio}
+        portfolio_data[name] = {'CAGR': cagr, 'Volatility': annualized_volatility, 'Sharpe Ratio': sharpe_ratio, 'Downside Volatility': annualized_down_volatility}
 
     # Calculate CAGR, Volatility, and Sharpe Ratio for the benchmark
     benchmark_name = benchmark_rows[0]['benchmark']  # Assume there's only one benchmark
     benchmark_return = benchmark_data[benchmark_name]
     benchmark_cagr = calculate_cagr(benchmark_return)
     benchmark_volatility = calculate_annualized_volatility(benchmark_return)
+    benchmark_down_volatility = calculate_annualized_down_volatility(benchmark_return)
     benchmark_sharpe_ratio = (benchmark_cagr - risk_free_rate) / benchmark_volatility
     benchmark_data = {
         'CAGR': benchmark_cagr,
         'Volatility': benchmark_volatility,
-        'Sharpe Ratio': benchmark_sharpe_ratio
+        'Sharpe Ratio': benchmark_sharpe_ratio,
+        'Downside Volatility': benchmark_down_volatility
     }
 
     comparison_fig = create_comparison_chart(portfolio_data, benchmark_data)
@@ -433,10 +436,20 @@ def calculate_annualized_volatility(returns):
     annual_volatility = annual_returns.std()
     return annual_volatility
 
+def calculate_annualized_down_volatility(returns):
+    """
+    Calcola la volatilità annualizzata dei ritorni annualizzati.
+    """
+    annual_returns = returns.resample('Y').last().pct_change().dropna()
+    #Rimuovi i rendimenti positivi
+    annual_returns = annual_returns[annual_returns < 0]
+    annual_volatility = annual_returns.std()
+    return annual_volatility
+
 
 def create_comparison_chart(portfolio_data, benchmark_data):
     portfolios = list(portfolio_data.keys()) + ['Benchmark']
-    metrics = ['CAGR', 'Volatility', 'Sharpe Ratio']
+    metrics = ['CAGR', 'Volatility', 'Sharpe Ratio', 'Downside Volatility']
 
     # Definiamo colori diversi per ogni portfolio e il benchmark
     colors = ['red', 'blue', 'green', 'purple', 'orange']  # Add a color for the benchmark
