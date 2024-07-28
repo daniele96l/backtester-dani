@@ -16,52 +16,56 @@ app.layout = html.Div([
         dcc.Input(id='percentage-input', type='number', placeholder='Percentuale', min=0, max=100, step=1, style={'marginRight': '10px'}),
         html.Button('Aggiungi', id='add-button', n_clicks=0),
     ], style={'marginBottom': '20px'}),
-    dash_table.DataTable(
-        id='portfolio-table',
-        columns=[
-            {'name': 'Ticker', 'id': 'ticker'},
-            {'name': 'Percentuale', 'id': 'percentage'},
-        ],
-        data=[],
-        row_selectable='single',
-        selected_rows=[],
-        style_table={'overflowX': 'auto'},
-        style_cell={
-            'backgroundColor': '#2C2C2C',
-            'color': '#FFFFFF',
-            'textAlign': 'left'
-        },
-        style_header={
-            'backgroundColor': '#3C3C3C',
-            'fontWeight': 'bold'
-        }
-    ),
-    html.Button('Rimuovi Selezionato', id='remove-button', n_clicks=0, style={'marginTop': '10px'}),
-    html.Div(id='percentage-warning', style={'color': 'red', 'marginTop': '10px'}),
     html.Div([
-        dcc.Input(id='benchmark-input', type='text', placeholder='Inserisci un simbolo benchmark', style={'marginRight': '10px'}),
-        html.Button('Aggiungi Benchmark', id='add-benchmark-button', n_clicks=0),
-    ], style={'marginTop': '20px', 'marginBottom': '20px'}),
-    dash_table.DataTable(
-        id='benchmark-table',
-        columns=[
-            {'name': 'Benchmark', 'id': 'benchmark'},
-        ],
-        data=[],
-        row_selectable='single',
-        selected_rows=[],
-        style_table={'overflowX': 'auto'},
-        style_cell={
-            'backgroundColor': '#2C2C2C',
-            'color': '#FFFFFF',
-            'textAlign': 'left'
-        },
-        style_header={
-            'backgroundColor': '#3C3C3C',
-            'fontWeight': 'bold'
-        }
-    ),
-    html.Button('Rimuovi Benchmark Selezionato', id='remove-benchmark-button', n_clicks=0, style={'marginTop': '10px'}),
+        html.Div([
+            dash_table.DataTable(
+                id='portfolio-table',
+                columns=[
+                    {'name': 'Ticker', 'id': 'ticker'},
+                    {'name': 'Percentuale', 'id': 'percentage'},
+                ],
+                data=[],
+                row_selectable='single',
+                selected_rows=[],
+                style_table={'overflowX': 'auto'},
+                style_cell={
+                    'backgroundColor': '#2C2C2C',
+                    'color': '#FFFFFF',
+                    'textAlign': 'left'
+                },
+                style_header={
+                    'backgroundColor': '#3C3C3C',
+                    'fontWeight': 'bold'
+                }
+            ),
+            html.Button('Rimuovi Selezionato', id='remove-button', n_clicks=0, style={'marginTop': '10px'}),
+            html.Div(id='percentage-warning', style={'color': 'red', 'marginTop': '10px'})
+        ], style={'width': '48%', 'display': 'inline-block'}),
+        html.Div([
+            dcc.Input(id='benchmark-input', type='text', placeholder='Inserisci un simbolo benchmark', style={'marginRight': '10px'}),
+            html.Button('Aggiungi Benchmark', id='add-benchmark-button', n_clicks=0),
+            dash_table.DataTable(
+                id='benchmark-table',
+                columns=[
+                    {'name': 'Benchmark', 'id': 'benchmark'},
+                ],
+                data=[],
+                row_selectable='single',
+                selected_rows=[],
+                style_table={'overflowX': 'auto'},
+                style_cell={
+                    'backgroundColor': '#2C2C2C',
+                    'color': '#FFFFFF',
+                    'textAlign': 'left'
+                },
+                style_header={
+                    'backgroundColor': '#3C3C3C',
+                    'fontWeight': 'bold'
+                }
+            ),
+            html.Button('Rimuovi Benchmark Selezionato', id='remove-benchmark-button', n_clicks=0, style={'marginTop': '10px'}),
+        ], style={'width': '48%', 'display': 'inline-block', 'marginLeft': '4%'})
+    ], style={'display': 'flex', 'justifyContent': 'space-between'}),
     html.Div([
         dcc.DatePickerSingle(
             id='start-date-picker',
@@ -81,8 +85,11 @@ app.layout = html.Div([
     ], style={'marginTop': '20px', 'marginBottom': '20px'}),
     dcc.Graph(id='portfolio-graph'),
     html.Button('Calcola Efficient Frontier', id='efficient-frontier-button', n_clicks=0, style={'marginTop': '20px'}),
-    dcc.Graph(id='efficient-frontier-graph')
+    dcc.Graph(id='efficient-frontier-graph'),
+    dcc.Graph(id='optimal-portfolio-performance-graph'),
+    html.Div(id='pie-charts', style={'display': 'flex', 'justifyContent': 'space-between'})
 ], style={'padding': '20px'})
+
 
 
 @app.callback(
@@ -237,17 +244,19 @@ def update_graph(rows, benchmark_rows, start_date, end_date):
 
     return fig
 
-
 @app.callback(
-    Output('efficient-frontier-graph', 'figure'),
+    [Output('efficient-frontier-graph', 'figure'),
+     Output('optimal-portfolio-performance-graph', 'figure'),
+     Output('pie-charts', 'children')],
     [Input('efficient-frontier-button', 'n_clicks')],
     [State('portfolio-table', 'data'),
+     State('benchmark-table', 'data'),
      State('start-date-picker', 'date'),
      State('end-date-picker', 'date')]
 )
-def calculate_efficient_frontier(n_clicks, rows, start_date, end_date):
+def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end_date):
     if not rows or not start_date or not end_date or n_clicks == 0:
-        return go.Figure()
+        return go.Figure(), go.Figure(), []
 
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -258,6 +267,13 @@ def calculate_efficient_frontier(n_clicks, rows, start_date, end_date):
         ticker = row['ticker']
         data = yf.download(ticker, start=start_date, end=end_date)
         data_dict[ticker] = data['Close']
+
+    # Scarichiamo i dati per il benchmark
+    benchmark_data = {}
+    for row in benchmark_rows:
+        benchmark = row['benchmark']
+        data = yf.download(benchmark, start=start_date, end=end_date)
+        benchmark_data[benchmark] = data['Close']
 
     # Troviamo la prima data in comune
     common_data = pd.concat(data_dict.values(), axis=1).dropna()
@@ -344,6 +360,165 @@ def calculate_efficient_frontier(n_clicks, rows, start_date, end_date):
         title='Efficient Frontier',
         xaxis_title='Rischio/Volatilità',
         yaxis_title='Ritorno',
+        showlegend=True,
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF')
+    )
+    fig.update_xaxes(gridcolor='#3C3C3C')
+    fig.update_yaxes(gridcolor='#3C3C3C')
+
+    max_sharpe_weights = weights_record[max_sharpe_idx]
+    min_vol_weights = weights_record[min_std_dev_idx]
+    max_return_weights = weights_record[max_return_idx]
+    current_weights = np.array([float(row['percentage']) / 100 for row in rows])
+
+    ef_fig = create_efficient_frontier_graph(results, max_sharpe_idx, min_std_dev_idx, max_return_idx, current_std_dev,
+                                             current_return)
+    perf_fig = create_optimal_portfolio_performance_graph(common_data, max_sharpe_weights, min_vol_weights,
+                                                          max_return_weights, current_weights, rows, benchmark_data)
+
+    pie_charts = create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights)
+
+    return ef_fig, perf_fig, pie_charts
+
+
+def create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights):
+    tickers = [row['ticker'] for row in rows]
+
+    pie_charts = []
+    portfolios = {
+        'Current Portfolio': current_weights,
+        'Max Sharpe Ratio': max_sharpe_weights,
+        'Min Volatility': min_vol_weights,
+        'Max Return': max_return_weights
+    }
+
+    for name, weights in portfolios.items():
+        pie = dcc.Graph(
+            figure=go.Figure(data=[go.Pie(
+                labels=tickers,
+                values=weights,
+                textinfo='label+percent',
+                insidetextorientation='radial'
+            )]),
+            style={'width': '25%', 'display': 'inline-block'},
+            config={'displayModeBar': False}
+        )
+        pie.figure.update_layout(
+            title=name,
+            paper_bgcolor='#1E1E1E',
+            plot_bgcolor='#1E1E1E',
+            font=dict(color='#FFFFFF')
+        )
+        pie_charts.append(pie)
+
+    return pie_charts
+
+
+def create_efficient_frontier_graph(results, max_sharpe_idx, min_std_dev_idx, max_return_idx, current_std_dev, current_return):
+    fig = go.Figure()
+
+    # Scatter plot per tutti i portafogli
+    fig.add_trace(go.Scatter(
+        x=results[1],
+        y=results[0],
+        mode='markers',
+        marker=dict(
+            color=results[2],
+            colorscale='Viridis',
+            size=5,
+            colorbar=dict(title='Sharpe Ratio')
+        ),
+        name='Portafogli'
+    ))
+
+    # Punto per il portafoglio con massimo Sharpe Ratio
+    fig.add_trace(go.Scatter(
+        x=[results[1,max_sharpe_idx]],
+        y=[results[0,max_sharpe_idx]],
+        mode='markers',
+        marker=dict(color='red', size=10, symbol='diamond'),
+        name='Max Sharpe Ratio'
+    ))
+
+    # Punto per il portafoglio con minima volatilità
+    fig.add_trace(go.Scatter(
+        x=[results[1,min_std_dev_idx]],
+        y=[results[0,min_std_dev_idx]],
+        mode='markers',
+        marker=dict(color='blue', size=10, symbol='diamond'),
+        name='Min Volatility'
+    ))
+
+    # Punto per il portafoglio con massimo ritorno
+    fig.add_trace(go.Scatter(
+        x=[results[1,max_return_idx]],
+        y=[results[0,max_return_idx]],
+        mode='markers',
+        marker=dict(color='green', size=10, symbol='diamond'),
+        name='Max Return'
+    ))
+
+    # Punto per il portafoglio corrente
+    fig.add_trace(go.Scatter(
+        x=[current_std_dev],
+        y=[current_return],
+        mode='markers',
+        marker=dict(color='magenta', size=10, symbol='diamond'),
+        name='Current Portfolio'
+    ))
+
+    fig.update_layout(
+        title='Efficient Frontier',
+        xaxis_title='Rischio/Volatilità',
+        yaxis_title='Ritorno',
+        showlegend=True,
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF')
+    )
+    fig.update_xaxes(gridcolor='#3C3C3C')
+    fig.update_yaxes(gridcolor='#3C3C3C')
+
+    return fig
+
+def create_optimal_portfolio_performance_graph(data, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights, rows, benchmark_data):
+    fig = go.Figure()
+
+    # Calcola le performance dei portafogli ottimali
+    portfolios = {
+        'Max Sharpe': max_sharpe_weights,
+        'Min Volatility': min_vol_weights,
+        'Max Return': max_return_weights,
+        'Current Portfolio': current_weights
+    }
+
+    for name, weights in portfolios.items():
+        portfolio_return = (data * weights).sum(axis=1)
+        normalized_return = portfolio_return / portfolio_return.iloc[0]
+        fig.add_trace(go.Scatter(
+            x=data.index,
+            y=normalized_return,
+            mode='lines',
+            name=name
+        ))
+
+    # Aggiungi i benchmark
+    for benchmark, benchmark_prices in benchmark_data.items():
+        normalized_benchmark = benchmark_prices / benchmark_prices.iloc[0]
+        fig.add_trace(go.Scatter(
+            x=normalized_benchmark.index,
+            y=normalized_benchmark,
+            mode='lines',
+            name=f'Benchmark: {benchmark}',
+            line=dict(dash='dash')
+        ))
+
+    fig.update_layout(
+        title='Performance dei Portafogli Ottimali e Benchmark',
+        xaxis_title='Data',
+        yaxis_title='Valore Normalizzato',
         showlegend=True,
         paper_bgcolor='#1E1E1E',
         plot_bgcolor='#1E1E1E',
