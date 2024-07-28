@@ -43,7 +43,7 @@ app.layout = html.Div([
         ], style={'width': '48%', 'display': 'inline-block'}),
         html.Div([
             dcc.Input(id='benchmark-input', type='text', placeholder='Inserisci un simbolo benchmark', style={'marginRight': '10px'}),
-            html.Button('Aggiungi Benchmark', id='add-benchmark-button', n_clicks=0),
+            html.Button('Cambia Benchmark', id='add-benchmark-button', n_clicks=0),
             dash_table.DataTable(
                 id='benchmark-table',
                 columns=[
@@ -131,28 +131,15 @@ def update_portfolio(add_clicks, remove_clicks, ticker, percentage, rows, select
     [Output('benchmark-table', 'data'),
      Output('benchmark-input', 'value'),
      Output('benchmark-table', 'selected_rows')],
-    [Input('add-benchmark-button', 'n_clicks'),
-     Input('remove-benchmark-button', 'n_clicks')],
+    [Input('add-benchmark-button', 'n_clicks')],
     [State('benchmark-input', 'value'),
-     State('benchmark-table', 'data'),
-     State('benchmark-table', 'selected_rows')]
+     State('benchmark-table', 'data')]
 )
-def update_benchmark(add_clicks, remove_clicks, benchmark, rows, selected_rows):
-    ctx = dash.callback_context
-    if not ctx.triggered:
-        return rows if rows else [{'benchmark': '^GSPC'}], '', []
-
-    button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-
-    if button_id == 'add-benchmark-button' and benchmark:
-        rows.append({'benchmark': benchmark.upper()})
-    elif button_id == 'remove-benchmark-button' and selected_rows:
-        rows = [row for i, row in enumerate(rows) if i not in selected_rows]
-
-    if not rows:
-        rows.append({'benchmark': '^GSPC'})
-
+def update_benchmark(n_clicks, benchmark, rows):
+    if n_clicks > 0 and benchmark:
+        rows = [{'benchmark': benchmark.upper()}]
     return rows, '', []
+
 
 
 
