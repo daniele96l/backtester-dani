@@ -6,6 +6,7 @@ import plotly.graph_objs as go
 import pandas as pd
 from datetime import date, datetime
 import numpy as np
+import plotly.express as px
 
 app = dash.Dash(__name__, external_stylesheets=['/assets/style.css'])
 
@@ -268,7 +269,6 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
         data = yf.download(ticker, start=start_date, end=end_date)
         data_dict[ticker] = data['Close']
 
-
     # Scarichiamo i dati per il benchmark
     if not benchmark_rows:
         benchmark_rows = [{'benchmark': '^GSPC'}]
@@ -286,7 +286,7 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
         return go.Figure()  # Non ci sono date in comune
 
     common_data.columns = [row['ticker'] for row in rows]
-    returns = common_data.pct_change().dropna()
+    returns = common_data.resample('Y').last().pct_change().dropna()
 
     mean_returns = returns.mean()
     cov_matrix = returns.cov()
@@ -299,7 +299,7 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
         weights = np.random.random(len(rows))
         weights /= np.sum(weights)
         weights_record.append(weights)
-        portfolio_return = np.dot(weights, mean_returns) * 252
+        portfolio_return = np.dot(weights, mean_returns) * 12
         portfolio_std_dev = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
         results[0,i] = portfolio_return
         results[1,i] = portfolio_std_dev
@@ -312,7 +312,7 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
 
     # Calculate the current portfolio return and std dev
     current_weights = np.array([float(row['percentage']) / 100 for row in rows])
-    current_return = np.dot(current_weights, mean_returns) * 252
+    current_return = np.dot(current_weights, mean_returns) * 12
     current_std_dev = np.sqrt(np.dot(current_weights.T, np.dot(cov_matrix, current_weights))) * np.sqrt(252)
 
     fig = go.Figure()
@@ -401,7 +401,8 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
         annualized_volatility = calculate_annualized_volatility(portfolio_return)
         annualized_down_volatility = calculate_annualized_down_volatility(portfolio_return)
         sharpe_ratio = (cagr - risk_free_rate) / annualized_volatility
-        portfolio_data[name] = {'CAGR': cagr, 'Volatility': annualized_volatility, 'Sharpe Ratio': sharpe_ratio, 'Downside Volatility': annualized_down_volatility}
+        sortino = (cagr - risk_free_rate) / annualized_down_volatility
+        portfolio_data[name] = {'CAGR': cagr, 'Volatility': annualized_volatility, 'Sharpe Ratio': sharpe_ratio, 'Downside Volatility': annualized_down_volatility, 'Sortino Ratio': sortino}
 
     # Calculate CAGR, Volatility, and Sharpe Ratio for the benchmark
     benchmark_name = benchmark_rows[0]['benchmark']  # Assume there's only one benchmark
@@ -410,11 +411,13 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
     benchmark_volatility = calculate_annualized_volatility(benchmark_return)
     benchmark_down_volatility = calculate_annualized_down_volatility(benchmark_return)
     benchmark_sharpe_ratio = (benchmark_cagr - risk_free_rate) / benchmark_volatility
+    sortino = (benchmark_cagr - risk_free_rate) / benchmark_down_volatility
     benchmark_data = {
         'CAGR': benchmark_cagr,
         'Volatility': benchmark_volatility,
         'Sharpe Ratio': benchmark_sharpe_ratio,
-        'Downside Volatility': benchmark_down_volatility
+        'Downside Volatility': benchmark_down_volatility,
+        'Sortino Ratio': sortino
     }
 
     comparison_fig = create_comparison_chart(portfolio_data, benchmark_data)
@@ -441,7 +444,6 @@ def calculate_annualized_down_volatility(returns):
     Calcola la volatilità annualizzata dei ritorni annualizzati.
     """
     annual_returns = returns.resample('Y').last().pct_change().dropna()
-    #Rimuovi i rendimenti positivi
     annual_returns = annual_returns[annual_returns < 0]
     annual_volatility = annual_returns.std()
     return annual_volatility
@@ -449,7 +451,7 @@ def calculate_annualized_down_volatility(returns):
 
 def create_comparison_chart(portfolio_data, benchmark_data):
     portfolios = list(portfolio_data.keys()) + ['Benchmark']
-    metrics = ['CAGR', 'Volatility', 'Sharpe Ratio', 'Downside Volatility']
+    metrics = ['CAGR', 'Volatility', 'Sharpe Ratio', 'Downside Volatility', 'Sortino Ratio']
 
     # Definiamo colori diversi per ogni portfolio e il benchmark
     colors = ['red', 'blue', 'green', 'purple', 'orange']  # Add a color for the benchmark
@@ -482,8 +484,19 @@ def create_comparison_chart(portfolio_data, benchmark_data):
 
     return fig
 
+
 def create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights):
     tickers = [row['ticker'] for row in rows]
+
+    # Definiamo una lista di colori per ogni asset
+    color_map = {
+        'Current Portfolio': 'blue',
+        'Max Sharpe Ratio': 'red',
+        'Min Volatility': 'green',
+        'Max Return': 'purple'
+    }
+    # Generiamo colori unici per gli asset
+    colors = px.colors.qualitative.Plotly[:len(tickers)]
 
     pie_charts = []
     portfolios = {
@@ -499,7 +512,8 @@ def create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weig
                 labels=tickers,
                 values=weights,
                 textinfo='label+percent',
-                insidetextorientation='radial'
+                insidetextorientation='radial',
+                marker=dict(colors=colors)  # Associa colori agli asset
             )]),
             style={'width': '25%', 'display': 'inline-block'},
             config={'displayModeBar': False}
@@ -582,10 +596,14 @@ def create_efficient_frontier_graph(results, max_sharpe_idx, min_std_dev_idx, ma
 
     return fig
 
-def create_optimal_portfolio_performance_graph(data, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights, rows, benchmark_data):
+def create_optimal_portfolio_performance_graph(data, max_sharpe_weights, min_vol_weights, max_return_weights,
+                                               current_weights, rows, benchmark_data):
     fig = go.Figure()
 
-    # Calcola le performance dei portafogli ottimali
+    # Calcola i ritorni giornalieri
+    returns = data.pct_change().dropna()
+
+    # Definisce i portafogli e i pesi
     portfolios = {
         'Max Sharpe': max_sharpe_weights,
         'Min Volatility': min_vol_weights,
@@ -593,11 +611,16 @@ def create_optimal_portfolio_performance_graph(data, max_sharpe_weights, min_vol
         'Current Portfolio': current_weights
     }
 
+    # Calcola e aggiunge ogni portafoglio al grafico
     for name, weights in portfolios.items():
-        portfolio_return = (data * weights).sum(axis=1)
-        normalized_return = portfolio_return / portfolio_return.iloc[0]
+        # Calcola il ritorno ponderato del portafoglio
+        portfolio_return = (returns * weights).sum(axis=1)
+
+        # Normalizza il ritorno per il confronto
+        normalized_return = (1 + portfolio_return).cumprod() / (1 + portfolio_return.iloc[0])
+
         fig.add_trace(go.Scatter(
-            x=data.index,
+            x=returns.index,
             y=normalized_return,
             mode='lines',
             name=name
