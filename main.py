@@ -68,21 +68,26 @@ app.layout = html.Div([
         ], style={'width': '48%', 'display': 'inline-block', 'marginLeft': '4%'})
     ], style={'display': 'flex', 'justifyContent': 'space-between'}),
     html.Div([
+        html.Label('Start Date:'),
         dcc.DatePickerSingle(
             id='start-date-picker',
             min_date_allowed=date(1900, 1, 1),
             max_date_allowed=date.today(),
             initial_visible_month=date.today(),
-            date=date(date.today().year - 1, date.today().month, date.today().day),
+            date=date(date.today().year - 5, date.today().month, date.today().day),
             style={'marginRight': '10px'}
-        ),
+        )
+    ], style={'display': 'inline-block', 'marginRight': '20px'}),
+
+    html.Div([
+        html.Label('End Date:'),
         dcc.DatePickerSingle(
             id='end-date-picker',
             min_date_allowed=date(1900, 1, 1),
             max_date_allowed=date.today(),
             initial_visible_month=date.today(),
             date=date.today()
-        ),
+        )
     ], style={'marginTop': '20px', 'marginBottom': '20px'}),
     dcc.Graph(id='portfolio-graph'),
     html.Button('Calcola Efficient Frontier', id='efficient-frontier-button', n_clicks=0, style={'marginTop': '20px'}),
