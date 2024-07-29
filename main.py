@@ -89,7 +89,8 @@ app.layout = html.Div([
     dcc.Graph(id='efficient-frontier-graph'),
     dcc.Graph(id='optimal-portfolio-performance-graph'),
     html.Div(id='pie-charts', style={'display': 'flex', 'justifyContent': 'space-between'}),
-    dcc.Graph(id='comparison-chart')
+    dcc.Graph(id='comparison-chart'),
+    dcc.Graph(id='rolling-return-graph')
 
 ], style={'padding': '20px'})
 
@@ -246,7 +247,8 @@ def update_graph(rows, benchmark_rows, start_date, end_date):
     [Output('efficient-frontier-graph', 'figure'),
      Output('optimal-portfolio-performance-graph', 'figure'),
      Output('pie-charts', 'children'),
-     Output('comparison-chart', 'figure')],
+     Output('comparison-chart', 'figure'),
+     Output('rolling-return-graph', 'figure')],
     [Input('efficient-frontier-button', 'n_clicks')],
     [State('portfolio-table', 'data'),
      State('benchmark-table', 'data'),
@@ -257,7 +259,7 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
     if not rows or not start_date or not end_date or n_clicks == 0:
         # Restituisci figure vuote e liste vuote se non ci sono dati
         empty_fig = go.Figure()
-        return empty_fig, empty_fig, [], empty_fig
+        return empty_fig, empty_fig, [], empty_fig,empty_fig
 
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -383,6 +385,9 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
     perf_fig = create_optimal_portfolio_performance_graph(common_data, max_sharpe_weights, min_vol_weights,
                                                           max_return_weights, current_weights, rows, benchmark_data)
 
+    roll_fig = create_rolling_return_graph(common_data, max_sharpe_weights, min_vol_weights,
+                                                          max_return_weights, current_weights, rows, benchmark_data)
+
     pie_charts = create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights)
 
     portfolio_data = {}
@@ -422,7 +427,7 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
 
     comparison_fig = create_comparison_chart(portfolio_data, benchmark_data)
 
-    return ef_fig, perf_fig, pie_charts, comparison_fig
+    return ef_fig, perf_fig, pie_charts, comparison_fig, roll_fig
 
 def calculate_cagr(data):
     start_value = data.iloc[0]
@@ -641,6 +646,69 @@ def create_optimal_portfolio_performance_graph(data, max_sharpe_weights, min_vol
         title='Performance dei Portafogli Ottimali e Benchmark',
         xaxis_title='Data',
         yaxis_title='Valore Normalizzato',
+        showlegend=True,
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF')
+    )
+    fig.update_xaxes(gridcolor='#3C3C3C')
+    fig.update_yaxes(gridcolor='#3C3C3C')
+
+    return fig
+
+
+import plotly.graph_objs as go
+import pandas as pd
+
+
+def create_rolling_return_graph(data, max_sharpe_weights, min_vol_weights, max_return_weights,
+                                current_weights, rows, benchmark_data):
+    fig = go.Figure()
+
+    # Calcola i ritorni giornalieri
+    returns = data.pct_change().dropna()
+
+    # Definisce i portafogli e i pesi
+    portfolios = {
+        'Max Sharpe': max_sharpe_weights,
+        'Min Volatility': min_vol_weights,
+        'Max Return': max_return_weights,
+        'Current Portfolio': current_weights
+    }
+
+    # Calcola e aggiunge ogni portafoglio al grafico
+    window = 252 * 5  # finestra di 5 anni
+    for name, weights in portfolios.items():
+        # Calcola il ritorno ponderato del portafoglio
+        portfolio_return = (returns * weights).sum(axis=1)
+
+        # Calcola il ritorno rolling su 5 anni
+        rolling_return = portfolio_return.rolling(window=window).apply(lambda x: (1 + x).prod() - 1)
+
+        fig.add_trace(go.Scatter(
+            x=returns.index,
+            y=rolling_return,
+            mode='lines',
+            name=name
+        ))
+
+    # Aggiungi i benchmark
+    for benchmark, benchmark_prices in benchmark_data.items():
+        benchmark_returns = benchmark_prices.pct_change().dropna()
+        rolling_benchmark_return = benchmark_returns.rolling(window=window).apply(lambda x: (1 + x).prod() - 1)
+
+        fig.add_trace(go.Scatter(
+            x=rolling_benchmark_return.index,
+            y=rolling_benchmark_return,
+            mode='lines',
+            name=f'Benchmark: {benchmark}',
+            line=dict(dash='dash')
+        ))
+
+    fig.update_layout(
+        title='Rolling Return su 5 Anni dei Portafogli Ottimali e Benchmark',
+        xaxis_title='Data',
+        yaxis_title='Ritorno Rolling 5 Anni',
         showlegend=True,
         paper_bgcolor='#1E1E1E',
         plot_bgcolor='#1E1E1E',
