@@ -247,7 +247,9 @@ def update_graph_and_rolling_returns(rows, benchmark_rows, start_date, end_date)
     # Calcolo dei rolling returns
     returns = pd.DataFrame({ticker: data.pct_change().dropna() for ticker, data in data_dict.items()})
 
+    period_length = (end_date - start_date).days
     rolling_windows = [252, 252*5, 252*10]  # 1 anno, 5 anni, 10 anni
+    rolling_windows = [window for window in rolling_windows if window <= period_length/2]  # Filtra le finestre mobili
     window_labels = {252: '1 Anno', 252*5: '5 Anni', 252*10: '10 Anni'}
 
     all_traces = {window: [] for window in rolling_windows}
