@@ -90,6 +90,7 @@ app.layout = html.Div([
         )
     ], style={'marginTop': '20px', 'marginBottom': '20px'}),
     dcc.Graph(id='portfolio-graph'),
+    dcc.Graph(id='rolling-return-graph-stocks'),
     html.Button('Calcola Efficient Frontier', id='efficient-frontier-button', n_clicks=0, style={'marginTop': '20px'}),
     dcc.Graph(id='efficient-frontier-graph'),
     dcc.Graph(id='optimal-portfolio-performance-graph'),
@@ -148,44 +149,43 @@ def update_benchmark(n_clicks, benchmark, rows):
     return rows, '', []
 
 
-
-
 @app.callback(
-    Output('portfolio-graph', 'figure'),
+    [Output('portfolio-graph', 'figure'),
+     Output('rolling-return-graph-stocks', 'figure')],
     [Input('portfolio-table', 'data'),
      Input('benchmark-table', 'data'),
      Input('start-date-picker', 'date'),
      Input('end-date-picker', 'date')]
 )
-def update_graph(rows, benchmark_rows, start_date, end_date):
+def update_graph_and_rolling_returns(rows, benchmark_rows, start_date, end_date):
     if not rows or not start_date or not end_date:
-        return go.Figure()
+        return go.Figure(), go.Figure()
 
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
-    # Scarichiamo i dati per tutti gli asset
+    # Scarica i dati per tutti gli asset
     data_dict = {}
     for row in rows:
         ticker = row['ticker']
         data = yf.download(ticker, start=start_date, end=end_date)
         data_dict[ticker] = data['Close']
 
-    # Scarichiamo i dati per il benchmark
+    # Scarica i dati per il benchmark
     if not benchmark_rows:
         benchmark_rows = [{'benchmark': '^GSPC'}]  # Default to S&P 500 if no benchmark is selected
 
-    # Scarichiamo i dati per il benchmark
     for row in benchmark_rows:
         benchmark = row['benchmark']
         data = yf.download(benchmark, start=start_date, end=end_date)
         data_dict[benchmark] = data['Close']
 
-    # Troviamo la prima data in comune
+    # Trova la prima data in comune
     common_dates = pd.concat(data_dict.values(), axis=1).dropna().index
     if len(common_dates) == 0:
-        return go.Figure()  # Non ci sono date in comune
+        return go.Figure(), go.Figure()  # Non ci sono date in comune
 
+    # Grafico del Portfolio
     fig = go.Figure()
 
     portfolio_value = pd.Series(0, index=common_dates)
@@ -210,7 +210,6 @@ def update_graph(rows, benchmark_rows, start_date, end_date):
         # Calcola il contributo pesato al valore totale del portfolio
         portfolio_value += normalized_price * (percentage / 100)
 
-    # Aggiungi la linea del valore totale del portfolio se la somma delle percentuali è 100%
     if abs(total_percentage - 100) < 0.001:  # Usiamo una piccola tolleranza per gli errori di arrotondamento
         fig.add_trace(go.Scatter(
             x=portfolio_value.index,
@@ -220,7 +219,6 @@ def update_graph(rows, benchmark_rows, start_date, end_date):
             line=dict(color='white', width=2, dash='dash')
         ))
 
-    # Aggiungi i benchmark
     for row in benchmark_rows:
         benchmark = row['benchmark']
         data = data_dict[benchmark]
@@ -246,8 +244,72 @@ def update_graph(rows, benchmark_rows, start_date, end_date):
     fig.update_xaxes(gridcolor='#3C3C3C')
     fig.update_yaxes(gridcolor='#3C3C3C')
 
-    return fig
+    # Calcolo dei rolling returns
+    returns = pd.DataFrame({ticker: data.pct_change().dropna() for ticker, data in data_dict.items()})
 
+    rolling_windows = [252, 252*5, 252*10]  # 1 anno, 5 anni, 10 anni
+    window_labels = {252: '1 Anno', 252*5: '5 Anni', 252*10: '10 Anni'}
+
+    all_traces = {window: [] for window in rolling_windows}
+    portfolio_dates = {window: [] for window in rolling_windows}
+
+    for window in rolling_windows:
+        for ticker in data_dict.keys():
+            rolling_return = returns[ticker].rolling(window=window).apply(lambda x: (1 + x).prod() - 1).dropna()
+
+            trace = go.Scatter(
+                x=rolling_return.index,
+                y=rolling_return,
+                mode='lines',
+                name=f'{ticker} ({window_labels[window]})'
+            )
+            all_traces[window].append(trace)
+            portfolio_dates[window].append(rolling_return.index)
+
+    # Trova l'intersezione di tutte le date dei portafogli
+    common_dates = {window: set(portfolio_dates[window][0]) for window in rolling_windows}
+    for window in rolling_windows:
+        for dates in portfolio_dates[window][1:]:
+            common_dates[window] = common_dates[window].intersection(set(dates))
+        common_dates[window] = sorted(list(common_dates[window]))
+
+    rolling_returns_fig = go.Figure()
+
+    # Aggiungi tracce iniziali (per esempio, per la finestra di 1 anno)
+    for trace in all_traces[252]:
+        rolling_returns_fig.add_trace(trace)
+
+    # Definisce i pulsanti del dropdown
+    buttons = []
+    for window in rolling_windows:
+        buttons.append(dict(
+            label=window_labels[window],
+            method='update',
+            args=[{'visible': [trace in all_traces[window] for window in rolling_windows for trace in all_traces[window]]},
+                  {'title': f'Rolling Return su {window_labels[window]}',
+                   'xaxis': {'range': [common_dates[window][0], common_dates[window][-1]]}}]
+        ))
+
+    # Aggiorna il layout con i pulsanti del dropdown
+    rolling_returns_fig.update_layout(
+        title='Rolling Return su 1 Anno',
+        xaxis_title='Data',
+        yaxis_title='Ritorno Rolling',
+        showlegend=True,
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF'),
+        updatemenus=[dict(
+            buttons=buttons,
+            direction='down',
+            showactive=True,
+        )]
+    )
+
+    rolling_returns_fig.update_xaxes(gridcolor='#3C3C3C')
+    rolling_returns_fig.update_yaxes(gridcolor='#3C3C3C')
+
+    return fig, rolling_returns_fig
 @app.callback(
     [Output('efficient-frontier-graph', 'figure'),
      Output('optimal-portfolio-performance-graph', 'figure'),
@@ -660,10 +722,6 @@ def create_optimal_portfolio_performance_graph(data, max_sharpe_weights, min_vol
     fig.update_yaxes(gridcolor='#3C3C3C')
 
     return fig
-
-
-import plotly.graph_objects as go
-import pandas as pd
 
 def create_rolling_return_graph(data, max_sharpe_weights, min_vol_weights, max_return_weights,
                                 current_weights, benchmark_data):
