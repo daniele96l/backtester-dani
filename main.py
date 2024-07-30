@@ -90,9 +90,17 @@ app.layout = html.Div([
         )
     ], style={'marginTop': '20px', 'marginBottom': '20px'}),
     dcc.Graph(id='portfolio-graph'),
+    dcc.Dropdown(
+        id='rolling-window-dropdown',
+        options=[
+            {'label': '1 Anno', 'value': 252},
+            {'label': '5 Anni', 'value': 252 * 5},
+            {'label': '10 Anni', 'value': 252 * 10}
+        ],
+        value=252,  # Valore predefinito (1 anno)
+        style={'width': '50%'}
+    ),
     dcc.Graph(id='rolling-return-graph-1y'),
-    dcc.Graph(id='rolling-return-graph-5y'),
-    dcc.Graph(id='rolling-return-graph-10y'),
     dcc.Graph(id='returns-histogram'),
     html.Button('Calcola Efficient Frontier', id='efficient-frontier-button', n_clicks=0, style={'marginTop': '20px'}),
     dcc.Graph(id='efficient-frontier-graph'),
@@ -100,6 +108,7 @@ app.layout = html.Div([
     html.Div(id='pie-charts', style={'display': 'flex', 'justifyContent': 'space-between'}),
     dcc.Graph(id='comparison-chart'),
     dcc.Graph(id='rolling-return-graph')
+
 
 ], style={'padding': '20px'})
 
@@ -195,20 +204,25 @@ def create_empty_warning_fig(title):
         yaxis=dict(visible=False)
     )
     return fig
-@app.callback(
+from dash import dcc, html, Input, Output, callback
+import yfinance as yf
+import pandas as pd
+import plotly.graph_objects as go
+from datetime import datetime
+
+@callback(
     [Output('portfolio-graph', 'figure'),
      Output('rolling-return-graph-1y', 'figure'),
-     Output('rolling-return-graph-5y', 'figure'),
-     Output('rolling-return-graph-10y', 'figure'),
      Output('returns-histogram', 'figure')],
     [Input('portfolio-table', 'data'),
      Input('benchmark-table', 'data'),
      Input('start-date-picker', 'date'),
-     Input('end-date-picker', 'date')]
+     Input('end-date-picker', 'date'),
+     Input('rolling-window-dropdown', 'value')]
 )
-def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date):
+def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date, rolling_window):
     if not rows or not start_date or not end_date:
-        return go.Figure(), go.Figure(), go.Figure(), go.Figure(), go.Figure()
+        return go.Figure(), go.Figure(), go.Figure()
 
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -301,7 +315,6 @@ def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date):
     # Calcolo dei rolling returns
     returns = pd.DataFrame({ticker: data.pct_change().dropna() for ticker, data in data_dict.items()})
 
-
     def filter_dates(returns, window):
         rolling_returns = returns.rolling(window=window).apply(lambda x: (1 + x).prod() - 1)
         return rolling_returns.dropna()
@@ -310,103 +323,36 @@ def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date):
     returns_data = [returns[col] for col in returns.columns]
     histogram_fig = create_returns_histogram(returns_data, [col for col in returns.columns])
 
-    # Crea tre figure separate per le tre finestre temporali
-    rolling_returns_fig_1y = go.Figure()
-    rolling_returns_fig_5y = go.Figure()
-    rolling_returns_fig_10y = go.Figure()
+    # Crea il grafico per la finestra temporale selezionata
+    rolling_returns_fig = go.Figure()
 
     for ticker in data_dict.keys():
-        rolling_return_1y = filter_dates(returns[ticker], window=252)
-        rolling_return_5y = filter_dates(returns[ticker], window=252*5)
-        rolling_return_10y = filter_dates(returns[ticker], window=252*10)
+        rolling_return = filter_dates(returns[ticker], rolling_window)
 
-        if rolling_return_1y.empty:
-            rolling_returns_fig_1y = create_empty_warning_fig("Rolling Return su 1 Anno")
+        if rolling_return.empty:
+            rolling_returns_fig = create_empty_warning_fig(f"Rolling Return ({rolling_window // 252} Anni)")
         else:
-            rolling_returns_fig_1y.add_trace(go.Scatter(
-                x=rolling_return_1y.index,
-                y=rolling_return_1y,
+            rolling_returns_fig.add_trace(go.Scatter(
+                x=rolling_return.index,
+                y=rolling_return,
                 mode='lines',
-                name=f'{ticker} (1 Anno)'
+                name=f'{ticker} ({rolling_window // 252} Anni)'
             ))
 
-        if rolling_return_5y.empty:
-            rolling_returns_fig_5y = create_empty_warning_fig("Rolling Return su 5 Anni")
-        else:
-            rolling_returns_fig_5y.add_trace(go.Scatter(
-                x=rolling_return_5y.index,
-                y=rolling_return_5y,
-                mode='lines',
-                name=f'{ticker} (5 Anni)'
-            ))
-
-        if rolling_return_10y.empty:
-            rolling_returns_fig_10y = create_empty_warning_fig("Rolling Return su 10 Anni")
-        else:
-            rolling_returns_fig_10y.add_trace(go.Scatter
-            (
-                x=rolling_return_10y.index,
-                y=rolling_return_10y,
-                mode='lines',
-                name=f'{ticker} (10 Anni)'
-            ))
-
-
-        rolling_returns_fig_1y.add_trace(go.Scatter(
-            x=rolling_return_1y.index,
-            y=rolling_return_1y,
-            mode='lines',
-            name=f'{ticker} (1 Anno)'
-        ))
-
-        rolling_returns_fig_5y.add_trace(go.Scatter(
-            x=rolling_return_5y.index,
-            y=rolling_return_5y,
-            mode='lines',
-            name=f'{ticker} (5 Anni)'
-        ))
-
-        rolling_returns_fig_10y.add_trace(go.Scatter(
-            x=rolling_return_10y.index,
-            y=rolling_return_10y,
-            mode='lines',
-            name=f'{ticker} (10 Anni)'
-        ))
-
-    # Aggiorna layout per ciascun grafico
-    rolling_returns_fig_1y.update_layout(
-        title='Rolling Return su 1 Anno',
+    # Aggiorna layout per il grafico rolling
+    rolling_returns_fig.update_layout(
+        title=f'Rolling Return su {rolling_window // 252} Anni',
         xaxis_title='Data',
         yaxis_title='Ritorno Rolling',
         paper_bgcolor='#1E1E1E',
         plot_bgcolor='#1E1E1E',
         font=dict(color='#FFFFFF')
     )
-    rolling_returns_fig_5y.update_layout(
-        title='Rolling Return su 5 Anni',
-        xaxis_title='Data',
-        yaxis_title='Ritorno Rolling',
-        paper_bgcolor='#1E1E1E',
-        plot_bgcolor='#1E1E1E',
-        font=dict(color='#FFFFFF')
-    )
-    rolling_returns_fig_10y.update_layout(
-        title='Rolling Return su 10 Anni',
-        xaxis_title='Data',
-        yaxis_title='Ritorno Rolling',
-        paper_bgcolor='#1E1E1E',
-        plot_bgcolor='#1E1E1E',
-        font=dict(color='#FFFFFF')
-    )
+    rolling_returns_fig.update_xaxes(gridcolor='#3C3C3C')
+    rolling_returns_fig.update_yaxes(gridcolor='#3C3C3C')
 
-    rolling_returns_fig_1y.update_xaxes(gridcolor='#3C3C3C')
-    rolling_returns_fig_1y.update_yaxes(gridcolor='#3C3C3C')
-    rolling_returns_fig_5y.update_xaxes(gridcolor='#3C3C3C')
-    rolling_returns_fig_5y.update_yaxes(gridcolor='#3C3C3C')
-    rolling_returns_fig_10y.update_xaxes(gridcolor='#3C3C3C')
-    rolling_returns_fig_10y.update_yaxes(gridcolor='#3C3C3C')
+    return fig, rolling_returns_fig, histogram_fig
 
-    return fig, histogram_fig,rolling_returns_fig_1y, rolling_returns_fig_5y, rolling_returns_fig_10y
 @app.callback(
     [Output('efficient-frontier-graph', 'figure'),
      Output('optimal-portfolio-performance-graph', 'figure'),
