@@ -175,7 +175,26 @@ def create_returns_histogram(returns_data, asset_labels):
 
     return histogram_fig
 
-
+def create_empty_warning_fig(title):
+    fig = go.Figure()
+    fig.add_annotation(
+        x=0.5, y=0.5,
+        text="Non abbastanza dati per calcolare i ritorni rolling",
+        showarrow=False,
+        font=dict(size=20, color="white"),
+        align="center"
+    )
+    fig.update_layout(
+        title=title,
+        xaxis_title='Data',
+        yaxis_title='Ritorno Rolling',
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF'),
+        xaxis=dict(visible=False),
+        yaxis=dict(visible=False)
+    )
+    return fig
 @app.callback(
     [Output('portfolio-graph', 'figure'),
      Output('rolling-return-graph-1y', 'figure'),
@@ -282,6 +301,11 @@ def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date):
     # Calcolo dei rolling returns
     returns = pd.DataFrame({ticker: data.pct_change().dropna() for ticker, data in data_dict.items()})
 
+
+    def filter_dates(returns, window):
+        rolling_returns = returns.rolling(window=window).apply(lambda x: (1 + x).prod() - 1)
+        return rolling_returns.dropna()
+
     # Crea l'istogramma con i ritorni degli asset
     returns_data = [returns[col] for col in returns.columns]
     histogram_fig = create_returns_histogram(returns_data, [col for col in returns.columns])
@@ -292,9 +316,41 @@ def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date):
     rolling_returns_fig_10y = go.Figure()
 
     for ticker in data_dict.keys():
-        rolling_return_1y = returns[ticker].dropna().rolling(window=252).apply(lambda x: (1 + x).prod() - 1)
-        rolling_return_5y = returns[ticker].dropna().rolling(window=252*5).apply(lambda x: (1 + x).prod() - 1)
-        rolling_return_10y = returns[ticker].dropna().rolling(window=252*10).apply(lambda x: (1 + x).prod() - 1)
+        rolling_return_1y = filter_dates(returns[ticker], window=252)
+        rolling_return_5y = filter_dates(returns[ticker], window=252*5)
+        rolling_return_10y = filter_dates(returns[ticker], window=252*10)
+
+        if rolling_return_1y.empty:
+            rolling_returns_fig_1y = create_empty_warning_fig("Rolling Return su 1 Anno")
+        else:
+            rolling_returns_fig_1y.add_trace(go.Scatter(
+                x=rolling_return_1y.index,
+                y=rolling_return_1y,
+                mode='lines',
+                name=f'{ticker} (1 Anno)'
+            ))
+
+        if rolling_return_5y.empty:
+            rolling_returns_fig_5y = create_empty_warning_fig("Rolling Return su 5 Anni")
+        else:
+            rolling_returns_fig_5y.add_trace(go.Scatter(
+                x=rolling_return_5y.index,
+                y=rolling_return_5y,
+                mode='lines',
+                name=f'{ticker} (5 Anni)'
+            ))
+
+        if rolling_return_10y.empty:
+            rolling_returns_fig_10y = create_empty_warning_fig("Rolling Return su 10 Anni")
+        else:
+            rolling_returns_fig_10y.add_trace(go.Scatter
+            (
+                x=rolling_return_10y.index,
+                y=rolling_return_10y,
+                mode='lines',
+                name=f'{ticker} (10 Anni)'
+            ))
+
 
         rolling_returns_fig_1y.add_trace(go.Scatter(
             x=rolling_return_1y.index,
