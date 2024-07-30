@@ -91,6 +91,7 @@ app.layout = html.Div([
     ], style={'marginTop': '20px', 'marginBottom': '20px'}),
     dcc.Graph(id='portfolio-graph'),
     dcc.Graph(id='rolling-return-graph-stocks'),
+    dcc.Graph(id='returns-histogram'),
     html.Button('Calcola Efficient Frontier', id='efficient-frontier-button', n_clicks=0, style={'marginTop': '20px'}),
     dcc.Graph(id='efficient-frontier-graph'),
     dcc.Graph(id='optimal-portfolio-performance-graph'),
@@ -148,10 +149,35 @@ def update_benchmark(n_clicks, benchmark, rows):
         rows = [{'benchmark': benchmark.upper()}]
     return rows, '', []
 
+def create_returns_histogram(returns_data, asset_labels):
+    histogram_fig = go.Figure()
+
+    for returns, label in zip(returns_data, asset_labels):
+        histogram_fig.add_trace(go.Histogram(
+            x=returns,
+            nbinsx=50,  # Adjust the number of bins as needed
+            name=label
+        ))
+
+    histogram_fig.update_layout(
+        title='Distribuzione dei Ritorni',
+        xaxis_title='Ritorno',
+        yaxis_title='Frequenza',
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF')
+    )
+
+    histogram_fig.update_xaxes(gridcolor='#3C3C3C')
+    histogram_fig.update_yaxes(gridcolor='#3C3C3C')
+
+    return histogram_fig
+
 
 @app.callback(
     [Output('portfolio-graph', 'figure'),
-     Output('rolling-return-graph-stocks', 'figure')],
+     Output('rolling-return-graph-stocks', 'figure'),
+     Output('returns-histogram', 'figure')],
     [Input('portfolio-table', 'data'),
      Input('benchmark-table', 'data'),
      Input('start-date-picker', 'date'),
@@ -159,7 +185,7 @@ def update_benchmark(n_clicks, benchmark, rows):
 )
 def update_graph_and_rolling_returns(rows, benchmark_rows, start_date, end_date):
     if not rows or not start_date or not end_date:
-        return go.Figure(), go.Figure()
+        return go.Figure(), go.Figure(), go.Figure()
 
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -311,7 +337,12 @@ def update_graph_and_rolling_returns(rows, benchmark_rows, start_date, end_date)
     rolling_returns_fig.update_xaxes(gridcolor='#3C3C3C')
     rolling_returns_fig.update_yaxes(gridcolor='#3C3C3C')
 
-    return fig, rolling_returns_fig
+    # Create the histogram using the new function
+    # Crea l'istogramma con i ritorni degli asset
+    returns_data = [returns[col] for col in returns.columns]  # Lista dei ritorni per ogni asset
+    histogram_fig = create_returns_histogram(returns_data, [col for col in returns.columns])
+
+    return fig, rolling_returns_fig, histogram_fig
 @app.callback(
     [Output('efficient-frontier-graph', 'figure'),
      Output('optimal-portfolio-performance-graph', 'figure'),
@@ -522,7 +553,6 @@ def calculate_annualized_down_volatility(returns):
     annual_volatility = annual_returns.std()
     return annual_volatility
 
-
 def create_comparison_chart(portfolio_data, benchmark_data):
     portfolios = list(portfolio_data.keys()) + ['Benchmark']
     metrics = ['CAGR', 'Volatility', 'Sharpe Ratio', 'Downside Volatility', 'Sortino Ratio']
@@ -557,7 +587,6 @@ def create_comparison_chart(portfolio_data, benchmark_data):
     fig.update_yaxes(gridcolor='#3C3C3C')
 
     return fig
-
 
 def create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights):
     tickers = [row['ticker'] for row in rows]
