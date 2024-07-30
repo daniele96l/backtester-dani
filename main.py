@@ -455,7 +455,7 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
                                                           max_return_weights, current_weights, rows, benchmark_data)
 
     roll_fig = create_rolling_return_graph(common_data, max_sharpe_weights, min_vol_weights,
-                                                          max_return_weights, current_weights, benchmark_data)
+                                                          max_return_weights, current_weights, benchmark_data, start_date, end_date)
 
     pie_charts = create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights)
 
@@ -726,7 +726,7 @@ def create_optimal_portfolio_performance_graph(data, max_sharpe_weights, min_vol
     return fig
 
 def create_rolling_return_graph(data, max_sharpe_weights, min_vol_weights, max_return_weights,
-                                current_weights, benchmark_data):
+                                current_weights, benchmark_data, start_date, end_date):
     fig = go.Figure()
 
     # Calcola i ritorni giornalieri
@@ -740,7 +740,9 @@ def create_rolling_return_graph(data, max_sharpe_weights, min_vol_weights, max_r
         'Current Portfolio': current_weights
     }
 
-    rolling_windows = [252, 252*5, 252*10]  # 1 anno, 3 anni, 5 anni
+    period_length = (end_date - start_date).days
+    rolling_windows = [252, 252*5, 252*10]  # 1 anno, 5 anni, 10 anni
+    rolling_windows = [window for window in rolling_windows if window <= period_length/2]  # Filtra le finestre mobili
     window_labels = {252: '1 Anno', 252*5: '5 Anni', 252*10: '10 Anni'}
 
     # Memorizza le tracce per ciascun portafoglio e benchmark
