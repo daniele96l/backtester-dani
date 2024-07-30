@@ -391,7 +391,7 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
                                                           max_return_weights, current_weights, rows, benchmark_data)
 
     roll_fig = create_rolling_return_graph(common_data, max_sharpe_weights, min_vol_weights,
-                                                          max_return_weights, current_weights, rows, benchmark_data)
+                                                          max_return_weights, current_weights, benchmark_data)
 
     pie_charts = create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights)
 
@@ -662,12 +662,11 @@ def create_optimal_portfolio_performance_graph(data, max_sharpe_weights, min_vol
     return fig
 
 
-import plotly.graph_objs as go
+import plotly.graph_objects as go
 import pandas as pd
 
-
 def create_rolling_return_graph(data, max_sharpe_weights, min_vol_weights, max_return_weights,
-                                current_weights, rows, benchmark_data):
+                                current_weights, benchmark_data):
     fig = go.Figure()
 
     # Calcola i ritorni giornalieri
@@ -681,35 +680,64 @@ def create_rolling_return_graph(data, max_sharpe_weights, min_vol_weights, max_r
         'Current Portfolio': current_weights
     }
 
-    # Calcola e aggiunge ogni portafoglio al grafico
-    window = 252 * 5  # finestra di 5 anni
-    for name, weights in portfolios.items():
-        # Calcola il ritorno ponderato del portafoglio
-        portfolio_return = (returns * weights).sum(axis=1)
+    rolling_windows = [252, 252*5, 252*10]  # 1 anno, 3 anni, 5 anni
+    window_labels = {252: '1 Anno', 252*5: '5 Anni', 252*10: '10 Anni'}
 
-        # Calcola il ritorno rolling su 5 anni
-        rolling_return = portfolio_return.rolling(window=window).apply(lambda x: (1 + x).prod() - 1)
+    # Memorizza le tracce per ciascun portafoglio e benchmark
+    all_traces = {window: [] for window in rolling_windows}
+    portfolio_dates = {window: [] for window in rolling_windows}
 
-        fig.add_trace(go.Scatter(
-            x=returns.index,
-            y=rolling_return,
-            mode='lines',
-            name=name
+    for window in rolling_windows:
+        for name, weights in portfolios.items():
+            portfolio_return = (returns * weights).sum(axis=1)
+            rolling_return = portfolio_return.rolling(window=window).apply(lambda x: (1 + x).prod() - 1).dropna()
+
+            trace = go.Scatter(
+                x=rolling_return.index,
+                y=rolling_return,
+                mode='lines',
+                name=name + f' ({window_labels[window]})'
+            )
+            all_traces[window].append(trace)
+            portfolio_dates[window].append(rolling_return.index)
+
+        for benchmark, benchmark_prices in benchmark_data.items():
+            benchmark_returns = benchmark_prices.pct_change().dropna()
+            rolling_benchmark_return = benchmark_returns.rolling(window=window).apply(lambda x: (1 + x).prod() - 1).dropna()
+
+            trace = go.Scatter(
+                x=rolling_benchmark_return.index,
+                y=rolling_benchmark_return,
+                mode='lines',
+                name=f'Benchmark: {benchmark} ({window_labels[window]})',
+                line=dict(dash='dash')
+            )
+            all_traces[window].append(trace)
+            portfolio_dates[window].append(rolling_benchmark_return.index)
+
+    # Trova l'intersezione di tutte le date dei portafogli
+    common_dates = {window: set(portfolio_dates[window][0]) for window in rolling_windows}
+    for window in rolling_windows:
+        for dates in portfolio_dates[window][1:]:
+            common_dates[window] = common_dates[window].intersection(set(dates))
+        common_dates[window] = sorted(list(common_dates[window]))
+
+    # Aggiungi tracce iniziali (per esempio, per la finestra di 5 anni)
+    for trace in all_traces[252]:
+        fig.add_trace(trace)
+
+    # Definisce i pulsanti del dropdown
+    buttons = []
+    for window in rolling_windows:
+        buttons.append(dict(
+            label=window_labels[window],
+            method='update',
+            args=[{'visible': [trace in all_traces[window] for window in rolling_windows for trace in all_traces[window]]},
+                  {'title': f'Rolling Return su {window_labels[window]} dei Portafogli Ottimali e Benchmark',
+                   'xaxis': {'range': [common_dates[window][0], common_dates[window][-1]]}}]
         ))
 
-    # Aggiungi i benchmark
-    for benchmark, benchmark_prices in benchmark_data.items():
-        benchmark_returns = benchmark_prices.pct_change().dropna()
-        rolling_benchmark_return = benchmark_returns.rolling(window=window).apply(lambda x: (1 + x).prod() - 1)
-
-        fig.add_trace(go.Scatter(
-            x=rolling_benchmark_return.index,
-            y=rolling_benchmark_return,
-            mode='lines',
-            name=f'Benchmark: {benchmark}',
-            line=dict(dash='dash')
-        ))
-
+    # Aggiorna il layout con i pulsanti del dropdown
     fig.update_layout(
         title='Rolling Return su 5 Anni dei Portafogli Ottimali e Benchmark',
         xaxis_title='Data',
@@ -717,8 +745,14 @@ def create_rolling_return_graph(data, max_sharpe_weights, min_vol_weights, max_r
         showlegend=True,
         paper_bgcolor='#1E1E1E',
         plot_bgcolor='#1E1E1E',
-        font=dict(color='#FFFFFF')
+        font=dict(color='#FFFFFF'),
+        updatemenus=[dict(
+            buttons=buttons,
+            direction='down',
+            showactive=True,
+        )]
     )
+
     fig.update_xaxes(gridcolor='#3C3C3C')
     fig.update_yaxes(gridcolor='#3C3C3C')
 
