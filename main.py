@@ -183,7 +183,7 @@ def create_returns_histogram(returns_data, asset_labels):
      Input('start-date-picker', 'date'),
      Input('end-date-picker', 'date')]
 )
-def update_graph_and_rolling_returns(rows, benchmark_rows, start_date, end_date):
+def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date):
     if not rows or not start_date or not end_date:
         return go.Figure(), go.Figure(), go.Figure()
 
@@ -206,8 +206,13 @@ def update_graph_and_rolling_returns(rows, benchmark_rows, start_date, end_date)
         data = yf.download(benchmark, start=start_date, end=end_date)
         data_dict[benchmark] = data['Close']
 
-    # Trova la prima data in comune
-    common_dates = pd.concat(data_dict.values(), axis=1).dropna().index
+    combined_data = pd.concat(data_dict.values(), axis=1)
+    common_dates = combined_data.dropna().index
+
+    # Filtra i dati per mantenere solo le date comuni
+    for key in data_dict.keys():
+        data_dict[key] = data_dict[key][common_dates]
+
     if len(common_dates) == 0:
         return go.Figure(), go.Figure()  # Non ci sono date in comune
 
@@ -273,17 +278,26 @@ def update_graph_and_rolling_returns(rows, benchmark_rows, start_date, end_date)
     # Calcolo dei rolling returns
     returns = pd.DataFrame({ticker: data.pct_change().dropna() for ticker, data in data_dict.items()})
 
+    # Create the histogram using the new function
+    # Crea l'istogramma con i ritorni degli asset
+    returns_data = [returns[col] for col in returns.columns]  # Lista dei ritorni per ogni asset
+    histogram_fig = create_returns_histogram(returns_data, [col for col in returns.columns])
+
     period_length = (end_date - start_date).days
     rolling_windows = [252, 252*5, 252*10]  # 1 anno, 5 anni, 10 anni
     rolling_windows = [window for window in rolling_windows if window <= period_length/2]  # Filtra le finestre mobili
     window_labels = {252: '1 Anno', 252*5: '5 Anni', 252*10: '10 Anni'}
+    min_days_required = 252 * 2  # Almeno due anni di dati
+    if period_length < min_days_required:
+        return fig, go.Figure(), histogram_fig  # Non ci sono abbastanza dati per i rolling returns
+
 
     all_traces = {window: [] for window in rolling_windows}
     portfolio_dates = {window: [] for window in rolling_windows}
 
     for window in rolling_windows:
         for ticker in data_dict.keys():
-            rolling_return = returns[ticker].rolling(window=window).apply(lambda x: (1 + x).prod() - 1).dropna()
+            rolling_return = returns[ticker].dropna().rolling(window=window).apply(lambda x: (1 + x).prod() - 1)
 
             trace = go.Scatter(
                 x=rolling_return.index,
@@ -336,11 +350,6 @@ def update_graph_and_rolling_returns(rows, benchmark_rows, start_date, end_date)
 
     rolling_returns_fig.update_xaxes(gridcolor='#3C3C3C')
     rolling_returns_fig.update_yaxes(gridcolor='#3C3C3C')
-
-    # Create the histogram using the new function
-    # Crea l'istogramma con i ritorni degli asset
-    returns_data = [returns[col] for col in returns.columns]  # Lista dei ritorni per ogni asset
-    histogram_fig = create_returns_histogram(returns_data, [col for col in returns.columns])
 
     return fig, rolling_returns_fig, histogram_fig
 @app.callback(
@@ -484,9 +493,12 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
                                              current_return)
     perf_fig = create_optimal_portfolio_performance_graph(common_data, max_sharpe_weights, min_vol_weights,
                                                           max_return_weights, current_weights, rows, benchmark_data)
-
-    roll_fig = create_rolling_return_graph(common_data, max_sharpe_weights, min_vol_weights,
+    period_length = (end_date - start_date).days
+    if period_length > 252 * 2:
+        roll_fig = create_rolling_return_graph(common_data, max_sharpe_weights, min_vol_weights,
                                                           max_return_weights, current_weights, benchmark_data, start_date, end_date)
+    else:
+        roll_fig = go.Figure()
 
     pie_charts = create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights)
 
@@ -781,7 +793,7 @@ def create_rolling_return_graph(data, max_sharpe_weights, min_vol_weights, max_r
     for window in rolling_windows:
         for name, weights in portfolios.items():
             portfolio_return = (returns * weights).sum(axis=1)
-            rolling_return = portfolio_return.rolling(window=window).apply(lambda x: (1 + x).prod() - 1).dropna()
+            rolling_return = portfolio_return.dropna().rolling(window=window).apply(lambda x: (1 + x).prod() - 1)
 
             trace = go.Scatter(
                 x=rolling_return.index,
@@ -808,6 +820,7 @@ def create_rolling_return_graph(data, max_sharpe_weights, min_vol_weights, max_r
 
     # Trova l'intersezione di tutte le date dei portafogli
     common_dates = {window: set(portfolio_dates[window][0]) for window in rolling_windows}
+
     for window in rolling_windows:
         for dates in portfolio_dates[window][1:]:
             common_dates[window] = common_dates[window].intersection(set(dates))
