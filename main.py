@@ -90,7 +90,9 @@ app.layout = html.Div([
         )
     ], style={'marginTop': '20px', 'marginBottom': '20px'}),
     dcc.Graph(id='portfolio-graph'),
-    dcc.Graph(id='rolling-return-graph-stocks'),
+    dcc.Graph(id='rolling-return-graph-1y'),
+    dcc.Graph(id='rolling-return-graph-5y'),
+    dcc.Graph(id='rolling-return-graph-10y'),
     dcc.Graph(id='returns-histogram'),
     html.Button('Calcola Efficient Frontier', id='efficient-frontier-button', n_clicks=0, style={'marginTop': '20px'}),
     dcc.Graph(id='efficient-frontier-graph'),
@@ -176,7 +178,9 @@ def create_returns_histogram(returns_data, asset_labels):
 
 @app.callback(
     [Output('portfolio-graph', 'figure'),
-     Output('rolling-return-graph-stocks', 'figure'),
+     Output('rolling-return-graph-1y', 'figure'),
+     Output('rolling-return-graph-5y', 'figure'),
+     Output('rolling-return-graph-10y', 'figure'),
      Output('returns-histogram', 'figure')],
     [Input('portfolio-table', 'data'),
      Input('benchmark-table', 'data'),
@@ -185,7 +189,7 @@ def create_returns_histogram(returns_data, asset_labels):
 )
 def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date):
     if not rows or not start_date or not end_date:
-        return go.Figure(), go.Figure(), go.Figure()
+        return go.Figure(), go.Figure(), go.Figure(), go.Figure(), go.Figure()
 
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -214,7 +218,7 @@ def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date):
         data_dict[key] = data_dict[key][common_dates]
 
     if len(common_dates) == 0:
-        return go.Figure(), go.Figure()  # Non ci sono date in comune
+        return go.Figure(), go.Figure(), go.Figure()  # Non ci sono date in comune
 
     # Grafico del Portfolio
     fig = go.Figure()
@@ -278,80 +282,75 @@ def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date):
     # Calcolo dei rolling returns
     returns = pd.DataFrame({ticker: data.pct_change().dropna() for ticker, data in data_dict.items()})
 
-    # Create the histogram using the new function
     # Crea l'istogramma con i ritorni degli asset
-    returns_data = [returns[col] for col in returns.columns]  # Lista dei ritorni per ogni asset
+    returns_data = [returns[col] for col in returns.columns]
     histogram_fig = create_returns_histogram(returns_data, [col for col in returns.columns])
 
-    period_length = (end_date - start_date).days
-    rolling_windows = [252, 252*5, 252*10]  # 1 anno, 5 anni, 10 anni
-    rolling_windows = [window for window in rolling_windows if window <= period_length/2]  # Filtra le finestre mobili
-    window_labels = {252: '1 Anno', 252*5: '5 Anni', 252*10: '10 Anni'}
-    min_days_required = 252 * 2  # Almeno due anni di dati
-    if period_length < min_days_required:
-        return fig, go.Figure(), histogram_fig  # Non ci sono abbastanza dati per i rolling returns
+    # Crea tre figure separate per le tre finestre temporali
+    rolling_returns_fig_1y = go.Figure()
+    rolling_returns_fig_5y = go.Figure()
+    rolling_returns_fig_10y = go.Figure()
 
+    for ticker in data_dict.keys():
+        rolling_return_1y = returns[ticker].dropna().rolling(window=252).apply(lambda x: (1 + x).prod() - 1)
+        rolling_return_5y = returns[ticker].dropna().rolling(window=252*5).apply(lambda x: (1 + x).prod() - 1)
+        rolling_return_10y = returns[ticker].dropna().rolling(window=252*10).apply(lambda x: (1 + x).prod() - 1)
 
-    all_traces = {window: [] for window in rolling_windows}
-    portfolio_dates = {window: [] for window in rolling_windows}
-
-    for window in rolling_windows:
-        for ticker in data_dict.keys():
-            rolling_return = returns[ticker].dropna().rolling(window=window).apply(lambda x: (1 + x).prod() - 1)
-
-            trace = go.Scatter(
-                x=rolling_return.index,
-                y=rolling_return,
-                mode='lines',
-                name=f'{ticker} ({window_labels[window]})'
-            )
-            all_traces[window].append(trace)
-            portfolio_dates[window].append(rolling_return.index)
-
-    # Trova l'intersezione di tutte le date dei portafogli
-    common_dates = {window: set(portfolio_dates[window][0]) for window in rolling_windows}
-    for window in rolling_windows:
-        for dates in portfolio_dates[window][1:]:
-            common_dates[window] = common_dates[window].intersection(set(dates))
-        common_dates[window] = sorted(list(common_dates[window]))
-
-    rolling_returns_fig = go.Figure()
-
-    # Aggiungi tracce iniziali (per esempio, per la finestra di 1 anno)
-    for trace in all_traces[252]:
-        rolling_returns_fig.add_trace(trace)
-
-    # Definisce i pulsanti del dropdown
-    buttons = []
-    for window in rolling_windows:
-        buttons.append(dict(
-            label=window_labels[window],
-            method='update',
-            args=[{'visible': [trace in all_traces[window] for window in rolling_windows for trace in all_traces[window]]},
-                  {'title': f'Rolling Return su {window_labels[window]}',
-                   'xaxis': {'range': [common_dates[window][0], common_dates[window][-1]]}}]
+        rolling_returns_fig_1y.add_trace(go.Scatter(
+            x=rolling_return_1y.index,
+            y=rolling_return_1y,
+            mode='lines',
+            name=f'{ticker} (1 Anno)'
         ))
 
-    # Aggiorna il layout con i pulsanti del dropdown
-    rolling_returns_fig.update_layout(
+        rolling_returns_fig_5y.add_trace(go.Scatter(
+            x=rolling_return_5y.index,
+            y=rolling_return_5y,
+            mode='lines',
+            name=f'{ticker} (5 Anni)'
+        ))
+
+        rolling_returns_fig_10y.add_trace(go.Scatter(
+            x=rolling_return_10y.index,
+            y=rolling_return_10y,
+            mode='lines',
+            name=f'{ticker} (10 Anni)'
+        ))
+
+    # Aggiorna layout per ciascun grafico
+    rolling_returns_fig_1y.update_layout(
         title='Rolling Return su 1 Anno',
         xaxis_title='Data',
         yaxis_title='Ritorno Rolling',
-        showlegend=True,
         paper_bgcolor='#1E1E1E',
         plot_bgcolor='#1E1E1E',
-        font=dict(color='#FFFFFF'),
-        updatemenus=[dict(
-            buttons=buttons,
-            direction='down',
-            showactive=True,
-        )]
+        font=dict(color='#FFFFFF')
+    )
+    rolling_returns_fig_5y.update_layout(
+        title='Rolling Return su 5 Anni',
+        xaxis_title='Data',
+        yaxis_title='Ritorno Rolling',
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF')
+    )
+    rolling_returns_fig_10y.update_layout(
+        title='Rolling Return su 10 Anni',
+        xaxis_title='Data',
+        yaxis_title='Ritorno Rolling',
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF')
     )
 
-    rolling_returns_fig.update_xaxes(gridcolor='#3C3C3C')
-    rolling_returns_fig.update_yaxes(gridcolor='#3C3C3C')
+    rolling_returns_fig_1y.update_xaxes(gridcolor='#3C3C3C')
+    rolling_returns_fig_1y.update_yaxes(gridcolor='#3C3C3C')
+    rolling_returns_fig_5y.update_xaxes(gridcolor='#3C3C3C')
+    rolling_returns_fig_5y.update_yaxes(gridcolor='#3C3C3C')
+    rolling_returns_fig_10y.update_xaxes(gridcolor='#3C3C3C')
+    rolling_returns_fig_10y.update_yaxes(gridcolor='#3C3C3C')
 
-    return fig, rolling_returns_fig, histogram_fig
+    return fig, histogram_fig,rolling_returns_fig_1y, rolling_returns_fig_5y, rolling_returns_fig_10y
 @app.callback(
     [Output('efficient-frontier-graph', 'figure'),
      Output('optimal-portfolio-performance-graph', 'figure'),
