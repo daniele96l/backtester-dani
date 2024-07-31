@@ -102,6 +102,7 @@ app.layout = html.Div([
     ),
     dcc.Graph(id='rolling-return-graph-1y'),
     dcc.Graph(id='returns-histogram'),
+    dcc.Graph(id='characteristics-histogram'),
     html.Button('Calcola Efficient Frontier', id='efficient-frontier-button', n_clicks=0, style={'marginTop': '20px'}),
     dcc.Graph(id='efficient-frontier-graph'),
     dcc.Graph(id='optimal-portfolio-performance-graph'),
@@ -145,6 +146,28 @@ def update_portfolio(add_clicks, remove_clicks, ticker, percentage, rows, select
     return rows, '', None, [], warning
 
 
+def calculate_asset_characteristics(data):
+    # Calculate daily returns
+    returns = data.pct_change().dropna()
+
+    # Calculate CAGR
+    total_days = (data.index[-1] - data.index[0]).days
+    total_years = total_days / 365.25
+    cagr = ((data.iloc[-1] / data.iloc[0]) ** (1 / total_years)) - 1
+
+    # Calculate annualized volatility
+    annual_volatility = calculate_annualized_volatility(data)
+
+    # Calculate downward volatility
+    down_volatility = calculate_annualized_down_volatility(data)
+
+    # Calculate Sharpe Ratio (assuming risk-free rate of 0 for simplicity)
+    sharpe_ratio = calculate_sharpe_ratio(returns, 0)
+
+    # Calculate Sortino Ratio (assuming risk-free rate of 0 for simplicity)
+    sortino_ratio = calculate_sortino_ratio(returns, 0)
+
+    return cagr, annual_volatility, down_volatility, sharpe_ratio, sortino_ratio
 @app.callback(
     [Output('benchmark-table', 'data'),
      Output('benchmark-input', 'value'),
@@ -208,7 +231,8 @@ from dash import dcc, html, Input, Output, callback
 @callback(
     [Output('portfolio-graph', 'figure'),
      Output('rolling-return-graph-1y', 'figure'),
-     Output('returns-histogram', 'figure')],
+     Output('returns-histogram', 'figure'),
+     Output('characteristics-histogram', 'figure')],
     [Input('portfolio-table', 'data'),
      Input('benchmark-table', 'data'),
      Input('start-date-picker', 'date'),
@@ -217,7 +241,7 @@ from dash import dcc, html, Input, Output, callback
 )
 def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date, rolling_window):
     if not rows or not start_date or not end_date:
-        return go.Figure(), go.Figure(), go.Figure()
+        return go.Figure(), go.Figure(), go.Figure(), go.Figure()
 
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -346,7 +370,45 @@ def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date, rollin
     rolling_returns_fig.update_xaxes(gridcolor='#3C3C3C')
     rolling_returns_fig.update_yaxes(gridcolor='#3C3C3C')
 
-    return fig, rolling_returns_fig, histogram_fig
+    characteristics = {}
+    for ticker, data in data_dict.items():
+        cagr, volatility, down_volatility, sharpe, sortino = calculate_asset_characteristics(data)
+        characteristics[ticker] = {
+            'CAGR': cagr,
+            'Annualized Volatility': volatility,
+            'Downward Volatility': down_volatility,
+            'Sharpe Ratio': sharpe,
+            'Sortino Ratio': sortino
+        }
+
+    # Create the characteristics histogram
+    fig_characteristics = make_subplots(rows=1, cols=5, subplot_titles=('CAGR', 'Annualized Volatility', 'Downward Volatility', 'Sharpe Ratio', 'Sortino Ratio'))
+
+    tickers = list(characteristics.keys())
+    cagr_values = [char['CAGR'] for char in characteristics.values()]
+    volatility_values = [char['Annualized Volatility'] for char in characteristics.values()]
+    down_volatility_values = [char['Downward Volatility'] for char in characteristics.values()]
+    sharpe_values = [char['Sharpe Ratio'] for char in characteristics.values()]
+    sortino_values = [char['Sortino Ratio'] for char in characteristics.values()]
+
+    fig_characteristics.add_trace(go.Bar(x=tickers, y=cagr_values, name='CAGR'), row=1, col=1)
+    fig_characteristics.add_trace(go.Bar(x=tickers, y=volatility_values, name='Annualized Volatility'), row=1, col=2)
+    fig_characteristics.add_trace(go.Bar(x=tickers, y=down_volatility_values, name='Downward Volatility'), row=1, col=3)
+    fig_characteristics.add_trace(go.Bar(x=tickers, y=sharpe_values, name='Sharpe Ratio'), row=1, col=4)
+    fig_characteristics.add_trace(go.Bar(x=tickers, y=sortino_values, name='Sortino Ratio'), row=1, col=5)
+
+    fig_characteristics.update_layout(
+        title='Asset Characteristics',
+        showlegend=False,
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF'),
+        height=600  # Aumentiamo l'altezza per adattarci a più grafici
+    )
+    fig_characteristics.update_xaxes(gridcolor='#3C3C3C')
+    fig_characteristics.update_yaxes(gridcolor='#3C3C3C')
+
+    return fig, rolling_returns_fig, histogram_fig,fig_characteristics
 
 @app.callback(
     [Output('efficient-frontier-graph', 'figure'),
@@ -595,7 +657,8 @@ def create_comparison_chart(portfolio_data, benchmark_data):
         legend=dict(
             itemclick="toggleothers",  # Allow toggling visibility of all items except the clicked one
             itemdoubleclick="toggle"  # Allow toggling visibility of the clicked item
-        )
+        ),
+        showlegend=False  # Hide the legend
     )
 
     # Update grid colors and background colors
@@ -604,6 +667,20 @@ def create_comparison_chart(portfolio_data, benchmark_data):
         fig.update_yaxes(title_text='Valore', row=1, col=i + 1, gridcolor='#3C3C3C')
 
     return fig
+def calculate_sharpe_ratio(returns, risk_free_rate):
+    """
+    Calcola lo Sharpe Ratio.
+    """
+    excess_returns = returns - risk_free_rate
+    return np.sqrt(252) * excess_returns.mean() / excess_returns.std()
+
+def calculate_sortino_ratio(returns, risk_free_rate):
+    """
+    Calcola il Sortino Ratio.
+    """
+    excess_returns = returns - risk_free_rate
+    downside_returns = excess_returns[excess_returns < 0]
+    return np.sqrt(252) * excess_returns.mean() / downside_returns.std()
 
 def create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights):
     tickers = [row['ticker'] for row in rows]
