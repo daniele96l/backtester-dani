@@ -7,7 +7,7 @@ import pandas as pd
 from datetime import date, datetime
 import numpy as np
 import plotly.express as px
-
+from plotly.subplots import make_subplots
 app = dash.Dash(__name__, external_stylesheets=['/assets/style.css'])
 
 app.layout = html.Div([
@@ -112,8 +112,6 @@ app.layout = html.Div([
 
 ], style={'padding': '20px'})
 
-
-
 @app.callback(
     [Output('portfolio-table', 'data'),
      Output('ticker-input', 'value'),
@@ -205,10 +203,7 @@ def create_empty_warning_fig(title):
     )
     return fig
 from dash import dcc, html, Input, Output, callback
-import yfinance as yf
-import pandas as pd
-import plotly.graph_objects as go
-from datetime import datetime
+
 
 @callback(
     [Output('portfolio-graph', 'figure'),
@@ -566,41 +561,42 @@ def calculate_annualized_down_volatility(returns):
     annual_volatility = annual_returns.std()
     return annual_volatility
 
+
 def create_comparison_chart(portfolio_data, benchmark_data):
     portfolios = list(portfolio_data.keys()) + ['Benchmark']
     metrics = ['CAGR', 'Volatility', 'Sharpe Ratio', 'Downside Volatility', 'Sortino Ratio']
 
-    # Definiamo colori diversi per ogni portfolio e il benchmark
-    colors = ['red', 'blue', 'green', 'purple', 'orange']  # Add a color for the benchmark
+    colors = ['red', 'blue', 'green', 'purple', 'orange']
 
-    fig = go.Figure()
+    fig = make_subplots(rows=1, cols=len(metrics), shared_xaxes=False, subplot_titles=metrics)
 
-    for i, portfolio in enumerate(portfolios):
-        data = portfolio_data[portfolio] if portfolio != 'Benchmark' else benchmark_data
-        for metric in metrics:
-            fig.add_trace(go.Bar(
-                name=portfolio,
-                x=[metric],
-                y=[data[metric]],
-                marker_color=colors[i % len(colors)],
-                showlegend=True if metric == 'CAGR' else False
-            ))
+    for i, metric in enumerate(metrics):
+        for j, portfolio in enumerate(portfolios):
+            data = portfolio_data[portfolio] if portfolio != 'Benchmark' else benchmark_data
+            fig.add_trace(
+                go.Bar(
+                    name=portfolio,
+                    x=[portfolio],
+                    y=[data[metric]],
+                    marker_color=colors[j % len(colors)],
+                    showlegend=False  # Questo nasconde la legenda
+                ),
+                row=1, col=i + 1
+            )
 
     fig.update_layout(
-        title='Confronto CAGR, Volatilità e Sharpe Ratio (incluso Benchmark)',
-        barmode='group',
-        xaxis_title='Metriche',
-        yaxis_title='Valore',
-        legend_title='Portafogli',
+        title='Confronto CAGR, Volatilità, Sharpe Ratio, Volatilità negativa e Sortino Ratio (incluso Benchmark)',
         paper_bgcolor='#1E1E1E',
         plot_bgcolor='#1E1E1E',
-        font=dict(color='#FFFFFF')
+        font=dict(color='#FFFFFF'),
+        barmode='group'
     )
-    fig.update_xaxes(gridcolor='#3C3C3C')
-    fig.update_yaxes(gridcolor='#3C3C3C')
+
+    for i in range(len(metrics)):
+        fig.update_xaxes(title_text='Portafogli', row=1, col=i + 1, gridcolor='#3C3C3C')
+        fig.update_yaxes(title_text='Valore', row=1, col=i + 1, gridcolor='#3C3C3C')
 
     return fig
-
 def create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights):
     tickers = [row['ticker'] for row in rows]
 
