@@ -109,7 +109,8 @@ app.layout = html.Div([
     dcc.Graph(id='optimal-portfolio-performance-graph'),
     html.Div(id='pie-charts', style={'display': 'flex', 'justifyContent': 'space-between'}),
     dcc.Graph(id='comparison-chart'),
-    dcc.Graph(id='rolling-return-graph')
+    dcc.Graph(id='rolling-return-graph'),
+    dcc.Graph(id='drawdown-graph2')
 
 
 ], style={'padding': '20px'})
@@ -441,7 +442,8 @@ def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date, rollin
      Output('optimal-portfolio-performance-graph', 'figure'),
      Output('pie-charts', 'children'),
      Output('comparison-chart', 'figure'),
-     Output('rolling-return-graph', 'figure')],
+     Output('rolling-return-graph', 'figure'),
+     Output('drawdown-graph2', 'figure')],
     [Input('efficient-frontier-button', 'n_clicks')],
     [State('portfolio-table', 'data'),
      State('benchmark-table', 'data'),
@@ -452,7 +454,7 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
     if not rows or not start_date or not end_date or n_clicks == 0:
         # Restituisci figure vuote e liste vuote se non ci sono dati
         empty_fig = go.Figure()
-        return empty_fig, empty_fig, [], empty_fig,empty_fig
+        return empty_fig, empty_fig, [], empty_fig,empty_fig, empty_fig
 
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -623,7 +625,43 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
 
     comparison_fig = create_comparison_chart(portfolio_data, benchmark_data)
 
-    return ef_fig, perf_fig, pie_charts, comparison_fig, roll_fig
+    # After calculating portfolio returns for each optimized portfolio
+    drawdown_fig = go.Figure()
+
+    for name, weights in portfolios.items():
+        portfolio_return = (common_data * weights).sum(axis=1).dropna()
+        drawdown = calculate_drawdown(portfolio_return)
+
+        drawdown_fig.add_trace(go.Scatter(
+            x=drawdown.index,
+            y=drawdown,
+            mode='lines',
+            name=name
+        ))
+
+
+    benchmark_drawdown = calculate_drawdown(benchmark_return)
+
+    drawdown_fig.add_trace(go.Scatter(
+        x=benchmark_drawdown.index,
+        y=benchmark_drawdown,
+        mode='lines',
+        name=f'Benchmark ({benchmark_name})'
+    ))
+
+    drawdown_fig.update_layout(
+        title='Drawdown Comparison',
+        xaxis_title='Date',
+        yaxis_title='Drawdown',
+        showlegend=True,
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF')
+    )
+    drawdown_fig.update_xaxes(gridcolor='#3C3C3C')
+    drawdown_fig.update_yaxes(gridcolor='#3C3C3C')
+
+    return ef_fig, perf_fig, pie_charts, comparison_fig, roll_fig, drawdown_fig
 
 def calculate_cagr(data):
     start_value = data.iloc[0]
