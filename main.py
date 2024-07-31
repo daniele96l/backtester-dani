@@ -566,8 +566,10 @@ def create_comparison_chart(portfolio_data, benchmark_data):
     portfolios = list(portfolio_data.keys()) + ['Benchmark']
     metrics = ['CAGR', 'Volatility', 'Sharpe Ratio', 'Downside Volatility', 'Sortino Ratio']
 
+    # Define colors for each portfolio and the benchmark
     colors = ['red', 'blue', 'green', 'purple', 'orange']
 
+    # Create subplots: one subplot for each metric, each with its own y-axis
     fig = make_subplots(rows=1, cols=len(metrics), shared_xaxes=False, subplot_titles=metrics)
 
     for i, metric in enumerate(metrics):
@@ -579,7 +581,7 @@ def create_comparison_chart(portfolio_data, benchmark_data):
                     x=[portfolio],
                     y=[data[metric]],
                     marker_color=colors[j % len(colors)],
-                    showlegend=False  # Questo nasconde la legenda
+                    showlegend=True if i == 0 else False  # Show legend only once
                 ),
                 row=1, col=i + 1
             )
@@ -589,14 +591,20 @@ def create_comparison_chart(portfolio_data, benchmark_data):
         paper_bgcolor='#1E1E1E',
         plot_bgcolor='#1E1E1E',
         font=dict(color='#FFFFFF'),
-        barmode='group'
+        barmode='group',
+        legend=dict(
+            itemclick="toggleothers",  # Allow toggling visibility of all items except the clicked one
+            itemdoubleclick="toggle"  # Allow toggling visibility of the clicked item
+        )
     )
 
+    # Update grid colors and background colors
     for i in range(len(metrics)):
         fig.update_xaxes(title_text='Portafogli', row=1, col=i + 1, gridcolor='#3C3C3C')
         fig.update_yaxes(title_text='Valore', row=1, col=i + 1, gridcolor='#3C3C3C')
 
     return fig
+
 def create_pie_charts(rows, max_sharpe_weights, min_vol_weights, max_return_weights, current_weights):
     tickers = [row['ticker'] for row in rows]
 
