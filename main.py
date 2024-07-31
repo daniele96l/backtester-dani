@@ -101,6 +101,7 @@ app.layout = html.Div([
         style={'width': '50%'}
     ),
     dcc.Graph(id='rolling-return-graph-1y'),
+    dcc.Graph(id='drawdown-graph'),
     dcc.Graph(id='returns-histogram'),
     dcc.Graph(id='characteristics-histogram'),
     html.Button('Calcola Efficient Frontier', id='efficient-frontier-button', n_clicks=0, style={'marginTop': '20px'}),
@@ -112,7 +113,10 @@ app.layout = html.Div([
 
 
 ], style={'padding': '20px'})
-
+def calculate_drawdown(data):
+    peak = data.cummax()
+    drawdown = (data - peak) / peak
+    return drawdown
 @app.callback(
     [Output('portfolio-table', 'data'),
      Output('ticker-input', 'value'),
@@ -144,7 +148,6 @@ def update_portfolio(add_clicks, remove_clicks, ticker, percentage, rows, select
         warning = f'Attenzione: La somma delle percentuali è {total_percentage}%, non 100%'
 
     return rows, '', None, [], warning
-
 
 def calculate_asset_characteristics(data):
     # Calculate daily returns
@@ -232,7 +235,8 @@ from dash import dcc, html, Input, Output, callback
     [Output('portfolio-graph', 'figure'),
      Output('rolling-return-graph-1y', 'figure'),
      Output('returns-histogram', 'figure'),
-     Output('characteristics-histogram', 'figure')],
+     Output('characteristics-histogram', 'figure'),
+     Output('drawdown-graph', 'figure')],
     [Input('portfolio-table', 'data'),
      Input('benchmark-table', 'data'),
      Input('start-date-picker', 'date'),
@@ -241,7 +245,7 @@ from dash import dcc, html, Input, Output, callback
 )
 def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date, rolling_window):
     if not rows or not start_date or not end_date:
-        return go.Figure(), go.Figure(), go.Figure(), go.Figure()
+        return go.Figure(), go.Figure(), go.Figure(), go.Figure(), go.Figure()
 
     start_date = datetime.strptime(start_date, '%Y-%m-%d')
     end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -408,7 +412,29 @@ def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date, rollin
     fig_characteristics.update_xaxes(gridcolor='#3C3C3C')
     fig_characteristics.update_yaxes(gridcolor='#3C3C3C')
 
-    return fig, rolling_returns_fig, histogram_fig,fig_characteristics
+    drawdown_fig = go.Figure()
+
+    for ticker, data in data_dict.items():
+        drawdown = calculate_drawdown(data)
+        drawdown_fig.add_trace(go.Scatter(
+            x=drawdown.index,
+            y=drawdown,
+            name=ticker,
+            mode='lines'
+        ))
+
+    drawdown_fig.update_layout(
+        title='Drawdown',
+        xaxis_title='Data',
+        yaxis_title='Drawdown',
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF')
+    )
+    drawdown_fig.update_xaxes(gridcolor='#3C3C3C')
+    drawdown_fig.update_yaxes(gridcolor='#3C3C3C')
+
+    return fig, rolling_returns_fig, histogram_fig,fig_characteristics, drawdown_fig
 
 @app.callback(
     [Output('efficient-frontier-graph', 'figure'),
