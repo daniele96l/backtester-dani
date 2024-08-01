@@ -7,8 +7,11 @@ import pandas as pd
 from datetime import date, datetime
 import numpy as np
 import plotly.express as px
+import statsmodels.api as sm
+import pandas_datareader.data as reader
 from plotly.subplots import make_subplots
 app = dash.Dash(__name__, external_stylesheets=['/assets/style.css'])
+from dash import dcc, html, Input, Output, callback
 
 app.layout = html.Div([
     html.H1('Dashboard del Portfolio', style={'textAlign': 'center'}),
@@ -104,6 +107,8 @@ app.layout = html.Div([
     dcc.Graph(id='drawdown-graph'),
     dcc.Graph(id='returns-histogram'),
     dcc.Graph(id='characteristics-histogram'),
+    html.Button('Esegui Analisi Fattoriale', id='factorial-analysis-button', n_clicks=0, style={'marginTop': '20px'}),
+    dcc.Graph(id='factorial-analysis-graph'),
     html.Button('Calcola Efficient Frontier', id='efficient-frontier-button', n_clicks=0, style={'marginTop': '20px'}),
     dcc.Graph(id='efficient-frontier-graph'),
     dcc.Graph(id='optimal-portfolio-performance-graph'),
@@ -229,9 +234,88 @@ def create_empty_warning_fig(title):
         yaxis=dict(visible=False)
     )
     return fig
-from dash import dcc, html, Input, Output, callback
 
+@app.callback(
+    Output('factorial-analysis-graph', 'figure'),
+    [Input('factorial-analysis-button', 'n_clicks')],
+    [State('portfolio-table', 'data'),
+     State('start-date-picker', 'date'),
+     State('end-date-picker', 'date')]
+)
+def perform_factorial_analysis(n_clicks, rows, start_date, end_date):
+    if n_clicks == 0:
+        return go.Figure()
 
+    # Conversione delle date
+    start_date = datetime.strptime(start_date, '%Y-%m-%d')
+    end_date = datetime.strptime(end_date, '%Y-%m-%d')
+
+    # Creazione del portfolio
+    portfolio_data = {}
+    for row in rows:
+        ticker = row['ticker']
+        percentage = float(row['percentage']) / 100
+        data = yf.download(ticker, start=start_date, end=end_date)['Adj Close']
+        portfolio_data[ticker] = data * percentage
+
+    my_portfolio = pd.DataFrame(portfolio_data).sum(axis=1)
+    my_portfolio = pd.DataFrame(my_portfolio, columns=['sum_column'])
+
+    my_portfolio = my_portfolio.resample('M').last()
+    my_portfolio = my_portfolio.pct_change().dropna()
+    # Esecuzione dell'analisi fattoriale
+    latest_date = my_portfolio.index.max()
+    earliest_date = my_portfolio.index.min()
+
+    my_portfolio["Adj Close"] = my_portfolio["sum_column"]
+    fundsret = pd.DataFrame(my_portfolio["Adj Close"])
+
+    factors = reader.DataReader("Developed_5_Factors", "famafrench", earliest_date, latest_date)[0]
+    if len(fundsret) > len(factors):
+        fundsret = fundsret.iloc[:-1]
+
+    fundsret.index = factors.index
+
+    merge = pd.merge(fundsret, factors, on="Date")
+    merge = merge[1:]
+
+    merge["Adj Close"] = merge["Adj Close"] - merge["RF"]
+    merge[["Mkt-RF","SMB","HML","RMW","CMA","RF"]] = merge[["Mkt-RF","SMB","HML","RMW","CMA","RF"]]/100
+
+    y = merge["Adj Close"]
+    X = merge[["Mkt-RF","SMB","HML","RMW","CMA","RF"]]
+
+    X_sm = sm.add_constant(X)
+    model = sm.OLS(y, X_sm)
+    results = model.fit()
+
+    # Creazione del grafico dei coefficienti
+    coef_data = results.params[1:-1]
+    variable_names = coef_data.index
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=variable_names,
+        y=coef_data.values,
+        text=coef_data.values,
+        textposition='auto'
+    ))
+    fig.update_layout(
+        title='Coefficienti del Modello di Regressione',
+        xaxis_title='Variabili',
+        yaxis_title='Coefficienti',
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='white'),  # Colore del testo
+        xaxis=dict(
+            gridcolor='rgb(50, 50, 50)'  # Colore delle linee di griglia sull'asse x
+        ),
+        yaxis=dict(
+            gridcolor='rgb(50, 50, 50)'  # Colore delle linee di griglia sull'asse y
+        )
+    )
+
+    return fig
 @callback(
     [Output('portfolio-graph', 'figure'),
      Output('rolling-return-graph-1y', 'figure'),
@@ -244,7 +328,7 @@ from dash import dcc, html, Input, Output, callback
      Input('end-date-picker', 'date'),
      Input('rolling-window-dropdown', 'value')]
 )
-def rolling_return_for_stocks(rows, benchmark_rows, start_date, end_date, rolling_window):
+def greate_initial_plots(rows, benchmark_rows, start_date, end_date, rolling_window):
     if not rows or not start_date or not end_date:
         return go.Figure(), go.Figure(), go.Figure(), go.Figure(), go.Figure()
 
