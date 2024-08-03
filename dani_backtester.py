@@ -273,8 +273,11 @@ def perform_factorial_analysis(n_clicks, rows, start_date, end_date):
     fundsret = pd.DataFrame(my_portfolio["Adj Close"])
 
     factors = reader.DataReader("Developed_5_Factors", "famafrench", earliest_date, latest_date)[0]
-    if len(fundsret) > len(factors):
-        fundsret = fundsret.iloc[:-1]
+
+    fundsret.index = fundsret.index.to_period('M')
+    common_dates = fundsret.index.intersection(factors.index)
+    fundsret = fundsret.loc[common_dates]
+    factors = factors.loc[common_dates]
 
     fundsret.index = factors.index
 
