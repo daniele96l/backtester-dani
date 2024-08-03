@@ -5,4 +5,4 @@ pandas==1.5.3
 numpy==1.24.3
 statsmodels==0.13.5
 pandas-datareader==0.10.0
-gunicorn==19.7.1
+gunicorn
