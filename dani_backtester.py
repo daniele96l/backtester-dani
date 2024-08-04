@@ -19,7 +19,7 @@ server = app.server
 app.layout = html.Div([
     html.H1('Dashboard del Portfolio', style={'textAlign': 'center'}),
     html.Div([
-        dcc.Input(id='ticker-input', type='text', placeholder='Inserisci un simbolo ticker', style={'marginRight': '10px'}),
+        dcc.Input(id='ticker-input', type='text', placeholder='Inserisci il ticker', style={'marginRight': '10px'}),
         dcc.Input(id='percentage-input', type='number', placeholder='Percentuale', min=0, max=100, step=1, style={'marginRight': '10px'}),
         html.Button('Aggiungi', id='add-button', n_clicks=0),
     ], style={'marginBottom': '20px'}),
@@ -49,12 +49,12 @@ app.layout = html.Div([
             html.Div(id='percentage-warning', style={'color': 'red', 'marginTop': '10px'})
         ], style={'width': '48%', 'display': 'inline-block'}),
         html.Div([
-            dcc.Input(id='benchmark-input', type='text', placeholder='Inserisci un simbolo benchmark', style={'marginRight': '10px'}),
+            dcc.Input(id='benchmark-input', type='text', placeholder='Inserisci il benchmark', style={'marginRight': '10px'}),
             html.Button('Cambia Benchmark', id='add-benchmark-button', n_clicks=0),
             dash_table.DataTable(
                 id='benchmark-table',
                 columns=[
-                    {'name': 'Benchmark', 'id': 'benchmark'},
+                    {'name': 'Benchmark di default S&P500', 'id': 'benchmark'},
                 ],
                 data=[],
                 row_selectable='single',
@@ -347,7 +347,7 @@ def create_initial_plots(rows, benchmark_rows, start_date, end_date, rolling_win
         ticker = row['ticker']
         data = yf.download(ticker, start=start_date, end=end_date)
         if data.empty:
-            return tuple(create_empty_figure(f"'{ticker}'non esiste nel database. Controlla che il tuo ticker sia presente su https://finance.yahoo.com/ e che il ticker abbia quel formato. Per esempio VWCE è VWCE.MI.") for _ in range(5))
+            return tuple(create_empty_figure(f"'{ticker}' non esiste nel database. Controlla su www.finance.yahoo.com che il tuo ticker abbia il formato corretto. Per esempio VWCE è VWCE.MI.") for _ in range(5))
         data_dict[ticker] = data['Close']
 
     # Scarica i dati per il benchmark
@@ -529,27 +529,26 @@ def create_initial_plots(rows, benchmark_rows, start_date, end_date, rolling_win
 
     return fig, rolling_returns_fig, histogram_fig,fig_characteristics, drawdown_fig
 
-def create_empty_figure(title="No Data", max_line_length=30):
-    wrapped_title = "\n".join(textwrap.wrap(title, width=max_line_length))
+import textwrap
+
+def create_empty_figure(title="No Data", max_line_length=300):
+    wrapped_title = textwrap.fill(title, max_line_length)
     fig = go.Figure()
-    fig.add_annotation(
-        x=0.5, y=0.5,
-        text=wrapped_title,
-        showarrow=False,
-        font=dict(size=20, color="white"),
-        align="center",
-    )
     fig.update_layout(
-        paper_bgcolor='#1E1E1E',
-        plot_bgcolor='#1E1E1E',
-        font=dict(color='#FFFFFF'),
+        title=wrapped_title,
+        title_font=dict(size=15),
         xaxis=dict(visible=False),
         yaxis=dict(visible=False),
-        autosize=True,
-        margin=dict(l=40, r=40, t=40, b=40),
+        annotations=[
+            dict(
+                text="No Data",
+                xref="paper",
+                yref="paper",
+                showarrow=False,
+                font=dict(size=20)
+            )
+        ]
     )
-    fig.update_xaxes(title_text="X Axis Title", automargin=True)
-    fig.update_yaxes(title_text="Y Axis Title", automargin=True)
     return fig
 @app.callback(
     [Output('efficient-frontier-graph', 'figure'),
