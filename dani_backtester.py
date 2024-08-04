@@ -8,6 +8,7 @@ from datetime import date, datetime
 import numpy as np
 import plotly.express as px
 import statsmodels.api as sm
+import textwrap
 import pandas_datareader.data as reader
 from plotly.subplots import make_subplots
 app = dash.Dash(__name__, external_stylesheets=['/assets/style.css'])
@@ -333,7 +334,7 @@ def perform_factorial_analysis(n_clicks, rows, start_date, end_date):
      Input('end-date-picker', 'date'),
      Input('rolling-window-dropdown', 'value')]
 )
-def greate_initial_plots(rows, benchmark_rows, start_date, end_date, rolling_window):
+def create_initial_plots(rows, benchmark_rows, start_date, end_date, rolling_window):
     if not rows or not start_date or not end_date:
         return go.Figure(), go.Figure(), go.Figure(), go.Figure(), go.Figure()
 
@@ -345,6 +346,8 @@ def greate_initial_plots(rows, benchmark_rows, start_date, end_date, rolling_win
     for row in rows:
         ticker = row['ticker']
         data = yf.download(ticker, start=start_date, end=end_date)
+        if data.empty:
+            return tuple(create_empty_figure(f"'{ticker}'non esiste nel database. Controlla che il tuo ticker sia presente su https://finance.yahoo.com/ e che il ticker abbia quel formato. Per esempio VWCE è VWCE.MI.") for _ in range(5))
         data_dict[ticker] = data['Close']
 
     # Scarica i dati per il benchmark
@@ -526,6 +529,28 @@ def greate_initial_plots(rows, benchmark_rows, start_date, end_date, rolling_win
 
     return fig, rolling_returns_fig, histogram_fig,fig_characteristics, drawdown_fig
 
+def create_empty_figure(title="No Data", max_line_length=30):
+    wrapped_title = "\n".join(textwrap.wrap(title, width=max_line_length))
+    fig = go.Figure()
+    fig.add_annotation(
+        x=0.5, y=0.5,
+        text=wrapped_title,
+        showarrow=False,
+        font=dict(size=20, color="white"),
+        align="center",
+    )
+    fig.update_layout(
+        paper_bgcolor='#1E1E1E',
+        plot_bgcolor='#1E1E1E',
+        font=dict(color='#FFFFFF'),
+        xaxis=dict(visible=False),
+        yaxis=dict(visible=False),
+        autosize=True,
+        margin=dict(l=40, r=40, t=40, b=40),
+    )
+    fig.update_xaxes(title_text="X Axis Title", automargin=True)
+    fig.update_yaxes(title_text="Y Axis Title", automargin=True)
+    return fig
 @app.callback(
     [Output('efficient-frontier-graph', 'figure'),
      Output('optimal-portfolio-performance-graph', 'figure'),
@@ -564,7 +589,9 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
     for row in benchmark_rows:
         benchmark = row['benchmark']
         data = yf.download(benchmark, start=start_date, end=end_date)
+
         benchmark_data[benchmark] = data['Close']
+
 
     # Troviamo la prima data in comune
     common_data = pd.concat(data_dict.values(), axis=1).dropna()
