@@ -14,6 +14,8 @@ from plotly.subplots import make_subplots
 app = dash.Dash(__name__, external_stylesheets=['/assets/style.css'])
 from dash import dcc, html, Input, Output, callback
 
+
+
 server = app.server
 
 app.layout = html.Div([
