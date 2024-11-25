@@ -97,20 +97,6 @@ def create_layout(asset_list, initial_table_data):
                 className='mb-4'
             ),
 
-            # Dropdown per il Benchmark
-            dbc.Row([
-                dbc.Col([
-                    dbc.Label("Scegli il tuo Benchmark (Opzionale):", style={'color': '#000000'}),
-                    dcc.Dropdown(
-                        id='benchmark-dropdown',
-                        options=[{'label': etf, 'value': etf} for etf in asset_list],
-                        placeholder="Seleziona un Benchmark",
-                        className='mb-3',
-                        style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
-                    )
-                ], md=6),
-            ], className='mb-4'),
-
             # Tabella del Portafoglio
             dbc.Row(
                 dbc.Col(
@@ -134,17 +120,30 @@ def create_layout(asset_list, initial_table_data):
                         style_as_list_view=True,
                     ),
                     width=12
-                )
+                ),
+                className='mb-4'
             ),
 
-            # Pulsante Crea Portafoglio
-            dbc.Row(
+            # Dropdown e Pulsante nella stessa riga
+            dbc.Row([
+                # Colonna per il pulsante
                 dbc.Col(
-                    dbc.Button("Crea Portafoglio", id='create-portfolio-button', color='warning', className='w-100 mt-4',
-                               style={'backgroundColor': '#8B4513', 'borderColor': '#8B4513'}),
-                    width=2
-                )
-            ),
+                    dbc.Button("Crea Portafoglio", id='create-portfolio-button', color='warning',
+                               className='w-100 mt-4', style={'backgroundColor': '#8B4513', 'borderColor': '#8B4513'}),
+                    md=2,  # Specifica la larghezza della colonna
+                ),
+                # Colonna per il dropdown
+                dbc.Col([
+                    dbc.Label("Scegli il tuo Benchmark (Opzionale):", style={'color': '#000000'}),
+                    dcc.Dropdown(
+                        id='benchmark-dropdown',
+                        options=[{'label': etf, 'value': etf} for etf in asset_list],
+                        placeholder="Seleziona un Benchmark",
+                        className='mb-3',
+                        style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
+                    )
+                ], md=10),  # Specifica la larghezza della colonna
+            ], className='mb-4'),
 
             # Sommario Allocazione e Feedback
             dbc.Row([
