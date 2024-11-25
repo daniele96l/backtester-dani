@@ -245,26 +245,6 @@ def register_callbacks(app):
 
         return current_data, False
 
-    # Callback per verificare l'allocazione totale e fornire feedback
-    @app.callback(
-        Output('allocation-summary', 'children'),
-        [Input('portfolio-table', 'data')]
-    )
-    def validate_allocation(table_data):
-        if not table_data:
-            return "Nessun ETF nel portafoglio al momento."
-
-        # Somma le percentuali, gestendo valori mancanti o non validi
-        try:
-            total_percentage = sum(float(row.get('Percentuale', 0)) for row in table_data)
-        except (ValueError, TypeError):
-            return "Errore: Valore percentuale non valido rilevato."
-
-        if total_percentage > 100:
-            return f"Avviso: L'allocazione totale supera il 100% di {total_percentage - 100:.2f}%."
-        elif total_percentage == 100:
-            return "Successo: L'allocazione totale è esattamente del 100%."
-
 
     # Callback per gestire la creazione del portafoglio
     @app.callback(
@@ -281,16 +261,16 @@ def register_callbacks(app):
 
         if n_clicks > 0:
             if not table_data:
-                return "Errore: Nessun ETF nel portafoglio da creare.", dash.no_update, dash.no_update
+                return "Nessun ETF nel portafoglio da creare.", dash.no_update, dash.no_update
 
             # Calcola l'allocazione totale
             try:
                 total_percentage = sum(float(row.get('Percentuale', 0)) for row in table_data)
             except (ValueError, TypeError):
-                return "Errore: Valore percentuale non valido rilevato.", dash.no_update, dash.no_update
+                return "Valore percentuale non valido rilevato.", dash.no_update, dash.no_update
 
             if total_percentage != 100:
-                return f"Errore: L'allocazione totale deve essere esattamente del 100%. Totale attuale: {total_percentage:.2f}%.", dash.no_update, dash.no_update
+                return f"L'allocazione totale deve essere esattamente del 100%. Totale attuale: {total_percentage:.2f}%.", dash.no_update, dash.no_update
 
             # Converti i dati della tabella in DataFrame
             df = pd.DataFrame(table_data)
@@ -335,7 +315,7 @@ def register_callbacks(app):
             print(portfolio_con_benchmark)
 
             # Fornisci feedback all'utente e salva i dati nel Store
-            return "Portafoglio creato con successo! Controlla la console del server per i dettagli.", portfolio_con_benchmark.to_dict('records'), dati.to_dict('records')
+            return "", portfolio_con_benchmark.to_dict('records'), dati.to_dict('records')
 
         return "", "",""
 
