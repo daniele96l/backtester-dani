@@ -82,7 +82,7 @@ app.layout = html.Div([
             min_date_allowed=date(1900, 1, 1),
             max_date_allowed=date.today(),
             initial_visible_month=date.today(),
-            date=date(date.today().year - 5, date.today().month, date.today().day),
+            date=date(date.today().year - 10, date.today().month, date.today().day),
             style={'marginRight': '10px'}
         )
     ], style={'display': 'inline-block', 'marginRight': '20px'}),
@@ -112,14 +112,12 @@ app.layout = html.Div([
     dcc.Graph(id='drawdown-graph'),
     dcc.Graph(id='returns-histogram'),
     dcc.Graph(id='characteristics-histogram'),
-    html.Button('Esegui Analisi Fattoriale', id='factorial-analysis-button', n_clicks=0, style={'marginTop': '20px'}),
-    dcc.Graph(id='factorial-analysis-graph'),
     html.Button('Calcola Efficient Frontier', id='efficient-frontier-button', n_clicks=0, style={'marginTop': '20px'}),
     dcc.Graph(id='efficient-frontier-graph'),
     dcc.Graph(id='optimal-portfolio-performance-graph'),
     html.Div(id='pie-charts', style={'display': 'flex', 'justifyContent': 'space-between'}),
     dcc.Graph(id='comparison-chart'),
-    dcc.Graph(id='rolling-return-graph'),
+    #dcc.Graph(id='rolling-return-graph'),
     dcc.Graph(id='drawdown-graph2')
 
 
@@ -240,90 +238,6 @@ def create_empty_warning_fig(title):
     )
     return fig
 
-@app.callback(
-    Output('factorial-analysis-graph', 'figure'),
-    [Input('factorial-analysis-button', 'n_clicks')],
-    [State('portfolio-table', 'data'),
-     State('start-date-picker', 'date'),
-     State('end-date-picker', 'date')]
-)
-def perform_factorial_analysis(n_clicks, rows, start_date, end_date):
-    if n_clicks == 0:
-        return go.Figure()
-
-    # Conversione delle date
-    start_date = datetime.strptime(start_date, '%Y-%m-%d')
-    end_date = datetime.strptime(end_date, '%Y-%m-%d')
-
-    # Creazione del portfolio
-    portfolio_data = {}
-    for row in rows:
-        ticker = row['ticker']
-        percentage = float(row['percentage']) / 100
-        data = yf.download(ticker, start=start_date, end=end_date)['Adj Close']
-        portfolio_data[ticker] = data * percentage
-
-    my_portfolio = pd.DataFrame(portfolio_data).sum(axis=1)
-    my_portfolio = pd.DataFrame(my_portfolio, columns=['sum_column'])
-
-    my_portfolio = my_portfolio.resample('M').last()
-    my_portfolio = my_portfolio.pct_change().dropna()
-    # Esecuzione dell'analisi fattoriale
-    latest_date = my_portfolio.index.max()
-    earliest_date = my_portfolio.index.min()
-
-    my_portfolio["Adj Close"] = my_portfolio["sum_column"]
-    fundsret = pd.DataFrame(my_portfolio["Adj Close"])
-
-    factors = reader.DataReader("Developed_5_Factors", "famafrench", earliest_date, latest_date)[0]
-
-    fundsret.index = fundsret.index.to_period('M')
-    common_dates = fundsret.index.intersection(factors.index)
-    fundsret = fundsret.loc[common_dates]
-    factors = factors.loc[common_dates]
-
-    fundsret.index = factors.index
-
-    merge = pd.merge(fundsret, factors, on="Date")
-    merge = merge[1:]
-
-    merge["Adj Close"] = merge["Adj Close"] - merge["RF"]
-    merge[["Mkt-RF","SMB","HML","RMW","CMA","RF"]] = merge[["Mkt-RF","SMB","HML","RMW","CMA","RF"]]/100
-
-    y = merge["Adj Close"]
-    X = merge[["Mkt-RF","SMB","HML","RMW","CMA","RF"]]
-
-    X_sm = sm.add_constant(X)
-    model = sm.OLS(y, X_sm)
-    results = model.fit()
-
-    # Creazione del grafico dei coefficienti
-    coef_data = results.params[1:-1]
-    variable_names = coef_data.index
-
-    fig = go.Figure()
-    fig.add_trace(go.Bar(
-        x=variable_names,
-        y=coef_data.values,
-        text=coef_data.values,
-        textposition='auto'
-    ))
-    fig.update_layout(
-        title='Coefficienti del Modello di Regressione',
-        xaxis_title='Variabili',
-        yaxis_title='Coefficienti',
-        paper_bgcolor='#1E1E1E',
-        plot_bgcolor='#1E1E1E',
-        font=dict(color='white'),  # Colore del testo
-        xaxis=dict(
-            gridcolor='rgb(50, 50, 50)'  # Colore delle linee di griglia sull'asse x
-        ),
-        yaxis=dict(
-            gridcolor='rgb(50, 50, 50)'  # Colore delle linee di griglia sull'asse y
-        )
-    )
-
-    return fig
 @callback(
     [Output('portfolio-graph', 'figure'),
      Output('rolling-return-graph-1y', 'figure'),
@@ -557,7 +471,6 @@ def create_empty_figure(title="No Data", max_line_length=300):
      Output('optimal-portfolio-performance-graph', 'figure'),
      Output('pie-charts', 'children'),
      Output('comparison-chart', 'figure'),
-     Output('rolling-return-graph', 'figure'),
      Output('drawdown-graph2', 'figure')],
     [Input('efficient-frontier-button', 'n_clicks')],
     [State('portfolio-table', 'data'),
@@ -692,6 +605,14 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
     max_return_weights = weights_record[max_return_idx]
     current_weights = np.array([float(row['percentage']) / 100 for row in rows])
 
+
+    min_data = common_data.index.min()
+    #Cut the benckmark data to match the common data min date
+    benchmark_data = {
+        ticker: series.loc[min_data:]  # Keep only data from min_date onward
+        for ticker, series in benchmark_data.items()
+    }
+
     ef_fig = create_efficient_frontier_graph(results, max_sharpe_idx, min_std_dev_idx, max_return_idx, current_std_dev,
                                              current_return)
     perf_fig = create_optimal_portfolio_performance_graph(common_data, max_sharpe_weights, min_vol_weights,
@@ -778,7 +699,7 @@ def calculate_efficient_frontier(n_clicks, rows, benchmark_rows, start_date, end
     drawdown_fig.update_xaxes(gridcolor='#3C3C3C')
     drawdown_fig.update_yaxes(gridcolor='#3C3C3C')
 
-    return ef_fig, perf_fig, pie_charts, comparison_fig, roll_fig, drawdown_fig
+    return ef_fig, perf_fig, pie_charts, comparison_fig, drawdown_fig
 
 def calculate_cagr(data):
     start_value = data.iloc[0]
@@ -1048,7 +969,7 @@ def create_rolling_return_graph(data, max_sharpe_weights, min_vol_weights, max_r
     benchmark_period_length = min((prices.index[-1] - prices.index[0]).days for prices in benchmark_data.values())
     period_length = min(data_period_length, benchmark_period_length)
     rolling_windows = [252, 252*5, 252*10]  # 1 anno, 5 anni, 10 anni
-    rolling_windows = [window for window in rolling_windows if window <= period_length/2]  # Filtra le finestre mobili
+    rolling_windows = [window for window in rolling_windows if window <= period_length]  # Filtra le finestre mobili
     window_labels = {252: '1 Anno', 252*5: '5 Anni', 252*10: '10 Anni'}
 
     # Memorizza le tracce per ciascun portafoglio e benchmark
@@ -1108,7 +1029,7 @@ def create_rolling_return_graph(data, max_sharpe_weights, min_vol_weights, max_r
 
     # Aggiorna il layout con i pulsanti del dropdown
     fig.update_layout(
-        title='Rolling Return su 5 Anni dei Portafogli Ottimali e Benchmark',
+        title='Rolling Return su N Anni dei Portafogli Ottimali e Benchmark',
         xaxis_title='Data',
         yaxis_title='Ritorno Rolling 5 Anni',
         showlegend=True,

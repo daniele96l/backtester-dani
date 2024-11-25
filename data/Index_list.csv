@@ -1,0 +1,2119 @@
+Fund,ISIN,Tickers,Index
+iShares AEX UCITS ETF,IE00B0M62Y33,IAEX,AEX
+iShares AEX UCITS ETF EUR (Acc),IE00BMTX2B82,IAEA,AEX
+VanEck AEX UCITS ETF,NL0009272749,TDT,AEX
+Amundi BEL 20 UCITS ETF Dist,FR0000021842,BEL,BEL 20
+Bitcoin,BTC,BTC,Bitcoin
+21Shares Bitcoin ETP,CH0454664001,"21XB
+ABTC",Bitcoin
+BTCetc - ETC Group Physical Bitcoin,DE000A27Z304,BTCE,Bitcoin
+VanEck Vectors Bitcoin ETN,DE000A28M8D0,VBTC,Bitcoin
+Iconic Funds Physical Bitcoin ETP,DE000A3GK2N1,XBTI,Bitcoin
+WisdomTree Bitcoin,GB00BJYDH287,"BTCW
+WBIT
+WBTC",Bitcoin
+CoinShares Physical Bitcoin,GB00BLD4ZL17,BITC,Bitcoin
+Vanguard SRI Euro Investment Grade Bond Index Fund,IE00BYSX5D68,,Bloomberg Barclays EUR Non-Government Float Adjusted Bond
+iShares Euro Corporate Bond 1-5yr UCITS ETF,IE00B4L60045,"EUNT
+IE15
+SE15",Bloomberg Barclays Euro Corporate Bond 1-5Y
+iShares Euro Government Bond 7-10yr UCITS ETF EUR (Dist),IE00B1FZS806,"IBCM
+IBGM
+IEGM",Bloomberg Barclays Euro Government Bond 10 Year Term
+iShares Euro Government Bond 7-10yr UCITS ETF (Acc),IE00B3VTN290,"CBE0
+CE01
+CSBGE0
+SXRQ",Bloomberg Barclays Euro Government Bond 10 Year Term
+iShares Euro Government Bond 15-30yr UCITS ETF,IE00B1FZS913,"IBCL
+IBGL
+IEGL",Bloomberg Barclays Euro Government Bond 15-30 Year Term
+iShares Euro Government Bond 3-5yr UCITS ETF,IE00B1FZS681,"IBCN
+IBGX
+IEGX",Bloomberg Barclays Euro Government Bond 5 Year Term
+iShares Euro Inflation Linked Government Bond UCITS ETF,IE00B0M62X26,"IBC1
+IBCI",Bloomberg Barclays Euro Government Inflation-Linked Bond
+iShares Euro Government Inflation-Linked Bond Index Fund (IE),IE00B4WXT857,,Bloomberg Barclays Euro Government Inflation-Linked Bond
+Xtrackers Eurozone Inflation-Linked Bond UCITS ETF 1C,LU0290358224,"DBXK
+XEIN",Bloomberg Barclays Euro Government Inflation-Linked Bond
+Amundi Euro Government Inflation-Linked Bond UCITS ETF Acc,LU1650491282,"EMI
+LYQ7
+MTI
+MTIX",Bloomberg Barclays Euro Government Inflation-Linked Bond
+Amundi Euro Government Bond 15+Y UCITS ETF Acc,LU1287023268,"EM15
+LYXF
+MTF",Bloomberg Barclays Euro Treasury 50bn 15+ Year Bond
+Amundi Euro Government Bond 15+Y UCITS ETF Dist,LU2090062782,E15G,Bloomberg Barclays Euro Treasury 50bn 15+ Year Bond
+Amundi Euro Government Bond 25+Y UCITS ETF Acc,LU1686832194,"LMTH
+MTH",Bloomberg Barclays Euro Treasury 50bn 25+ Year Bond
+Amundi Euro Government Bond 5-7Y UCITS ETF Acc,LU1287023003,"EM57
+LYXC
+MTC",Bloomberg Barclays Euro Treasury 50bn 5-7 Year Bond
+Amundi Euro Government Bond 7-10Y UCITS ETF Acc,LU1287023185,"EM710
+LYXD
+MTD",Bloomberg Barclays Euro Treasury 50bn 7-10 Year Bond
+Vanguard USD Corporate 1-3 Bond UCITS ETF Distributing,IE00BDD48R20,"VDUC
+VUSC",Bloomberg Barclays Global Aggregate Corporate 1-3Y
+iShares Fallen Angels High Yield Corporate Bond UCITS ETF USD (Acc),IE00BDFJYP58,WIAU,Bloomberg Barclays Global Corporate ex EM Fallen Angels 3% Issuer Capped
+iShares Fallen Angels High Yield Corporate Bond UCITS ETF,IE00BYM31M36,"QDVQ
+RISE
+WING",Bloomberg Barclays Global Corporate ex EM Fallen Angels 3% Issuer Capped
+BNP Paribas Easy EUR Corporate Bond SRI Fossil Free 1-3Y UCITS ETF,LU2008760592,"ASR3
+SRIC3",Bloomberg Barclays MSCI Euro Corporate SRI Sustainable Ex Fossil Fuel Bond 1-3Y
+BNP Paribas Easy € Corp Bond SRI Fossil Free 1-3Y,LU2008760758,,Bloomberg Barclays MSCI Euro Corporate SRI Sustainable Ex Fossil Fuel Bond 1-3Y
+iShares Euro Corporate Bond ESG UCITS ETF (Dist),IE00BYZTVT56,"OM3F
+SUOE",Bloomberg Barclays MSCI Euro Corporate Sustainable and SRI
+Xtrackers II ESG EUR Corporate Bond UCITS ETF 1D,LU0484968812,XB4F,Bloomberg Barclays MSCI Euro Corporate Sustainable and SRI
+iShares USD TIPS UCITS ETF USD (Acc),IE00B1FZSC47,"IDTP
+ITPS
+IUST
+O002
+TPSA",Bloomberg Barclays US Government Inflation-Linked Bond
+SPDR Barclays US TIPS UCITS ETF,IE00BZ0G8977,"SYBY
+TIPS
+UTIP",Bloomberg Barclays US Government Inflation-Linked Bond
+Amundi US TIPS Government Inflation-Linked Bond UCITS ETF Dist,LU1452600270,"TIPG
+TIPU
+TIUP",Bloomberg Barclays US Government Inflation-Linked Bond
+Amundi ETF Barclays US Government Inflation-linked Bond UCITS ETF DR,LU1525419294,"ATIP
+UIFL",Bloomberg Barclays US Government Inflation-Linked Bond
+iShares Global Inflation Linked Government Bond UCITS ETF USD (Acc),IE00B3B8PX14,"IGIL
+IUS5
+SGIL",Bloomberg Barclays World Government Inflation-Linked Bond
+Xtrackers Global Inflation-Linked Bond UCITS ETF 5C,LU0908508814,XGIU,Bloomberg Barclays World Government Inflation-Linked Bond
+iShares Global Inflation Linked Government Bond EUR Hedged UCITS ETF (Dist),IE00BD8PH174,GILE,Bloomberg Barclays World Government Inflation-Linked Bond (EUR Hedged)
+Xtrackers Global Inflation-Linked Bond UCITS ETF 1C EUR hedged,LU0290357929,"DBXH
+XGIN",Bloomberg Barclays World Government Inflation-Linked Bond (EUR Hedged)
+Xtrackers Global Inflation-Linked Bond UCITS ETF 1D EUR hedged,LU0962078753,XGII,Bloomberg Barclays World Government Inflation-Linked Bond (EUR Hedged)
+HSBC China Government Local Bond UCITS ETF C,IE000N5JOGS2,"H41Q
+HCGB",Bloomberg China Treasury + Policy Bank
+iShares China CNY Bond UCITS ETF USD (Acc),IE00BKPSFD61,"AYER
+CYBA
+CYEA",Bloomberg China Treasury + Policy Bank
+iShares China CNY Bond UCITS ETF USD (Dist),IE00BYPC1H27,"CNYB
+ICGB",Bloomberg China Treasury + Policy Bank
+Amundi China CNY Bonds UCITS ETF DR (C),LU2439735890,"CNYE
+CNYF",Bloomberg China Treasury + Policy Bank
+iShares Diversified Commodity Swap UCITS ETF (DE),DE000A0H0728,"CMSE
+EXXY",Bloomberg Commodity
+UBS ETF (IE) Bloomberg Commodity Index SF UCITS ETF (USD) A-acc,IE00B5B3W843,DCUSAS,Bloomberg Commodity
+Invesco Bloomberg Commodity UCITS ETF Acc,IE00BD6FTQ80,"CMOD
+CMOP",Bloomberg Commodity
+iShares Diversified Commodity Swap UCITS ETF,IE00BDFL4P12,"COMM
+ICOM
+SXRS",Bloomberg Commodity
+L&G All Commodities UCITS ETF,IE00BF0BCP69,"BCOG
+BCOM
+ETLF",Bloomberg Commodity
+WisdomTree Broad Commodities UCITS ETF,IE00BKY4W127,"COMX
+PCOM",Bloomberg Commodity
+UBS ETF (IE) Bloomberg Commodity Index SF UCITS ETF (EUR) A-acc,IE00B58ZM503,DCEUAS,Bloomberg Commodity (EUR Hedged)
+Invesco Bloomberg Commodity UCITS ETF EUR hedged Acc,IE00BF4J0300,CMOE,Bloomberg Commodity (EUR Hedged)
+WisdomTree Broad Commodities - EUR Daily Hedged,JE00B78NNS84,00XK,Bloomberg Commodity (EUR Hedged)
+L&G Longer Dated All Commodities UCITS ETF,DE000A1CXBV8,ETL2,Bloomberg Commodity Index 3 Month Forward
+L&G Longer Dated All Commodities UCITS ETF,IE00B4WPHX27,"CMFP
+COMF
+ETL2",Bloomberg Commodity Index 3 Month Forward
+Vanguard USD Emerging Markets Government Bond UCITS ETF Accumulating,IE00BGYWCB81,"VAGG
+VDEA
+VEMA",Bloomberg EM USD Sovereign + Quasi-Sov
+Vanguard USD Emerging Markets Government Bond UCITS ETF Distributing,IE00BZ163L38,"VDET
+VEMT
+VGEM",Bloomberg EM USD Sovereign + Quasi-Sov
+Amundi Bloomberg Equal-Weight Commodity Ex-Agriculture UCITS ETF Acc,LU1829218749,"COMG
+COMO
+COMU
+LYTR",Bloomberg Energy and Metals Equal-Weighted
+iShares EUR Aggregate Bond ESG UCITS ETF EUR (Dist),IE00B3DKXQ41,"EUN4
+IEAG
+SEAG",Bloomberg Euro Aggregate Bond
+SPDR Bloomberg Euro Aggregate Bond UCITS ETF,IE00B41RYL63,"EAGG
+EUAG
+SYBA",Bloomberg Euro Aggregate Bond
+iShares Core Euro Government Bond UCITS ETF (Dist),IE00B4WXJJ64,"EUNH
+IEGA
+SEGA",Bloomberg Euro Aggregate Treasury
+Vanguard EUR Eurozone Government Bond UCITS ETF Accumulating,IE00BH04GL39,"VETA
+VGEA",Bloomberg Euro Aggregate Treasury
+Vanguard EUR Eurozone Government Bond UCITS ETF Distributing,IE00BZ163H91,"VETY
+VGEB",Bloomberg Euro Aggregate Treasury
+iShares Core Euro Corporate Bond UCITS ETF (Dist),IE00B3F81R35,"EUN5
+IEAC
+IEBC",Bloomberg Euro Corporate Bond
+SPDR Bloomberg Euro Corporate Bond UCITS ETF,IE00B3T9LM79,"EUCO
+SYBC",Bloomberg Euro Corporate Bond
+iShares Core Euro Corporate Bond UCITS ETF (Acc),IE00BF11F565,"IEAA
+IUSG",Bloomberg Euro Corporate Bond
+Invesco Euro Corporate Bond UCITS ETF Dist,IE00BF51K249,PSFE,Bloomberg Euro Corporate Bond
+Vanguard EUR Corporate Bond UCITS ETF Accumulating,IE00BGYWT403,VECA,Bloomberg Euro Corporate Bond
+Vanguard EUR Corporate Bond UCITS ETF Distributing,IE00BZ163G84,VECP,Bloomberg Euro Corporate Bond
+Xtrackers II EUR Corporate Bond UCITS ETF 1C,LU0478205379,"D5BG
+XBEC
+XBLC",Bloomberg Euro Corporate Bond
+iShares Euro Government Bond 1-3yr UCITS ETF (Dist),IE00B14X4Q57,"IBCA
+IBGS
+IEGS",Bloomberg Euro Government Bond 1-3 Year
+iShares Euro Government Bond 1-3yr UCITS ETF (Acc),IE00B3VTMJ91,"CBE3
+CE31
+CSBGE3
+SXRN",Bloomberg Euro Government Bond 1-3 Year
+iShares Euro Government Bond 3-7yr UCITS ETF (Acc),IE00B3VTML14,"CBE7
+CE71
+CSBGE7
+SXRP",Bloomberg Euro Government Bond 3-7 Year
+Vanguard Euro Government Bond Index Fund,IE00BFPM9W02,,Bloomberg Euro Government Float Adjusted Bond
+Amundi Euro Government Bond 1-3Y UCITS ETF Acc,LU1650487413,"EM13
+LYQ2
+MTA",Bloomberg Euro Treasury 50bn 1-3 Year Bond
+Amundi Euro Government Bond 1-3Y UCITS ETF Dist,LU1650487926,EGV3,Bloomberg Euro Treasury 50bn 1-3 Year Bond
+Amundi Euro Government Bond 10-15Y UCITS ETF Acc,LU1650489385,"EM1015
+LYQ6
+MTE",Bloomberg Euro Treasury 50bn 10-15 Year Bond
+Amundi Euro Government Bond 10-15Y UCITS ETF Dist,LU1650489898,NADB,Bloomberg Euro Treasury 50bn 10-15 Year Bond
+SPDR Bloomberg 3-5 Year Euro Government Bond UCITS ETF,IE00BS7K8821,"EU35
+SYB4",Bloomberg Euro Treasury 50bn 3-5 Year Bond
+Amundi Euro Government Bond 3-5Y UCITS ETF Acc,LU1650488494,"EM35
+LYQ3
+MTB",Bloomberg Euro Treasury 50bn 3-5 Year Bond
+Amundi Euro Government Bond 3-5Y UCITS ETF Dist,LU1650488817,EGV5,Bloomberg Euro Treasury 50bn 3-5 Year Bond
+Amundi Euro Government Bond II UCITS ETF Acc,LU1650490474,"EMG
+LYQ1
+MTX
+MTXX",Bloomberg Euro Treasury 50bn Bond
+iShares Euro Government Bond 0-1yr UCITS ETF,IE00B3FH7618,"EUN6
+IBGE
+IEGE",Bloomberg Euro Treasury Bond 0-1 Year
+iShares Core Global Aggregate Bond UCITS ETF USD (Dist),IE00B3F81409,"AGGG
+EUNU
+SAGG",Bloomberg Global Aggregate Bond
+SPDR Bloomberg Global Aggregate Bond UCITS ETF,IE00B43QJJ40,"GLAG
+GLBL
+SYBZ",Bloomberg Global Aggregate Bond
+AMUNDI GLOBAL AGGREGATE BOND UCITS ETF DR (C),LU1437024729,"10AU
+GAGG
+GAGU",Bloomberg Global Aggregate Bond
+SPDR Bloomberg Global Aggregate Bond UCITS ETF EUR Hedged (Acc),IE000AQ7A2X6,SPFF,Bloomberg Global Aggregate Bond (EUR Hedged)
+iShares Core Global Aggregate Bond UCITS ETF EUR Hedged (Acc),IE00BDBRDM35,"AGGH
+EUNA",Bloomberg Global Aggregate Bond (EUR Hedged)
+SPDR Bloomberg Global Aggregate Bond UCITS ETF EUR Hedged,IE00BF1QPL78,"GLAE
+SPFE",Bloomberg Global Aggregate Bond (EUR Hedged)
+Amundi Global Aggregate Bond UCITS ETF DR - EUR Hedged (C),LU1708330318,"GAGH
+X8LV",Bloomberg Global Aggregate Bond (EUR Hedged)
+iShares Global Corporate Bond UCITS ETF,IE00B7J7TB45,"CORP
+CRPS
+IS0X",Bloomberg Global Aggregate Corporate
+iShares Global Corporate Bond UCITS ETF USD (Acc),IE00BFM6TB42,"CRPA
+SXRB",Bloomberg Global Aggregate Corporate
+iShares ESG Screened Global Corporate Bond Index Fund,IE00BJN4RG66,,Bloomberg Global Aggregate Corporate (EUR Hedged)
+Vanguard Global Aggregate Bond UCITS ETF EUR Hedged Distributing,IE00B18GC888,YHD,Bloomberg Global Aggregate Float Adjusted and Scaled (EUR Hedged)
+Vanguard Global Aggregate Bond UCITS ETF EUR Hedged Distributing,IE00BG47KB92,VAGE,Bloomberg Global Aggregate Float Adjusted and Scaled (EUR Hedged)
+Vanguard Global Aggregate Bond UCITS ETF EUR Hedged Accumulating,IE00BG47KH54,VAGF,Bloomberg Global Aggregate Float Adjusted and Scaled (EUR Hedged)
+Vanguard USD Treasury Bond UCITS ETF Accumulating,IE00BGYWFS63,"VAGT
+VDTA
+VUTA",Bloomberg Global Aggregate US Treasury Float Adjusted
+Vanguard USD Treasury Bond UCITS ETF Distributing,IE00BZ163M45,"VDTY
+VGTY
+VUTY",Bloomberg Global Aggregate US Treasury Float Adjusted
+Amundi Index Euro Aggregate SRI UCITS ETF DR (C),LU2182388236,"EGRI
+PR10",Bloomberg MSCI Euro Aggregate Sustainable SRI Sector Neutral
+iShares EUR Corporate Bond 0-3yr ESG UCITS ETF EUR (Acc),IE000AK4O3W6,IE3E,Bloomberg MSCI Euro Corporate 0-3 Sustainable SRI
+iShares EUR Corporate Bond 0-3yr ESG UCITS ETF EUR (Dist),IE00BYZTVV78,"QDVL
+SUSE
+SUSS",Bloomberg MSCI Euro Corporate 0-3 Sustainable SRI
+iShares EUR High Yield Corporate Bond ESG UCITS ETF EUR (Acc),IE00BJK55C48,"AYE2
+EHYA",Bloomberg MSCI Euro Corporate High Yield Sustainable BB+ SRI Bond
+iShares EUR High Yield Corporate Bond ESG UCITS ETF EUR (Dist),IE00BKLC5874,"AYE3
+EHYD",Bloomberg MSCI Euro Corporate High Yield Sustainable BB+ SRI Bond
+SPDR Bloomberg 10+ Year US Treasury Bond UCITS ETF,IE00BYSZ5V04,"LUTR
+SPPX",Bloomberg US 10+ Year Treasury Bond
+Amundi US Treasury Bond Long Dated UCITS ETF Acc,LU1407890547,"U10C
+US10C",Bloomberg US 10+ Year Treasury Bond
+Amundi US Treasury Bond 10+Y UCITS ETF Dist,LU1407890620,"DJAD
+U10G
+US10",Bloomberg US 10+ Year Treasury Bond
+iShares US Aggregate Bond UCITS ETF (Dist),IE00B44CGS96,"EUNX
+IUAG
+SUAG",Bloomberg US Aggregate Bond
+SPDR Bloomberg US Aggregate Bond UCITS ETF,IE00B459R192,"SYBU
+USAG",Bloomberg US Aggregate Bond
+iShares US Aggregate Bond UCITS ETF (Acc),IE00BYXYYM63,"IS03
+IUAA",Bloomberg US Aggregate Bond
+iShares USD Floating Rate Bond UCITS ETF USD (Acc),IE00BDFGJ627,"FLOA
+QDV4",Bloomberg US Floating Rate Notes 1-5 Year
+iShares USD Floating Rate Bond UCITS ETF,IE00BZ048462,"FLO5
+FLOT
+FLTR
+QDVY",Bloomberg US Floating Rate Notes 1-5 Year
+BNP Paribas Easy ESG Dividend Europe UCITS ETF,LU1615090864,EDEU,BNP Paribas Easy ESG Dividend Europe
+BNP Paribas Easy ESG Low Volatility Europe UCITS ETF,LU1377381717,"EVOE
+VLEU",BNP Paribas Easy ESG Low Vol Europe
+BNP Paribas Easy ESG Low Volatility Europe UCITS ETF,LU1481201025,VLED,BNP Paribas Easy ESG Low Vol Europe
+BNP Paribas Easy ESG Low Volatility US UCITS ETF,LU1377381980,"EVOU
+VLUS",BNP Paribas Easy ESG Low Vol US
+BNP Paribas Easy ESG Low Volatility US UCITS ETF,LU1481201298,VLUD,BNP Paribas Easy ESG Low Vol US
+BNP Paribas Easy ESG Low Volatility US UCITS ETF USD,LU1481201371,VLUU,BNP Paribas Easy ESG Low Vol US
+BNP Paribas Easy ESG Momentum Europe UCITS ETF,LU1377382012,"EMOM
+MOEU",BNP Paribas Easy ESG Momentum Europe
+BNP Paribas Easy ESG Momentum Europe UCITS ETF,LU1481201538,MOED,BNP Paribas Easy ESG Momentum Europe
+BNP Paribas Easy ESG Quality Europe UCITS ETF,LU1377382103,"EQUA
+QUEU",BNP Paribas Easy ESG Quality Europe
+BNP Paribas Easy ESG Quality Europe UCITS ETF,LU1481201611,QUED,BNP Paribas Easy ESG Quality Europe
+BNP Paribas Easy Equity Value US UCITS ETF,LU1615091243,EVUS,BNP Paribas Equity Value US
+Amundi CAC 40 UCITS ETF Dist,FR0007052782,"CAC
+CACX
+LYY",CAC 40
+BNP Paribas Easy CAC 40 UCITS ETF,FR0010150458,E40,CAC 40
+Amundi CAC 40 UCITS ETF Acc,FR0013380607,"CACC
+VOOP",CAC 40
+Xtrackers CAC 40 UCITS ETF 1D,LU0322250985,"DX2G
+XCAC",CAC 40
+ComStage CAC 40 UCITS ETF,LU0419740799,"CD40
+Z40",CAC 40
+Amundi CAC 40 UCITS ETF DR EUR (C),LU1681046931,"C40
+GC40",CAC 40
+Amundi ETF CAC 40 UCITS ETF DR EUR (D),LU1681047079,"C4D
+C4DE",CAC 40
+Xtrackers CSI 300 Swap UCITS ETF 1C,LU0779800910,XCHA,CSI 300
+Xtrackers Harvest CSI 300 UCITS ETF 1D,LU0875160326,"ASHR
+RQFI",CSI 300
+iShares Core DAX UCITS ETF (DE),DE0005933931,"DAXEX
+EXS1",DAX
+Lyxor 1 DAX® UCITS ETF,DE000ETF9017,E901,DAX
+Deka DAX UCITS ETF,DE000ETFL011,EL4A,DAX
+Deka DAX (ausschüttend) UCITS ETF,DE000ETFL060,EL4F,DAX
+Amundi ETF DAX UCITS ETF DR,FR0010655712,"CG1
+CG1G",DAX
+Vanguard DAX UCITS ETF Distributing,IE00BG143G97,VDXX,DAX
+Amundi DAX III UCITS ETF Acc,LU0252633754,"DAX
+DAXX
+LYDAX
+LYY7",DAX
+Xtrackers DAX UCITS ETF 1C,LU0274211480,"DBXD
+OXDA
+OXDX
+XDAX",DAX
+ComStage DAX UCITS ETF,LU0378438732,"C001
+CBDAX",DAX
+ComStage DAX FR UCITS ETF,LU0488317024,"C002
+CBFDAX",DAX
+Xtrackers DAX UCITS ETF Income 1D,LU0838782315,XDDX,DAX
+L&G Gold Mining UCITS ETF,IE00B3CNHG25,"AUCO
+AUCP
+ETLX",DAXglobal Gold Miners
+iShares Dow Jones Asia Pacific Select Dividend 50 UCITS ETF (DE),DE000A0H0744,EXXW,Dow Jones Asia/Pacific Select Dividend 50
+iShares Asia Pacific Dividend UCITS ETF,IE00B14X4T88,"IAPD
+IDAP
+IQQX",Dow Jones Asia/Pacific Select Dividend 50
+iShares Emerging Markets Dividend UCITS ETF,IE00B652H904,"EUNY
+IEDY
+SEDY",Dow Jones Emerging Markets Select Dividend
+SPDR Dow Jones Global Real Estate UCITS ETF,IE00B8GF1M35,"GBRE
+GLRE
+SPYJ",Dow Jones Global Select Real Estate Securities
+SPDR Dow Jones Global Real Estate UCITS ETF Accumulating,IE00BH4GR342,"GLRA
+SPY2",Dow Jones Global Select Real Estate Securities
+iShares Dow Jones Global Titans 50 UCITS ETF (DE),DE0006289382,EXI2,Dow Jones Global Titans 50
+Lyxor DJ Global Titans 50 UCITS ETF Dist,FR0007075494,"L8IF
+MGT",Dow Jones Global Titans 50
+iShares Dow Jones Industrial Average UCITS ETF (DE),DE0006289390,EXI3,Dow Jones Industrial Average
+Lyxor Dow Jones Industrial Average UCITS ETF Dist,FR0007056841,"DJAM
+DJE
+DJEL
+DJEU",Dow Jones Industrial Average
+Amundi PEA S&P US Industrials ESG UCITS ETF Acc,FR0011869270,PDJE,Dow Jones Industrial Average
+iShares Dow Jones Industrial Average UCITS ETF (Acc),IE00B53L4350,"CIND
+CSINDU
+SXRU",Dow Jones Industrial Average
+iShares Dow Jones US Select Dividend UCITS ETF (DE),DE000A0D8Q49,EXX5,Dow Jones US Select Dividend
+iShares eb.rexx Government Germany UCITS ETF (DE),DE0006289465,"EXHA
+RXRGEX",eb.rexx Government Germany
+iShares eb.rexx Government Germany 10.5+yr UCITS ETF (DE),DE000A0D8Q31,EXX6,eb.rexx Government Germany 10.5+
+Invesco Elwood Global Blockchain UCITS ETF A,IE00BGBN6P67,"BCHE
+BCHN
+BCHS
+BNXG",Elwood Blockchain Global Equity
+HANetf Future of Defence UCITS ETF,IE000OJ5TQP4,"ASWC
+NATO
+NATP",EQM Future of Defence
+iShares EURO STOXX UCITS ETF (DE),DE000A0D8Q07,"EXSI
+SXXEEX",EURO STOXX
+Amundi MSCI EMU ESG CTB Net Zero Ambition UCITS ETF Acc,LU0908501058,"LGQG
+MFED",EURO STOXX
+Amundi MSCI EMU ESG CTB Net Zero Ambition UCITS ETF Dist,LU0908501132,MFDD,EURO STOXX
+iShares EURO STOXX 50 UCITS ETF (DE),DE0005933956,"DJSXE
+EXW1",EURO STOXX 50
+HSBC EURO STOXX 50 UCITS ETF EUR,DE000A1C0BB7,H4ZA,EURO STOXX 50
+Lyxor 1 EURO STOXX 50® UCITS ETF,DE000ETF9504,E950,EURO STOXX 50
+Deka EURO STOXX 50 UCITS ETF,DE000ETFL029,EL4B,EURO STOXX 50
+Deka EURO STOXX 50 (thesaurierend) UCITS ETF,DE000ETFL466,ELFA,EURO STOXX 50
+Amundi EURO STOXX 50 II UCITS ETF Acc,FR0007054358,"LYSX
+MSE",EURO STOXX 50
+BNP Paribas Easy EURO STOXX 50 UCITS ETF,FR0012739431,ETDD,EURO STOXX 50
+BNP Paribas Easy EURO STOXX 50 UCITS ETF,FR0012740983,ETBB,EURO STOXX 50
+iShares Core EURO STOXX 50 UCITS ETF EUR (Dist),IE0008471009,"EUE
+EUEA
+EUN2
+EUNE",EURO STOXX 50
+HSBC EURO STOXX 50 UCITS ETF EUR,IE00B4K6B022,"50E
+H4ZA
+H50E",EURO STOXX 50
+iShares Core EURO STOXX 50 UCITS ETF (Acc),IE00B53L3W79,"CS51
+CSSX5E
+CSX5
+ISX5
+SXRT",EURO STOXX 50
+Invesco EURO STOXX 50 UCITS ETF Dist,IE00B5B5TG76,"OSX5
+OSXF
+S6X0
+SDJE5D
+SX5D",EURO STOXX 50
+Invesco EURO STOXX 50 UCITS ETF,IE00B60SWX25,"SC0D
+SDJE50
+SX5E
+SX5S",EURO STOXX 50
+Vanguard EURO STOXX 50 UCITS ETF Distributing,IE00BF4R5F15,VX5E,EURO STOXX 50
+UBS ETF (LU) EURO STOXX 50 UCITS ETF (EUR) A-dis,LU0136234068,"E50EUA
+UB00
+UB01
+UIM1",EURO STOXX 50
+Xtrackers EURO STOXX 50 UCITS ETF 1D,LU0274211217,"DBXE
+XESX",EURO STOXX 50
+ComStage EURO STOXX 50 UCITS ETF,LU0378434079,"C050
+CBSX5E",EURO STOXX 50
+Xtrackers EURO STOXX 50 UCITS ETF 1C,LU0380865021,"DXET
+XESC",EURO STOXX 50
+ComStage EURO STOXX 50 UCITS ETF,LU0488317297,"C054
+CBSX5F",EURO STOXX 50
+Lyxor Core EURO STOXX 50 (DR) UCITS ETF Acc,LU0908501215,MSED,EURO STOXX 50
+Amundi EURO STOXX 50 UCITS ETF EUR (C),LU1681047236,"C50
+V50A",EURO STOXX 50
+Amundi EURO STOXX 50 UCITS ETF EUR (D),LU1681047319,"CD5
+CD5E
+V50D",EURO STOXX 50
+Amundi EURO STOXX 50 Daily (2x) Leveraged UCITS ETF Acc,FR0010468983,"DJLEV
+LVE
+LYLVE
+LYMZ",EURO STOXX 50 Daily Leverage
+Amundi ETF Leveraged EURO STOXX 50 Daily UCITS ETF,FR0010756072,"18MD
+C5L",EURO STOXX 50 Daily Leverage
+Amundi Euro Stoxx Banks UCITS ETF Acc,LU1829219390,"BNKE
+LYBK",EURO STOXX Banks
+Xtrackers EURO STOXX Quality Dividend UCITS ETF 1D,LU0292095535,"DXSA
+XD3E",EURO STOXX Quality Dividend 50
+iShares EURO STOXX Select Dividend 30 UCITS ETF (DE),DE0002635281,EXSG,EURO STOXX Select Dividend 30
+Deka EURO STOXX Select Dividend 30 UCITS ETF,DE000ETFL078,EL4G,EURO STOXX Select Dividend 30
+iShares Euro Dividend UCITS ETF,IE00B0M62S72,"IDVY
+IQQA",EURO STOXX Select Dividend 30
+ComStage EURO STOXX Select Dividend 30 UCITS ETF,LU0378434236,"C051
+CBSDIV",EURO STOXX Select Dividend 30
+iShares EURO STOXX Small UCITS ETF,IE00B02KXM00,"DJSC
+IQQS",EURO STOXX Small
+Fidelity Global Quality Income UCITS ETF,IE00BYXVGZ48,"FGEQ
+FGQD
+FGQI",Fidelity Global Quality Income
+Fidelity US Quality Income UCITS ETF,IE00BYXVGX24,"FUSD
+FUSI",Fidelity US Quality Income
+Fidelity US Quality Income UCITS ETF Acc,IE00BYXVGY31,"FUQA
+FUSA
+FUSC",Fidelity US Quality Income
+Rize Medical Cannabis and Life Sciences UCITS ETF,IE00BJXRZ273,"BLUM
+FLWG
+FLWR",Foxberry Medical Cannabis & Life Sciences
+iShares Core FTSE 100 UCITS ETF (Dist),IE0005042456,"ISF
+ISFA
+ISFU
+IUSZ",FTSE 100
+HSBC FTSE 100 UCITS ETF GBP,IE00B42TW061,"H4ZB
+HUKX
+UKX",FTSE 100
+iShares Core FTSE 100 UCITS ETF GBP (Acc),IE00B53HP851,"CSUKX
+CUKX
+SXRW",FTSE 100
+Invesco FTSE 100 UCITS ETF,IE00B60SWT88,S100,FTSE 100
+Vanguard FTSE 100 UCITS ETF Distributing,IE00B810Q511,VUKE,FTSE 100
+Vanguard FTSE 100 UCITS ETF (GBP) Accumulating,IE00BFMXYP42,VUKG,FTSE 100
+UBS ETF (LU) FTSE 100 UCITS ETF (GBP) A-dis,LU0136242590,"100EUA
+100GBA
+UB03
+UIM3",FTSE 100
+Xtrackers FTSE 100 UCITS ETF Income 1D,LU0292097234,"DBXX
+XUKX",FTSE 100
+ComStage FTSE 100 TR UCITS ETF,LU0488316216,"8H81
+CBGB10",FTSE 100
+Xtrackers FTSE 100 UCITS ETF 1C,LU0838780707,XDUK,FTSE 100
+Amundi ETF FTSE 100 UCITS ETF EUR,LU1437025023,C1U,FTSE 100
+Amundi ETF FTSE 100 UCITS ETF GBP,LU1437025296,"FT1K
+FTSE",FTSE 100
+Amundi FTSE 100 UCITS ETF Acc,LU1650492173,"B8TT
+FTS100
+L100",FTSE 100
+Amundi FTSE 100 UCITS ETF Dist,LU1650492256,"100D
+D100",FTSE 100
+Invesco FTSE 250 UCITS ETF,IE00B60SWV01,S250,FTSE 250
+HSBC FTSE 250 UCITS ETF GBP,IE00B64PTF05,HMCX,FTSE 250
+Vanguard FTSE 250 UCITS ETF (GBP) Accumulating,IE00BFMXVQ44,VMIG,FTSE 250
+Vanguard FTSE 250 UCITS ETF Distributing,IE00BKX55Q28,VMID,FTSE 250
+Xtrackers FTSE 250 UCITS ETF 1D,LU0292097317,"DBXY
+XMCX",FTSE 250
+iShares Core UK Gilts UCITS ETF,IE00B1FZSB30,IGLT,FTSE Actuaries UK Conventional Gilts All Stocks
+Amundi UK Government Bond UCITS ETF Dist,LU1407892592,"GILS
+LYTG",FTSE Actuaries UK Conventional Gilts All Stocks
+SPDR FTSE UK All Share UCITS ETF,IE00B7452L46,"FTAL
+SPYF",FTSE All-Share
+SPDR FTSE UK All Share UCITS ETF,IE00BD5FCF91,"FTAD
+ZPRD",FTSE All-Share
+Invesco FTSE All-World UCITS ETF Dist,IE0000QLH0G6,"FTWD
+FTWG",FTSE All-World
+Invesco FTSE All-World UCITS ETF Acc,IE000716YHJ7,"FWIA
+FWRA
+FWRG",FTSE All-World
+Vanguard FTSE All-World UCITS ETF (USD) Distributing,IE00B3RBWM25,"VGWL
+VWRD
+VWRL",FTSE All-World
+Vanguard FTSE All-World UCITS ETF (USD) Accumulating,IE00BK5BQT80,"VWCE
+VWRA
+VWRP",FTSE All-World
+Vanguard FTSE All-World High Dividend Yield UCITS ETF Distributing,IE00B8GKDB10,"VGWD
+VHYD
+VHYL",FTSE All-World High Dividend Yield
+Vanguard FTSE All-World High Dividend Yield UCITS ETF Acc,IE00BK5BR626,"VHYA
+VHYG",FTSE All-World High Dividend Yield
+Vanguard FTSE Developed World UCITS ETF Acc,IE00BK5BQV03,"VGVF
+VHVE
+VHVG",FTSE Developed
+Vanguard FTSE Developed World UCITS ETF Distributing,IE00BKX55T58,"VDEV
+VEVE
+VGVE",FTSE Developed
+Vanguard ESG Developed World All Cap Equity Index Fund,IE00B5456744,,FTSE Developed All Cap Choice
+Vanguard FTSE Developed Asia Pacific ex Japan UCITS ETF Distributing,IE00B9F5YL18,"VAPX
+VDPX
+VGEJ",FTSE Developed Asia Pacific ex Japan
+Vanguard FTSE Developed Asia Pacific ex Japan UCITS ETF Acc,IE00BK5BQZ41,"VAPU
+VDPG
+VGEK",FTSE Developed Asia Pacific ex Japan
+Vanguard FTSE Developed Europe UCITS ETF Distributing,IE00B945VV12,"VEUD
+VEUR
+VGEU",FTSE Developed Europe
+Vanguard FTSE Developed Europe UCITS ETF (EUR) Accumulating,IE00BK5BQX27,"VEUA
+VWCG",FTSE Developed Europe
+Vanguard FTSE Developed Europe ex UK UCITS ETF (EUR) Accumulating,IE00BK5BQY34,"VERE
+VERG",FTSE Developed Europe ex UK
+Vanguard FTSE Developed Europe ex UK UCITS ETF Distributing,IE00BKX55S42,VERX,FTSE Developed Europe ex UK
+Vanguard FTSE Emerging Markets UCITS ETF Distributing,IE00B3VVMM84,"VDEM
+VFEM",FTSE Emerging
+Vanguard FTSE Emerging Markets UCITS ETF Acc,IE00BK5BR733,"VFEA
+VFEG",FTSE Emerging
+Vanguard ESG Emerging Markets All Cap Equity Index Fund,IE00BKV0W243,,FTSE Emerging All Cap Choice
+Xtrackers Emerging Markets USD Government and Government-Related Bond Select UCITS ETF 1C EUR hedged,LU0321462953,"DXSU
+XEMB",FTSE Emerging Markets US Dollar Government Bond (EUR Hedged)
+Xtrackers USD Emerging Markets Bond UCITS ETF 2D,LU0677077884,XUEM,FTSE Emerging Markets USD Government and Government-Related Bond Select
+Xtrackers II USD Emerging Markets Bond UCITS ETF 2C,LU1920015440,XUEB,FTSE Emerging Markets USD Government and Government-Related Bond Select
+iShares Euro Government Bond Index Fund (IE),IE0031080868,,FTSE EMU Government Bond
+Lyxor Core Euro Government Bond (DR) UCITS ETF - Dist,LU2329745918,CMTX,FTSE EMU Government Bond
+BNP Paribas Easy FTSE EPRA Nareit Global Developed Green CTB UCITS ETF,LU2365458905,"ASRM
+EGDGR
+GRCTB",FTSE EPRA Nareit Developed Green EU CTB
+HSBC FTSE EPRA/NAREIT Developed UCITS ETF USD,IE00B5L01S80,"H4ZL
+HPRD
+HPRO",FTSE EPRA/NAREIT Developed
+Amundi ETF FTSE EPRA NAREIT Global UCITS ETF DR,LU1437018838,"EPRA
+EPRU",FTSE EPRA/NAREIT Developed
+Amundi Index FTSE EPRA NAREIT Global UCITS ETF DR EUR (D),LU1737652823,10AJ,FTSE EPRA/NAREIT Developed
+Lyxor FTSE EPRA/NAREIT Global Developed UCITS ETF - Dist (USD),LU1812091350,"LMWU
+LYMWO",FTSE EPRA/NAREIT Developed
+Amundi FTSE EPRA NAREIT Global Developed UCITS ETF Dist,LU1832418773,"LMWE
+LYMWO
+MWO
+REWLD",FTSE EPRA/NAREIT Developed
+iShares Developed Markets Property Yield UCITS ETF,IE00B1FZS350,"IDWP
+IQQ6
+IWDP",FTSE EPRA/NAREIT Developed Dividend+
+iShares Developed Markets Property Yield UCITS ETF USD (Acc),IE00BFM6T921,"DPYA
+SXRA",FTSE EPRA/NAREIT Developed Dividend+
+iShares Developed Markets Property Yield UCITS ETF EUR Hedged (Acc),IE00BDZVHD04,DPYE,FTSE EPRA/NAREIT Developed Dividend+ (EUR Hedged)
+iShares European Property Yield UCITS ETF EUR (Acc),IE00BGDQ0L74,IPRE,FTSE EPRA/NAREIT Developed Europe
+Xtrackers FTSE EPRA/NAREIT Developed Europe Real Estate UCITS ETF 1C,LU0489337690,"D5BK
+XDER",FTSE EPRA/NAREIT Developed Europe
+BNP Paribas Easy FTSE EPRA/NAREIT Developed Europe UCITS ETF QD,LU1291091228,"EEEP
+EEP",FTSE EPRA/NAREIT Developed Europe
+Amundi FTSE EPRA Europe Real Estate UCITS ETF EUR (C),LU1681039480,"EPRE
+REAL",FTSE EPRA/NAREIT Developed Europe
+Amundi FTSE EPRA Europe Real Estate UCITS ETF (D),LU1812091194,"LEEU
+MEH
+REEU",FTSE EPRA/NAREIT Developed Europe
+SPDR FTSE EPRA Europe ex UK Real Estate UCITS ETF,IE00BSJCQV56,"EURE
+EURL
+ZPRP",FTSE EPRA/NAREIT Developed Europe ex UK
+BNP Paribas Easy FTSE EPRA/NAREIT Eurozone Capped UCITS ETF QD,LU0192223062,"EEE
+EEEG
+IM2A",FTSE EPRA/NAREIT Eurozone Capped
+BNP Paribas Easy FTSE EPRA/NAREIT Eurozone Capped UCITS ETF,LU0950381748,"EEA
+EEAA
+EEEA",FTSE EPRA/NAREIT Eurozone Capped
+iShares US Property Yield UCITS ETF,IE00B1FZSF77,"IDUP
+IQQ7
+IUSP",FTSE EPRA/NAREIT US Dividend+
+Amundi ETF Govies 0-6 Months Euro Investment Grade UCITS ETF EUR (C),FR0010754200,"18M1
+C3M",FTSE Eurozone Government Bill 0-6 Month Capped
+Amundi Italy BTP Government Bond 10Y UCITS ETF Acc,LU1598691217,"BTP10
+LYT5",FTSE Eurozone Target Maturity Government Bond Italy (Mid Price)
+Vanguard ESG Global All Cap UCITS ETF (USD) Accumulating,IE00BNG8L278,"V3AA
+V3AB",FTSE Global All Cap Choice
+Vanguard ESG Global All Cap UCITS ETF (USD) Distributing,IE00BNG8L385,"V3AL
+V3AM",FTSE Global All Cap Choice
+iShares Global Infrastructure UCITS ETF,IE00B1FZS467,"IDIN
+INFR
+IQQI",FTSE Global Core Infrastructure
+Franklin FTSE India UCITS ETF,IE00BHZRQZ17,"FLXI
+FRIN",FTSE India 30/18 Capped
+Vanguard FTSE Japan UCITS ETF Distributing,IE00B95PGT31,"VDJP
+VJPN",FTSE Japan
+Vanguard FTSE Japan UCITS ETF Accumulating,IE00BFMXYX26,"VJPA
+VJPB",FTSE Japan
+Xtrackers Japan Government Bond UCITS ETF 1C,LU0952581584,XJSE,FTSE Japanese Government Bond
+Amundi FTSE MIB UCITS ETF Dist,FR0010010827,"ETFMIB
+LYMK
+MIB
+MIBX",FTSE MIB
+iShares FTSE MIB UCITS ETF EUR (Dist),IE00B1XNH568,IMIB,FTSE MIB
+iShares FTSE MIB UCITS ETF (Acc),IE00B53L4X51,"CMB1
+CMIB
+CSMIB
+SXRY",FTSE MIB
+Xtrackers FTSE MIB UCITS ETF 1D,LU0274212538,"DBXI
+XMIB",FTSE MIB
+Amundi ETF FTSE MIB UCITS ETF,LU1681037518,FMI,FTSE MIB
+Amundi PEA Obligations d'État Euro UCITS ETF Acc,FR0013346681,OBLI,FTSE MTS Eurozone Government Bond IG
+Amundi ETF Government Bond EuroMTS Broad Investment Grade 10-15 UCITS ETF EUR (C),FR0010754143,"18MW
+C10",FTSE MTS Eurozone Government Broad Investment Grade 10-15
+Vanguard FTSE North America UCITS ETF (USD) Accumulating,IE00BK5BQW10,"VNRA
+VNRG",FTSE North America
+Vanguard FTSE North America UCITS ETF Distributing,IE00BKX55R35,"VDNR
+VNRT",FTSE North America
+SPDR Refinitiv Global Convertible Bond UCITS ETF,IE00BNH72088,"CONV
+GCVB
+GLCB
+ZPRC",FTSE Qualified Global Convertible
+SPDR Refinitiv Global Convertible Bond EUR Hedged UCITS ETF,IE00BDT6FP91,"GCVE
+SPF1",FTSE Qualified Global Convertible (EUR Hedged)
+iShares UK Dividend UCITS ETF,IE00B0M63060,"IQQD
+IUKD",FTSE UK Dividend+
+Xtrackers Global Sovereign UCITS ETF 5C,LU0908508731,"XG7S
+XGGB",FTSE World Government Bond - Developed Markets
+Xtrackers Global Sovereign UCITS ETF 1C EUR hedged,LU0378818131,"DBZB
+XGSH",FTSE World Government Bond - Developed Markets (Hedged EUR)
+Xtrackers Global Government Bond UCITS ETF 1D EUR hedged,LU0690964092,XGVD,FTSE World Government Bond - Developed Markets (Hedged EUR)
+iShares Global Government Bond UCITS ETF USD (Dist),IE00B3F81K65,"EUN3
+IGLO
+SGLO",FTSE World Government Bond G7
+iShares Global Government Bond UCITS ETF,IE00BYZ28V50,IGLA,FTSE World Government Bond G7
+UBS ETF (CH) Gold (USD) A-dis,CH0106027193,AUUSI,Gold spot price
+Gold Bullion Securities,DE000A0LP781,"GG9B
+OGG9",Gold spot price
+WisdomTree Physical Gold,DE000A0N62G0,VZLD,Gold spot price
+Xetra-Gold,DE000A0S9GB0,"4GLD
+OGLD",Gold spot price
+WisdomTree Physical Swiss Gold,DE000A1DCTL3,"GZUR
+OGZU",Gold spot price
+Xtrackers Physical Gold ETC (EUR),DE000A1E0HR8,"OXA5
+XAD5",Gold spot price
+Xtrackers IE Physical Gold ETC Securities,DE000A2T0VU5,XGDU,Gold spot price
+EUWAX Gold,DE000EWG0LD1,GOLD,Gold spot price
+EUWAX Gold II,DE000EWG2LD7,EWG2,Gold spot price
+Amundi Physical Gold ETC (C),FR0013416716,"GLDA
+GOLD",Gold spot price
+Gold Bullion Securities,GB00B00FHZ82,"GBS
+GBSS",Gold spot price
+Xtrackers Physical Gold ETC,GB00B5840F36,XGLD,Gold spot price
+iShares Physical Gold ETC,IE00B4ND3602,"EGLN
+IGLN
+PPFB
+SGLN",Gold spot price
+Invesco Physical Gold A,IE00B579F325,"8PSG
+SGLD
+SGLP",Gold spot price
+WisdomTree Physical Gold,JE00B1VS3770,"PHAU
+PHGP",Gold spot price
+WisdomTree Physical Swiss Gold,JE00B588CD74,"SGBS
+SGBX",Gold spot price
+HANetf The Royal Mint Physical Gold ETC Securities,XS2115336336,"RM8U
+RMAP
+RMAU",Gold spot price
+Swisscanto ETF Precious Metal Physical Gold EUR A,CH0044781174,JBGOEA,Gold spot price (EUR Hedged)
+Swisscanto ETF Precious Metal Physical Gold AX,CH0044821699,JBGOEX,Gold spot price (EUR Hedged)
+ZKB Gold ETF H (EUR),CH0103326762,ZGLDHE,Gold spot price (EUR Hedged)
+iShares Gold EUR Hedged (CH),CH0104136319,CSGLDE,Gold spot price (EUR Hedged)
+UBS ETF (CH) Gold (EUR) hedged (EUR) A-dis,CH0106027144,AUEUAH,Gold spot price (EUR Hedged)
+Xtrackers Physical Gold EUR Hedged ETC,DE000A1EK0G3,"OXA1
+XAD1",Gold spot price (EUR Hedged)
+Xtrackers IE Physical Gold EUR Hedged ETC Securities,DE000A2T5DZ1,XGDE,Gold spot price (EUR Hedged)
+VanEck Vectors Global Real Estate UCITS ETF,NL0009690239,"TREG
+TRET",GPR Global 100
+Amundi ETF Global Emerging Bond Markit iBoxx UCITS ETF USD,LU1681041205,AGEB,iBoxx $ Liquid Emerging Markets Sovereigns
+Amundi Global Emerging Bond Markit iBoxx UCITS ETF Dist,LU1686830909,"EMKTB
+LEMB
+LYQS",iBoxx $ Liquid Emerging Markets Sovereigns
+iShares USD High Yield Corporate Bond UCITS ETF USD (Dist),IE00B4PY7Y77,"IHYU
+IS0R
+SHYU",iBoxx $ Liquid High Yield Capped
+iShares USD High Yield Corporate Bond UCITS ETF USD (Acc),IE00BYXYYL56,IHYA,iBoxx $ Liquid High Yield Capped
+iShares USD Corporate Bond UCITS ETF (Dist),IE0032895942,"IBCD
+LQDA
+LQDE
+LQDS",iBoxx $ Liquid Investment Grade
+iShares USD Corporate Bond UCITS ETF (Acc),IE00BYXYYJ35,LQDA,iBoxx $ Liquid Investment Grade
+Amundi Euro Inflation Expectations 2-10Y UCITS ETF Acc,LU1390062245,"EUIN
+INFL",iBoxx EUR Breakeven Euro-Inflation France & Germany
+Xtrackers iBoxx EUR Corporates Yield Plus UCITS ETF 1D,IE00BYPHT736,XDEP,iBoxx EUR Corporates Yield Plus
+Xtrackers Eurozone Government Bond 15-30 UCITS ETF 1C,LU0290357507,"DBXF
+X15E",iBoxx EUR Eurozone 15-30
+iShares Euro Government Bond 20yr Target Duration UCITS ETF,IE00BSKRJX20,"E20Y
+IS05",iBoxx EUR Eurozone 20yr Target Duration
+Amundi ETF Euro Inflation UCITS ETF EUR (C),FR0010754127,"18MU
+CI3",iBoxx EUR Inflation-Linked
+Amundi Euro High Yield Liquid Bond iBoxx UCITS ETF EUR (C),LU1681040496,AHYE,iBoxx EUR Liquid High Yield 30 Ex-Financial
+Xtrackers iBoxx Sovereigns Eurozone Yield Plus UCITS ETF 1C,LU0524480265,XY4P,iBoxx EUR Sovereigns Eurozone Yield Plus
+Xtrackers iBoxx Sovereigns Eurozone Yield Plus UCITS ETF 1D,LU0962071741,XYPD,iBoxx EUR Sovereigns Eurozone Yield Plus
+Xtrackers Eurozone Government Bond 25+ UCITS ETF 1C,LU0290357846,"DBXG
+X25E",iBoxx Eurozone 25+
+iShares Global High Yield Corporate Bond UCITS ETF,IE00B74DQ490,"HYLD
+IBC9
+IGHY",iBoxx Global Developed Markets Liquid High Yield Capped
+iShares Global High Yield Corporate Bond UCITS ETF,IE00BYWZ0440,"HYEA
+HYLA",iBoxx Global Developed Markets Liquid High Yield Capped
+iShares Euro High Yield Corporate Bond UCITS ETF EUR (Dist),IE00B66F4759,"EUNW
+IHYG
+SHYG",iBoxx € Liquid High Yield
+iShares Euro High Yield Corporate Bond UCITS ETF EUR (Acc),IE00BF3N7094,HIGH,iBoxx € Liquid High Yield
+Xtrackers EUR High Yield Corporate Bond UCITS ETF 1D,LU1109942653,XHYG,iBoxx € Liquid High Yield
+Xtrackers EUR High Yield Corporate Bond UCITS ETF 1C,LU1109943388,XHYA,iBoxx € Liquid High Yield
+Xtrackers II Eurozone Government Bond UCITS ETF 1C,LU0290355717,"DBXN
+XGLE",iBoxx € Sovereigns
+Xtrackers II Eurozone Government Bond UCITS ETF 1D,LU0643975591,X03F,iBoxx € Sovereigns
+Xtrackers Eurozone Government Bond 1-3 UCITS ETF 1C,LU0290356871,"DBXP
+X13E",iBoxx € Sovereigns 1-3
+Xtrackers Eurozone Government Bond 1-3 UCITS ETF 1D,LU0614173549,X03B,iBoxx € Sovereigns 1-3
+ComStage iBoxx EUR Sovereigns Germany Capped 10+ TR UCITS ETF,LU0444607005,8523,iBoxx € Sovereigns Germany Capped 10+
+ComStage iBoxx EUR Sovereigns Germany Capped 5-10 TR UCITS ETF,LU0444606965,8522,iBoxx € Sovereigns Germany Capped 5-10
+iShares USD Treasury Bond 1-3yr UCITS ETF (Dist),IE00B14X4S71,"IBTS
+IDBT
+IUSU",ICE US Treasury 1-3 Year Bond
+iShares USD Treasury Bond 1-3yr UCITS ETF (Acc),IE00B3VWN179,"CBU3
+CSBGU3
+CU31",ICE US Treasury 1-3 Year Bond
+iShares USD Treasury Bond 1-3yr UCITS ETF (Acc),IE00BYXPSP02,IBTA,ICE US Treasury 1-3 Year Bond
+iShares USD Treasury Bond 20+yr UCITS ETF USD (Acc),IE00BFM6TC58,DTLA,ICE US Treasury 20+ Year Bond
+iShares USD Treasury Bond 20+yr UCITS ETF (Dist),IE00BSKRJZ44,"IBTL
+IDTL
+IS04",ICE US Treasury 20+ Year Bond
+iShares USD Treasury Bond 20+yr EUR Hedged UCITS ETF,IE00BD8PGZ49,DTLE,ICE US Treasury 20+ Year Bond (EUR Hedged)
+iShares USD Treasury Bond 3-7yr UCITS ETF (Acc),IE00B3VWN393,"CBU7
+CSBGU7
+CU71
+SXRL",ICE US Treasury 3-7 Year Bond
+iShares USD Treasury Bond 3-7 UCITS ETF USD (Dist),IE00BFXYHY63,OM3M,ICE US Treasury 3-7 Year Bond
+iShares USD Treasury Bond 7-10yr UCITS ETF (Dist),IE00B1FZS798,"BTMA
+IBTM
+IDTM
+IUSM",ICE US Treasury 7-10 Year Bond
+iShares USD Treasury Bond 7-10yr UCITS ETF (Acc),IE00B3VWN518,"CBU0
+CSBGU0
+SXRM",ICE US Treasury 7-10 Year Bond
+iShares USD Treasury Bond 0-1yr UCITS ETF USD (Dist),IE00BGR7L912,"IBCC
+IBTU",ICE US Treasury Short Bond
+iShares USD Treasury Bond 0-1yr UCITS ETF (Acc),IE00BGSF1X88,IB01,ICE US Treasury Short Bond
+L&G Cyber Security UCITS ETF,IE00BYPLS672,"ISPY
+USPY",ISE Cyber Security
+iShares Automation & Robotics UCITS ETF,IE00BYWZ0333,"2B7F
+RBOD",iSTOXX FactSet Automation & Robotics
+iShares Automation & Robotics UCITS ETF,IE00BYZK4552,"2B76
+RBOT
+RBTX",iSTOXX FactSet Automation & Robotics
+UBS ETF (LU) J.P. Morgan CNY China Government 1-10 Year Bond UCITS ETF (USD) A-acc,LU2095995895,"CIB
+CNYGB
+JC11",JP Morgan China Government + Policy Bank 20% Capped 1-10 Year
+JPMorgan Global Equity Multi-Factor UCITS ETF Accumulating,IE00BJRCLL96,"JPGL
+JPLG",JP Morgan Diversified Factor Global Developed (Region Aware) Equity
+iShares J.P. Morgan USD Emerging Markets Bond UCITS ETF (Dist),IE00B2NPKV68,"EEMB
+IEMB
+IUS7
+SEMB",JP Morgan EMBI Global Core
+iShares J.P. Morgan USD Emerging Markets Bond UCITS ETF (Acc),IE00BYXYYK40,"JPEA
+JPEE",JP Morgan EMBI Global Core
+iShares J.P. Morgan USD EM Bond EUR Hedged UCITS ETF (Dist),IE00B9M6RS56,"EMBE
+IS3C",JP Morgan EMBI Global Core (Hedged EUR)
+iShares J.P. Morgan USD EM Bond UCITS ETF (Acc),IE00BJ5JPH63,3SUD,JP Morgan EMBI Global Core (Hedged EUR)
+UBS ETF (LU) J.P. Morgan EM Multi-Factor Enhanced Local Currency Bond UCITS ETF (USD) A-dis,LU1720938841,"EMLO
+EMLOC
+UEFE",JP Morgan Emerging Market Enhanced Multi-Factor Local Currency Bond
+UBS ETF (LU) J.P. Morgan EM Multi-Factor Enhanced Local Currency Bond UCITS ETF (USD) A-acc,LU1720938924,EMLOCA,JP Morgan Emerging Market Enhanced Multi-Factor Local Currency Bond
+JPMorgan BetaBuilders EUR Govt Bond UCITS ETF EUR (acc),IE00BJK9HD13,"BBEG
+BBGE",JP Morgan EMU Government Bond
+Amundi ETF BofA Merrill Lynch Euro Government Bonds 1-10 UCITS ETF DR,LU1437018598,EGOV,JP Morgan EMU Government Bond
+Amundi Index J.P. Morgan EMU Government Investment Grade UCITS ETF DR EUR (D),LU1737653714,10AL,JP Morgan EMU Government Bond
+BNP Paribas Easy JPM ESG EMU Government Bond IG 3-5 Y,LU2008763182,,JP Morgan ESG EMU Government Bond IG 3-5 Year
+BNP Paribas Easy JPM ESG EMU Government Bond IG 3-5Y UCITS ETF,LU2244387457,"ASRE
+GEMU",JP Morgan ESG EMU Government Bond IG 3-5 Year
+iShares J.P. Morgan EM Local Government Bond UCITS ETF,IE00B5M4WH52,"IEML
+IUSP
+SEML",JP Morgan GBI-EM Global Diversified 10% Cap 1% Floor
+iShares J.P. Morgan Emerging Markets Local Government Bond UCITS ETF USD (Acc),IE00BFZPF546,EMGA,JP Morgan GBI-EM Global Diversified 10% Cap 1% Floor
+Amundi ETF J.P. Morgan Government Bond Global UCITS ETF DR EUR Hedged,LU1708330235,GOVH,JP Morgan Global Government Bond (Hedged EUR)
+Amundi ETF J.P. Morgan GBI Global Government Bonds UCITS ETF DR,LU1437016204,"GGOU
+GGOV",JP Morgan Government Bond Global
+Amundi Index J.P. Morgan GBI Global Govies UCITS ETF DR EUR (D),LU1737653631,10AK,JP Morgan Government Bond Global
+Invesco JPX-Nikkei 400 UCITS ETF,IE00BPRCH686,"N400
+S400
+SMLN",JPX-Nikkei 400
+Xtrackers JPX-Nikkei 400 UCITS ETF 1D,IE00BPVLQD13,"XDNS
+XDNY",JPX-Nikkei 400
+Lyxor MSCI Japan ESG Leaders Extra (DR) UCITS ETF - Acc,LU1646359452,"JPX4
+JPXG
+JPXY
+LMVB",JPX-Nikkei 400
+Amundi JPX Nikkei 400 UCITS ETF EUR (C),LU1681038912,"JP40
+JPNK",JPX-Nikkei 400
+Amundi ETF JPX Nikkei 400 UCITS ETF JPY,LU1681039050,JPNY,JPX-Nikkei 400
+Xtrackers JPX-Nikkei 400 UCITS ETF 3C EUR hedged,IE00BRB36B93,XDNE,JPX-Nikkei 400 Daily (EUR Hedged)
+Invesco JPX-Nikkei 400 EUR Hedged UCITS ETF,IE00BVGC6645,NS4E,JPX-Nikkei 400 Daily (EUR Hedged)
+Nomura JPX-Nikkei 400 NTR D EUR Hedged UCITS ETF,IE00BVVSZ262,NJXE,JPX-Nikkei 400 Daily (EUR Hedged)
+Lyxor MSCI Japan ESG Leaders Extra (DR) UCITS ETF - Daily Hedged to EUR - Acc,LU1646359965,"JPXH
+LMVD",JPX-Nikkei 400 Daily (EUR Hedged)
+Amundi JPX Nikkei 400 UCITS ETF Daily Hedged EUR (C),LU1681039134,"JP4H
+JPHE",JPX-Nikkei 400 Daily (EUR Hedged)
+Franklin Emerging Markets UCITS ETF,IE00BF2B0K52,"FLXE
+FREM",LibertyQ Emerging Markets
+VanEck Defense UCITS ETF A,IE000YYE6WK5,"DFEN
+DFNG
+DFNS",MarketVector Global Defense Industry
+VanEck Uranium and Nuclear Technologies UCITS ETF A,IE000M7V94E1,"NUCG
+NUCL
+NUKL",MarketVector Global Uranium and Nuclear Energy Infrastructure
+VanEck Video Gaming and eSports UCITS ETF,IE00BYWQWR46,"ESGB
+ESP0
+ESPO",MarketVector Global Video Gaming & eSports ESG
+Xtrackers Eurozone Government Bond 3-5 UCITS ETF 1C,LU0290356954,"DBXQ
+X35E",Markit iBoxx EUR Eurozone (DE ES FR IT NL) 3-5
+Xtrackers Eurozone Government Bond 3-5 UCITS ETF 1D,LU0614173895,X03C,Markit iBoxx EUR Eurozone (DE ES FR IT NL) 3-5
+iShares EUR Ultrashort Bond UCITS ETF EUR (Acc),IE000RHYOR04,ERNX,Markit iBoxx EUR Liquid Investment Grade Ultrashort
+iShares EUR Ultrashort Bond UCITS ETF EUR (Dist),IE00BCRY6557,"ERN1
+ERNE
+IS3M",Markit iBoxx EUR Liquid Investment Grade Ultrashort
+iShares GBP Ultrashort Bond UCITS ETF,IE00BCRY6441,ERNS,Markit iBoxx GBP Liquid Investment Grade Ultrashort
+iShares Global High Yield Corp Bond GBP Hedged UCITS ETF (Dist),IE00B8KQFS66,GHYS,Markit iBoxx Global Developed Markets Liquid High Yield Capped (GBP Hedged)
+iShares Global High Yield Corp Bond UCITS ETF GBP Hedged (Dist),IE00BJSFQX44,GHYG,Markit iBoxx Global Developed Markets Liquid High Yield Capped (GBP Hedged)
+iShares MDAX UCITS ETF (DE),DE0005933923,"EXS3
+MDAXEX",MDAX
+iShares MDAX® UCITS ETF (DE) EUR (Dist),DE000A2QP349,EXID,MDAX
+Amundi MDAX UCITS ETF Dist,FR0011857234,MD4X,MDAX
+Invesco MDAX UCITS ETF A,IE00BHJYDV33,DEAM,MDAX
+HANetf The Medical Cannabis and Wellness UCITS ETF,IE00BG5J1M21,"CBDP
+CBDX
+CBSX",Medical Cannabis and Wellness Equity
+VanEck Vectors Morningstar Developed Markets Dividend Leaders UCITS ETF,NL0011683594,"TDGB
+TDIV
+VDIV",Morningstar Developed Markets Large Cap Dividend Leaders
+VanEck Morningstar US Sustainable Wide Moat UCITS ETF,IE00BQQP9H09,"GMVM
+MOAT
+MOGB",Morningstar US Sustainable Moat Focus
+Lyxor PEA Asie Pacifique (MSCI AC Asia Pacific Ex Japan) UCITS ETF - Acc,FR0011869312,PAEJ,MSCI AC Asia Pacific ex-Japan
+Amundi MSCI AC Asia Pacific Ex Japan UCITS ETF Acc,LU1900068328,"AEJ
+AEJL
+LASP
+LYAEJ",MSCI AC Asia Pacific ex-Japan
+Lyxor MSCI AC Asia Pacific Ex Japan UCITS ETF USD,LU1900068674,LYPXJ,MSCI AC Asia Pacific ex-Japan
+iShares MSCI AC Far East ex-Japan UCITS ETF,IE00B0M63730,"IDFF
+IFFF
+IQQF",MSCI AC Far East ex-Japan
+HSBC MSCI AC Far East ex Japan UCITS ETF USD,IE00BBQ2W338,"H411
+HMAD
+HMAF",MSCI AC Far East ex-Japan
+SPDR MSCI ACWI UCITS ETF,IE00B44Z5B48,"ACWD
+ACWE
+ACWI
+SPYY",MSCI ACWI
+iShares MSCI ACWI UCITS ETF (Acc),IE00B6R52259,"ISAC
+IUSQ
+SSAC",MSCI ACWI
+UBS ETFs plc – MSCI ACWI SF UCITS ETF (USD) A-UKdis,IE00BJXFZ989,ACWUKD,MSCI ACWI
+UBS ETF (IE) MSCI ACWI SF UCITS ETF (USD) A-acc,IE00BYM11H29,ACWIA,MSCI ACWI
+Amundi MSCI All Country World UCITS ETF USD Acc,LU1829220133,"ACWL
+ACWU
+LYAC",MSCI ACWI
+Amundi MSCI All Country World UCITS ETF EUR Acc,LU1829220216,"ACWI
+LYY0",MSCI ACWI
+SPDR MSCI ACWI IMI UCITS ETF,IE00B3YLTY66,"IMID
+IMIE
+SPYI",MSCI ACWI IMI
+Lyxor MSCI Robotics & AI ESG Filtered UCITS ETF Acc,LU1838002480,ROAI,MSCI ACWI IMI Robotics & AI ESG Filtered
+iShares MSCI Global Semiconductors UCITS ETF USD (Acc),IE000I8KRLL9,"SEC0
+SEME
+SEMI",MSCI ACWI IMI Semiconductors & Semiconductor Equipment ESG Screened Select Capped
+Xtrackers MSCI AC World ESG Screened UCITS ETF 1C,IE00BGHQ0G80,XMAW,MSCI ACWI Select ESG Screened
+Amundi MSCI Semiconductors ESG Screened UCITS ETF Acc,LU1900066033,"CHIP
+LSMC
+LTWN
+SEMG
+SEMU",MSCI ACWI Semiconductors & Semiconductor Equipment ESG Filtered
+iShares MSCI Australia UCITS ETF,IE00B5377D42,"IAUS
+IBC6
+SAUS",MSCI Australia
+UBS ETF (IE) MSCI Australia UCITS ETF (AUD) A-dis,IE00BD4TY345,"AUAD
+AUSAUY",MSCI Australia
+HSBC MSCI Canada UCITS ETF USD,DE000A1JF7N6,H4ZR,MSCI Canada
+HSBC MSCI Canada UCITS ETF USD,IE00B51B7Z02,"H4ZR
+H4ZX
+HCAD
+HCAN",MSCI Canada
+iShares MSCI Canada UCITS ETF (Acc),IE00B52SF786,"CCAU
+CSCA
+SXR2",MSCI Canada
+UBS ETF (LU) MSCI Canada UCITS ETF (CAD) A-dis,LU0446734872,"CANCDA
+CANEUA
+UB23
+UIM9",MSCI Canada
+Xtrackers MSCI Canada UCITS ETF 1C,LU0476289540,"D5BH
+XCAD
+XCAN",MSCI Canada
+Lyxor MSCI Canada UCITS ETF - Dist,LU0496786731,"CAN
+LCAN
+LYPT",MSCI Canada
+UBS ETF (LU) MSCI Canada UCITS ETF (CAD) A-acc,LU0950672807,CANA,MSCI Canada
+Deka MSCI China UCITS ETF,DE000ETFL326,EL46,MSCI China
+HSBC MSCI China UCITS ETF USD (Acc),IE0007P4PBU1,"H4Z6
+HCHA
+HCHS",MSCI China
+HSBC MSCI China UCITS ETF USD,IE00B44T3H88,"CNY
+H4ZP
+H4ZY
+HMCD
+HMCH",MSCI China
+iShares MSCI China UCITS ETF USD (Acc),IE00BJ5JPG56,"ICGA
+ICHN",MSCI China
+iShares MSCI China UCITS ETF USD (Dist),IE00BL977C92,ICHD,MSCI China
+Xtrackers MSCI China UCITS ETF 1C,LU0514695690,"XCS6
+XCX6
+XMCH",MSCI China
+Amundi MSCI China UCITS ETF Acc,LU1841731745,"L4K3
+LCCN",MSCI China
+Xtrackers MSCI China UCITS ETF 1D,LU2456436083,"XCS7
+XCX7",MSCI China
+Amundi MSCI China A UCITS ETF Acc,FR0011720911,"CNAA
+CNAL",MSCI China A
+L&G E Fund MSCI China A UCITS ETF,IE00BHBFDF83,"CASE
+CASH",MSCI China A
+UBS ETF (IE) MSCI China A SF UCITS ETF (USD) A-acc,IE00BKFB6K94,"CNAUA
+CNUA",MSCI China A
+Amundi MSCI China A II UCITS ETF Dist,LU2572256746,"C024
+C025",MSCI China A
+HSBC MSCI China A UCITS ETF USD (Acc),IE000Z4OYPZ6,"HCAA
+HCAS",MSCI China A Inclusion
+HSBC MSCI China A Inclusion UCITS ETF,IE00BF4NQ904,"H41K
+HMCA
+HMCT",MSCI China A Inclusion
+iShares MSCI China A UCITS ETF,IE00BQT3WG13,"36BZ
+CNYA
+IASH",MSCI China A Inclusion
+iShares MSCI EM ESG Enhanced UCITS ETF USD (Dist),IE00BHZPJ122,"EEDM
+EGDM",MSCI EM ESG Enhanced Focus CTB
+iShares MSCI EM ESG Enhanced UCITS ETF USD (Acc),IE00BHZPJ239,"EDG2
+EDM2
+EMEG",MSCI EM ESG Enhanced Focus CTB
+HSBC MSCI Emerging Markets UCITS ETF USD,DE000A1JXC94,H410,MSCI Emerging Markets
+Deka MSCI Emerging Markets UCITS ETF,DE000ETFL342,EL40,MSCI Emerging Markets
+Amundi MSCI Emerging Markets III UCITS ETF EUR Acc,FR0010429068,"EMKT
+LEM
+LEMC
+LYM7",MSCI Emerging Markets
+Amundi MSCI Emerging Markets III UCITS ETF USD Acc,FR0010435297,"LEMD
+LEML
+LNY4
+LYLEM",MSCI Emerging Markets
+Amundi PEA MSCI Emerging EMEA ESG Leaders UCITS ETF Acc,FR0011440478,PLEM,MSCI Emerging Markets
+Amundi ETF PEA MSCI Emerging Markets UCITS ETF,FR0013412020,PAEEM,MSCI Emerging Markets
+Vanguard Emerging Markets Stock Index Fund - Investor Accumulation (EUR),IE0031786142,,MSCI Emerging Markets
+iShares MSCI EM UCITS ETF (Dist),IE00B0M63177,"IDEM
+IEEM
+IEMM
+IQQE",MSCI Emerging Markets
+Invesco MSCI Emerging Markets UCITS ETF,IE00B3DWVS88,"EMSM
+MXFP
+MXFS",MSCI Emerging Markets
+UBS ETF (IE) MSCI Emerging Markets SF UCITS ETF (USD) A-acc,IE00B3Z3FS74,"EGUSAS
+EMGEAS",MSCI Emerging Markets
+SPDR MSCI Emerging Markets UCITS ETF,IE00B469F816,"EMRD
+EMRG
+SPYM",MSCI Emerging Markets
+iShares MSCI EM UCITS ETF (Acc),IE00B4L5YC18,"EUNM
+IEMA
+SEMA",MSCI Emerging Markets
+HSBC MSCI Emerging Markets UCITS ETF USD,IE00B5SSQT16,"H410
+HMEF
+HMEM",MSCI Emerging Markets
+Xtrackers MSCI Emerging Markets UCITS ETF 1C,IE00BTJRMP35,"XMME
+XMMS",MSCI Emerging Markets
+Xtrackers MSCI Emerging Markets Swap UCITS ETF 1C,LU0292107645,"DBX1
+XMEM
+XMMD",MSCI Emerging Markets
+UBS ETF (LU) MSCI Emerging Markets UCITS ETF (USD) A-dis,LU0480132876,"EMMEUA
+EMMUSA
+UB30
+UB32
+UIMI",MSCI Emerging Markets
+UBS ETF (LU) MSCI Emerging Markets UCITS ETF (USD) A-acc,LU0950674175,EMMUSC,MSCI Emerging Markets
+Amundi ETF MSCI Emerging Markets UCITS ETF DR,LU1437017350,AEME,MSCI Emerging Markets
+Amundi MSCI Emerging Markets UCITS ETF EUR (C),LU1681045370,"AEEM
+AMEM",MSCI Emerging Markets
+Amundi ETF MSCI Emerging Markets UCITS ETF USD,LU1681045453,"AUEG
+AUEM",MSCI Emerging Markets
+Amundi Index MSCI Emerging Markets UCITS ETF DR EUR (D),LU1737652583,AEMD,MSCI Emerging Markets
+Amundi ETF PEA MSCI Emerging Asia UCITS ETF,FR0013412012,PAASI,MSCI Emerging Markets Asia
+SPDR MSCI EM Asia UCITS ETF,IE00B466KX20,"EMAD
+EMAE
+EMAS
+SPYA",MSCI Emerging Markets Asia
+iShares MSCI EM Asia UCITS ETF (Acc),IE00B5L8K969,"CEA1
+CEBL
+CEMA
+CSEMAS",MSCI Emerging Markets Asia
+Xtrackers MSCI EM Asia Swap UCITS ETF 1C,LU0292107991,"DBX2
+XMAD
+XMAI
+XMAS",MSCI Emerging Markets Asia
+Amundi MSCI Emerging Markets Asia UCITS ETF EUR (C),LU1681044480,"AASI
+AMEA",MSCI Emerging Markets Asia
+Amundi ETF MSCI Emerging Markets Asia UCITS ETF USD,LU1681044563,"AASG
+AASU",MSCI Emerging Markets Asia
+Amundi MSCI Emerging Asia II UCITS ETF Acc,LU1781541849,"LCAL
+LCAS
+LCUA",MSCI Emerging Markets Asia
+iShares MSCI EM ex-China UCITS ETF USD (Acc),IE00BMG6Z448,"84X0
+EXCH
+EXCS
+MTPI",MSCI Emerging Markets ex China
+Amundi MSCI Emerging Ex China UCITS ETF Acc,LU2009202107,EMXC,MSCI Emerging Markets ex China
+UBS ETF (LU) MSCI Emerging Markets ex China UCITS ETF (USD) A-acc,LU2050966394,"4UBL
+EMXCN",MSCI Emerging Markets ex China
+iShares Core MSCI Emerging Markets IMI UCITS ETF,IE00BD45KH83,"EIMU
+EMGU
+IBC3",MSCI Emerging Markets IMI
+iShares Core MSCI Emerging Markets IMI UCITS ETF (Acc),IE00BKM4GZ66,"EIMI
+EMIM
+IS3N",MSCI Emerging Markets IMI
+iShares MSCI EM IMI ESG Screened UCITS ETF USD (Dist),IE00BFNM3N12,"GEDM
+OM3Y
+SEDM",MSCI Emerging Markets IMI ESG Screened
+iShares MSCI EM IMI ESG Screened UCITS ETF USD (Acc),IE00BFNM3P36,"AYEM
+SAEM
+SEGM",MSCI Emerging Markets IMI ESG Screened
+HSBC MSCI EM Latin America UCITS ETF USD,IE00B4TS3815,"H4ZW
+H4ZZ
+HMLA
+HMLD",MSCI Emerging Markets Latin America
+Xtrackers MSCI EM Latin America ESG Swap UCITS ETF 1C,LU0292108619,"DBX3
+XMLA
+XMLD",MSCI Emerging Markets Latin America
+Amundi MSCI Emerging Markets Latin America UCITS ETF EUR (C),LU1681045024,"ALAT
+AMEL",MSCI Emerging Markets Latin America
+Amundi ETF MSCI Emerging Markets Latin America UCITS ETF USD,LU1681045297,"ALAG
+ALAU",MSCI Emerging Markets Latin America
+Lyxor MSCI EM Latin America UCITS ETF - Acc,LU1900066629,"LATAM
+LLAM
+LTM
+LYLTM",MSCI Emerging Markets Latin America
+iShares Edge MSCI EM Minimum Volatility UCITS ETF,IE00B8KGV557,"EMLV
+EMMV
+EMV
+EUNZ",MSCI Emerging Markets Minimum Volatility
+iShares Edge MSCI EM Value Factor UCITS ETF USD(Acc),IE00BG0SKF03,"5MVL
+EMVL",MSCI Emerging Markets Select Value Factor Focus
+iShares MSCI Emerging Markets Small Cap UCITS ETF,IE00B3F81G20,"EUNI
+IEMS",MSCI Emerging Markets Small Cap
+SPDR MSCI Emerging Markets Small Cap UCITS ETF,IE00B48X4842,"EMSD
+EMSM
+SPYX",MSCI Emerging Markets Small Cap
+iShares MSCI EM SRI UCITS ETF USD (Dist),IE00BGDQ0T50,"36B5
+SEMD",MSCI Emerging Markets SRI Select Reduced Fossil Fuels
+iShares MSCI EM SRI UCITS ETF,IE00BYVJRP78,"QDVS
+SUES
+SUSM",MSCI Emerging Markets SRI Select Reduced Fossil Fuels
+iShares Core MSCI EMU UCITS ETF EUR (Acc),IE00B53QG562,"CEMU
+CEU
+CEU1
+CSEMU
+IEMU
+SXR7",MSCI EMU
+SPDR MSCI EMU UCITS ETF,IE00B910VR50,"EMUE
+EURO
+ZPRE",MSCI EMU
+iShares Core MSCI EMU UCITS ETF EUR (Dist),IE00BYXZ2585,"CEUD
+ICEUD",MSCI EMU
+UBS ETF (LU) MSCI EMU UCITS ETF (EUR) A-dis,LU0147308422,"EMUEUA
+UB06
+UIM4",MSCI EMU
+Xtrackers MSCI EMU UCITS ETF 1D,LU0846194776,XD5E,MSCI EMU
+UBS ETF (LU) MSCI EMU UCITS ETF (EUR) A-acc,LU0950668870,EMUAA,MSCI EMU
+Amundi Index MSCI EMU UCITS ETF DR EUR (C),LU1602144575,"AMED
+CMU",MSCI EMU
+Amundi MSCI EMU UCITS ETF Dist,LU1646360971,"EMU
+LMVF
+LYMFE
+MFE
+MFEX",MSCI EMU
+Amundi ETF MSCI EMU High Dividend UCITS ETF EUR (C),FR0010717090,"18M2
+CD8",MSCI EMU High Dividend Yield
+iShares MSCI EMU Small Cap UCITS ETF (Acc),IE00B3VWMM18,"CES1
+CEUS
+CSEMUS
+SXRJ",MSCI EMU Small Cap
+UBS ETF (LU) MSCI EMU Small Cap UCITS ETF (EUR) A-dis,LU0671493277,"ESCEUA
+UB69
+UEFD",MSCI EMU Small Cap
+Amundi MSCI EMU Small Cap ESG CTB Net Zero Ambition UCITS ETF,LU1598689153,"LGWU
+MMS",MSCI EMU Small Cap
+HSBC MSCI Europe UCITS ETF EUR,DE000A1C22L5,H4ZE,MSCI Europe
+Amundi MSCI Europe II UCITS ETF Acc,FR0010261198,"LYMEU
+LYY5
+MEU
+MEUG",MSCI Europe
+Amundi ETF PEA MSCI Europe UCITS ETF,FR0013412038,PCEU,MSCI Europe
+iShares Core MSCI Europe UCITS ETF EUR (Dist),IE00B1YZSC51,"IMEU
+IQQY
+ISEU",MSCI Europe
+iShares Core MSCI Europe UCITS ETF EUR (Acc),IE00B4K48X80,"EUNK
+IMAE
+IMEA
+SMEA",MSCI Europe
+HSBC MSCI Europe UCITS ETF EUR,IE00B5BD5K76,"H4ZE
+HEU
+HMEU",MSCI Europe
+Invesco MSCI Europe UCITS ETF,IE00B60SWY32,"MXEU
+SC0E
+SMEU
+SMSEUR",MSCI Europe
+SPDR MSCI Europe UCITS ETF,IE00BKWQ0Q14,"ERO
+EROX
+SPYE",MSCI Europe
+Xtrackers MSCI Europe UCITS ETF 1C,LU0274209237,"DBXA
+XMED
+XMEU",MSCI Europe
+Xtrackers MSCI Europe UCITS ETF 1D,LU1242369327,XIEE,MSCI Europe
+Amundi ETF MSCI Europe UCITS ETF DR,LU1437015735,CEU2,MSCI Europe
+Amundi MSCI Europe UCITS ETF EUR (C),LU1681042609,"CEU
+CEUG
+CEUR
+UCEU",MSCI Europe
+Amundi Index MSCI Europe UCITS ETF DR EUR (D),LU1737652310,"10AI
+CE2D",MSCI Europe
+iShares Edge MSCI Europe Value Factor UCITS ETF EUR (Dist),IE00BG13YH41,IEDL,MSCI Europe Enhanced Value
+iShares Edge MSCI Europe Value Factor UCITS ETF,IE00BQN1K901,"CEMS
+IEFV
+IEVL",MSCI Europe Enhanced Value
+Xtrackers MSCI Europe Value UCITS ETF 1C,LU0486851024,D5BL,MSCI Europe Enhanced Value
+BNP Paribas Easy MSCI Europe ex Controversial Weapons UCITS ETF,LU1291099718,"EEUE
+EEUX",MSCI Europe ex Controversial Weapons
+Amundi ETF MSCI Europe Growth UCITS ETF,LU1681042435,CG9,MSCI Europe Growth
+iShares MSCI Europe Quality Dividend ESG UCITS ETF EUR (Dist),IE00BYYHSM20,"EQDS
+EQDV
+QDVX",MSCI Europe High Dividend Yield ESG Reduced Carbon Target Select
+Xtrackers MSCI Europe ESG UCITS ETF 1C,IE00BFMNHK08,XZEU,MSCI Europe Low Carbon SRI Leaders
+Deka MSCI Europe MC UCITS ETF,DE000ETFL292,EL43,MSCI Europe Mid Cap
+iShares MSCI Europe Mid Cap UCITS ETF EUR (Acc),IE00BF20LF40,EUMD,MSCI Europe Mid Cap
+iShares MSCI Europe Mid Cap UCITS ETF,IE00BYXYX745,EMID,MSCI Europe Mid Cap
+Xtrackers MSCI Europe Mid Cap UCITS ETF 1C,LU0322253732,"DX2I
+XEUM",MSCI Europe Mid Cap
+Lyxor MSCI Europe Mid Cap UCITS ETF,LU0392496260,"CBEUMC
+X025",MSCI Europe Mid Cap
+Amundi ETF MSCI Europe Low Size Factor UCITS ETF,LU1681041544,CEM,MSCI Europe Mid Cap
+iShares Edge MSCI Europe Minimum Volatility UCITS ETF,IE00B86MWN23,"EUN0
+IMV
+IMVU
+MVEU",MSCI Europe Minimum Volatility
+iShares Edge MSCI Europe Minimum Volatility UCITS ETF EUR (Dist),IE00BG13YK79,MVED,MSCI Europe Minimum Volatility
+Amundi MSCI Europe Minimum Volatility Factor UCITS ETF EUR (C),LU1681041627,"MIVA
+MIVO",MSCI Europe Minimum Volatility
+iShares Edge MSCI Europe Momentum Factor UCITS ETF EUR (Dist),IE00BG13YJ64,IEMD,MSCI Europe Momentum
+iShares Edge MSCI Europe Momentum Factor UCITS ETF,IE00BQN1K786,"CEMR
+IEFM
+IEMO",MSCI Europe Momentum
+Amundi MSCI Europe Momentum Factor UCITS ETF EUR (C),LU1681041460,"MCEU
+MJMT",MSCI Europe Momentum
+Amundi MSCI Europe Quality Factor UCITS ETF EUR (C),LU1681041890,"AMEQ
+QCEU",MSCI Europe Quality
+iShares Edge MSCI Europe Quality Factor UCITS ETF EUR (Dist),IE00BG13YG34,"IEQD
+IS0W",MSCI Europe Sector Neutral Quality
+iShares Edge MSCI Europe Quality Factor UCITS ETF,IE00BQN1K562,"CEMQ
+IEFQ
+IEQU",MSCI Europe Sector Neutral Quality
+SPDR MSCI Europe Small Cap UCITS ETF,IE00BKWQ0M75,"EUSC
+SMC
+SMCX
+SPYS",MSCI Europe Small Cap
+Xtrackers MSCI Europe Small Cap UCITS ETF 1C,LU0322253906,"DX2J
+XXSC",MSCI Europe Small Cap
+ComStage MSCI Europe Small Cap UCITS ETF,LU0392496344,"CMEUSC
+X026",MSCI Europe Small Cap
+BNP Paribas Easy MSCI Europe Small Caps SRI S-Series 5% Capped UCITS ETF,LU1291101555,EESM,MSCI Europe Small Cap SRI S-Series 5% Capped
+SPDR MSCI Europe Small Cap Value Weighted UCITS ETF,IE00BSPLC298,"EUSV
+ZPRX",MSCI Europe Small Cap Value Weighted
+Amundi Index MSCI Europe SRI PAB UCITS ETF DR (C),LU1861137484,"ESRG
+ESRU
+EUSRI
+MIVB",MSCI Europe SRI Filtered PAB
+Amundi Index MSCI Europe SRI PAB UCITS ETF DR (D),LU2059756598,"ACU7
+EDSRI
+ESDG
+ESDU",MSCI Europe SRI Filtered PAB
+iShares MSCI Europe SRI UCITS ETF (Acc),IE00B52VJ196,"IESE
+IESG
+IUSK",MSCI Europe SRI Select Reduced Fossil Fuel
+iShares MSCI Europe SRI UCITS ETF EUR (Dist),IE00BGDPWW94,"36B3
+ISED",MSCI Europe SRI Select Reduced Fossil Fuel
+Invesco MSCI Europe Value UCITS ETF,IE00B3LK4Z20,EMSV,MSCI Europe Value
+Amundi ETF MSCI Europe Value Factor UCITS ETF EUR,LU1681042518,"CV9
+VCEU",MSCI Europe Value
+Amundi ETF MSCI France UCITS ETF,FR0010655704,"CF1
+X13J",MSCI France
+iShares MSCI France UCITS ETF,IE00BP3QZJ36,"IFRE
+IS3U
+ISFR",MSCI France
+Amundi MSCI India II UCITS ETF EUR Acc,FR0010361683,"INDI
+INR
+LYINC
+LYMD",MSCI India
+Amundi MSCI India II UCITS ETF USD Acc,FR0010375766,"INRL
+INRU
+LYINR
+NK4G",MSCI India
+Lyxor PEA Inde (MSCI India) UCITS ETF - Capi,FR0011869320,PINR,MSCI India
+iShares MSCI India UCITS ETF USD (Acc),IE00BZCQB185,"IIND
+NDIA
+QDV5",MSCI India
+Xtrackers MSCI India Swap UCITS ETF 1C,LU0514695187,"XCS5
+XCX5",MSCI India
+Amundi MSCI India UCITS ETF EUR (C),LU1681043086,"18MK
+CI2
+CI2E",MSCI India
+Amundi ETF MSCI India UCITS ETF USD,LU1681043169,"CI2G
+CI2U
+CI2USD",MSCI India
+Deka MSCI Japan UCITS ETF,DE000ETFL300,EL44,MSCI Japan
+iShares MSCI Japan UCITS ETF (Dist),IE00B02KXH56,"IJPN
+IJPU
+IQQJ",MSCI Japan
+iShares MSCI Japan UCITS ETF USD (Acc),IE00B53QDK08,"CJPU
+CSJP
+SXR5",MSCI Japan
+HSBC MSCI Japan UCITS ETF USD,IE00B5VX7566,"H4ZC
+HMJD
+HMJP
+MJP",MSCI Japan
+Invesco MSCI Japan UCITS ETF,IE00B60SX287,"MXJP
+SC0I
+SMSJPN",MSCI Japan
+SPDR MSCI Japan UCITS ETF,IE00BZ0G8B96,"JPJP
+JPJY
+ZPDJ",MSCI Japan
+UBS ETF (LU) MSCI Japan UCITS ETF (JPY) A-dis,LU0136240974,"JPNEUA
+JPNJPA
+UB02
+UC65
+UIM5",MSCI Japan
+Xtrackers MSCI Japan UCITS ETF 1C,LU0274209740,"DBXJ
+XMJD
+XMJP",MSCI Japan
+ComStage MSCI Japan UCITS ETF,LU0392495452,"CBMJ
+X017",MSCI Japan
+UBS ETF (LU) MSCI Japan UCITS ETF (JPY) A-acc,LU0950671825,JPNA,MSCI Japan
+Amundi Index MSCI Japan UCITS ETF DR EUR (C),LU1602144732,"CJ1
+J1GR",MSCI Japan
+Amundi ETF MSCI Japan UCITS ETF DR JPY,LU1602144815,"CJ1G
+CJ1U
+CJ1Y",MSCI Japan
+Amundi MSCI Japan UCITS ETF Acc,LU1781541252,"LCJD
+LCJP
+LCUJ",MSCI Japan
+iShares MSCI Japan EUR Hedged UCITS ETF (Acc),IE00B42Z5J44,"IBCG
+IJPE",MSCI Japan 100% Hedged to EUR
+SPDR MSCI Japan EUR Hedged UCITS ETF,IE00BZ0G8C04,"JPEH
+ZPDW",MSCI Japan 100% Hedged to EUR
+Xtrackers MSCI Japan UCITS ETF 4C EUR hedged,LU0659580079,XMK9,MSCI Japan 100% Hedged to EUR
+UBS ETF (LU) MSCI Japan hedged EUR UCITS ETF (EUR) A-dis,LU0937837945,"JPEUAH
+UE32",MSCI Japan 100% Hedged to EUR
+UBS ETF (LU) MSCI Japan hedged EUR UCITS ETF (EUR) A-acc,LU0950672476,"JPEUBH
+UEF2",MSCI Japan 100% Hedged to EUR
+ComStage MSCI Japan 100% Daily Hedged Euro UCITS ETF,LU1033694107,C025,MSCI Japan 100% Hedged to EUR
+iShares Core MSCI Japan IMI UCITS ETF,IE00B4L5YX21,"EUNN
+IJPA
+SJPA",MSCI Japan IMI
+Xtrackers MSCI Nordic UCITS ETF 1D,IE00B9MRHC27,XDN0,MSCI Nordic Countries
+Amundi MSCI Nordic UCITS ETF EUR (C),LU1681044647,"CN1
+CN1G",MSCI Nordic Countries
+ComStage MSCI Pacific UCITS ETF,LU0392495023,"CBMP
+X014",MSCI Pacific
+HSBC MSCI Pacific ex Japan UCITS ETF USD,DE000A1C22P6,H4ZH,MSCI Pacific ex-Japan
+iShares MSCI Pacific ex-Japan UCITS ETF (Dist),IE00B4WXJD03,"EUNJ
+IPXJ
+SPXJ",MSCI Pacific ex-Japan
+iShares Core MSCI Pacific ex Japan UCITS ETF (Acc),IE00B52MJY50,"CPJ1
+CPXJ
+CSPXJ
+SXR1",MSCI Pacific ex-Japan
+HSBC MSCI Pacific ex Japan UCITS ETF USD,IE00B5SG8Z57,"H4ZH
+HMXD
+HMXJ
+MXJ",MSCI Pacific ex-Japan
+Xtrackers MSCI Pacific ex Japan UCITS ETF 1C,LU0322252338,"DXS6
+XPXD
+XPXJ",MSCI Pacific ex-Japan
+ComStage MSCI Pacific ex Japan UCITS ETF,LU0392495296,"CBMPJ
+X015",MSCI Pacific ex-Japan
+UBS ETF (LU) MSCI Pacific (ex Japan) UCITS ETF (USD) A-dis,LU0446734526,"PACEUA
+PACUSA
+UB20
+UIMD",MSCI Pacific ex-Japan
+Xtrackers MSCI Pacific ex Japan Index UCITS ETF 2C,LU0455009935,"3043
+J0Q",MSCI Pacific ex-Japan
+Amundi MSCI Pacific Ex Japan UCITS ETF Dist,LU1220245556,"LGQK
+PAXG
+PAXJ",MSCI Pacific ex-Japan
+Amundi Index MSCI Pacific ex Japan UCITS ETF DR EUR (C),LU1602144906,"18MM
+CP9",MSCI Pacific ex-Japan
+Amundi ETF MSCI Pacific ex Japan UCITS ETF DR USD,LU1602145036,"CP9G
+CP9U",MSCI Pacific ex-Japan
+iShares MSCI Russia ADR/GDR UCITS ETF (Acc),IE00B5V87390,"CEBB
+CRU1
+CSRU",MSCI Russia ADR/GDR 20/35
+UBS ETF (LU) MSCI Switzerland 20/35 UCITS ETF (CHF) A-acc,LU0977261329,SW2CHB,MSCI Switzerland 20/35
+HSBC MSCI USA UCITS ETF USD,DE000A1C22K7,H4ZD,MSCI USA
+Lyxor MSCI USA ESG Broad CTB (DR) UCITS ETF - Dist,FR0010296061,"LUSA
+LYUSA
+LYYB
+USA
+USAL
+USAU",MSCI USA
+Lyxor MSCI USA ESG Broad CTB (DR) UCITS ETF Acc,FR0011363423,"LUSAC
+USAC",MSCI USA
+UBS ETF (IE) MSCI USA SF UCITS ETF (USD) A-acc,IE00B3SC9K16,MUUSAS,MSCI USA
+iShares MSCI USA UCITS ETF (Acc),IE00B52SFT06,"CSUS
+CU1
+SXR4",MSCI USA
+HSBC MSCI USA UCITS ETF USD,IE00B5WFQ436,"H4ZD
+HMUD
+HMUS
+MUS",MSCI USA
+Invesco MSCI USA UCITS ETF,IE00B60SX170,"MXUS
+SC0H",MSCI USA
+UBS ETF (IE) MSCI USA UCITS ETF (USD) A-dis,IE00B77D4428,"UBU3
+UC03
+UC04
+USAEUY
+USAUSY",MSCI USA
+UBS ETF (IE) MSCI USA UCITS ETF (USD) A-acc,IE00BD4TXS21,USAUSW,MSCI USA
+Xtrackers MSCI USA UCITS ETF 1C,IE00BJ0KDR00,"XD9U
+XDUS",MSCI USA
+UBS ETF (LU) MSCI USA UCITS ETF (USD) A-dis,LU0136234654,"UC67
+UIM6
+USAEUA
+USAUSA",MSCI USA
+Xtrackers MSCI USA Swap UCITS ETF 1C,LU0274210672,"DBXU
+XMUD
+XMUS",MSCI USA
+Amundi MSCI USA UCITS ETF EUR (C),LU1681042864,"ACU2
+CU2
+CU2E",MSCI USA
+Amundi ETF MSCI USA UCITS ETF USD,LU1681042948,"CU2G
+CU2U
+CU2USD",MSCI USA
+iShares Edge MSCI USA Value Factor UCITS ETF,IE00BD1F4M44,"IUVF
+IUVL
+QDVI",MSCI USA Enhanced Value
+iShares Edge MSCI USA Value Factor UCITS ETF USD (Dist),IE00BFF5RX68,IUVD,MSCI USA Enhanced Value
+iShares MSCI USA Dividend IQ UCITS ETF,IE00BKM4H312,"HDIQ
+QDIV
+QDVD",MSCI USA High Dividend Yield
+Amundi ETF Leveraged MSCI USA Daily UCITS ETF EUR,FR0010755611,"18MF
+CL2",MSCI USA Leveraged 2x Daily
+iShares Edge MSCI USA Size Factor UCITS ETF,IE00BD1F4K20,"IUSF
+IUSZ
+QDVC",MSCI USA Mid-Cap Equal Weighted
+iShares Edge MSCI USA Momentum Factor UCITS ETF,IE00BD1F4N50,"IUMF
+IUMO
+QDVA",MSCI USA Momentum
+iShares Edge MSCI USA Momentum Factor UCITS ETF USD (Dist),IE00BFF5RZ82,IUMD,MSCI USA Momentum
+UBS ETF (IE) Factor MSCI USA Quality UCITS ETF (USD) A-dis,IE00BX7RRJ27,"UBUT
+UC99
+UQLTD",MSCI USA Quality
+UBS ETF (IE) Factor MSCI USA Quality UCITS ETF (hedged to EUR) A-acc,IE00BWT3KN65,"UBUX
+UQLTE",MSCI USA Quality (EUR Hedged)
+iShares Edge MSCI USA Quality Factor UCITS ETF,IE00BD1F4L37,"IUQA
+IUQF
+QDVB",MSCI USA Sector Neutral Quality
+iShares Edge MSCI USA Quality Factor UCITS ETF USD (Dist),IE00BF2QSQ20,"IS38
+IUQD",MSCI USA Sector Neutral Quality
+iShares MSCI USA Small Cap UCITS ETF (Acc),IE00B3VWM098,"CSUSS
+CUS1
+CUSS
+SXRG",MSCI USA Small Cap
+SPDR MSCI USA Small Cap Value Weighted UCITS ETF,IE00BSPLC413,"USSC
+ZPRV",MSCI USA Small Cap Value Weighted
+iShares MSCI USA SRI UCITS ETF,IE00BYVJRR92,"QDVR
+SUAS
+SUUS",MSCI USA SRI Select Reduced Fossil Fuel
+iShares MSCI USA SRI UCITS ETF USD (Dist),IE00BZ173T46,"36B6
+SRIL",MSCI USA SRI Select Reduced Fossil Fuel
+UBS ETF (IE) MSCI USA Value UCITS ETF (USD) A-dis,IE00B78JSG98,"UBU5
+UC07
+USVEUY
+USVUSY",MSCI USA Value
+Amundi MSCI World II UCITS ETF Dist,FR0010315770,"LYWLD
+LYYA
+OLY3
+WLD
+WLDD
+WLDL",MSCI World
+Amundi MSCI World II UCITS ETF Acc,FR0014003IY1,WLDC,MSCI World
+iShares MSCI World Swap PEA UCITS ETF EUR (Acc),IE0002XZSHO1,WPEA,MSCI World
+Amundi MSCI World UCITS ETF UCITS ETF Acc,IE000BI8OT95,"MWRD
+MWRE
+WRDU",MSCI World
+Amundi MSCI World UCITS ETF UCITS ETF DR - USD (D),IE000CNSFAR2,"MWOE
+MWOF",MSCI World
+iShares MSCI World Swap UCITS ETF USD (Acc),IE000F9IDGB5,IWDS,MSCI World
+iShares Core MSCI World UCITS ETF USD (Dist),IE000OHHIBC6,IWDD,MSCI World
+HSBC MSCI World UCITS ETF USD (Acc),IE000UQND7H4,"H4ZY
+HMWA
+HMWS",MSCI World
+iShares MSCI World UCITS ETF (Dist),IE00B0M62Q58,"IDWR
+IQQW
+IWRD",MSCI World
+iShares Core MSCI World UCITS ETF USD (Acc),IE00B4L5Y983,"EUNL
+IWDA
+SWDA",MSCI World
+HSBC MSCI World UCITS ETF USD,IE00B4X9L533,"H4Z3
+H4ZJ
+HMWD
+HMWO
+WRD",MSCI World
+Invesco MSCI World UCITS ETF Acc,IE00B60SX394,"MXWO
+MXWS
+SC0J
+SMSWLD",MSCI World
+UBS ETF (IE) MSCI World UCITS ETF (USD) A-dis,IE00B7KQ7B66,"UBU7
+WRDD
+WRDUSY",MSCI World
+UBS ETF (IE) MSCI World UCITS ETF (USD) A-acc,IE00BD4TXV59,"UETW
+WRDA
+WRDUSW",MSCI World
+SPDR MSCI World UCITS ETF,IE00BFY0GT14,"SPPW
+SWLD
+SWRD",MSCI World
+Xtrackers MSCI World UCITS ETF 1C,IE00BJ0KDQ92,"XDWD
+XWLD",MSCI World
+Xtrackers MSCI World UCITS ETF 1D,IE00BK1PV551,"XDWL
+XDWP",MSCI World
+Xtrackers MSCI World Swap UCITS ETF 1C,LU0274208692,"DBXW
+XMWD
+XMWO",MSCI World
+UBS ETF (LU) MSCI World UCITS ETF (USD) A-dis,LU0340285161,"UC55
+UC68
+UIM7
+WRDEUA
+WRDUSA",MSCI World
+Amundi MSCI World UCITS ETF EUR (C),LU1681043599,"AMEW
+AMEX
+CW8
+CW8E",MSCI World
+Amundi MSCI World UCITS ETF USD (C),LU1681043672,"CW8G
+CW8U
+CW8USD
+XAMZ",MSCI World
+Amundi MSCI World V UCITS ETF Acc,LU1781541179,"LCUW
+LCWD
+LCWL",MSCI World
+Xtrackers MSCI World Swap UCITS ETF 1D,LU2263803533,XWD1,MSCI World
+Amundi MSCI World III UCITS ETF Dist,LU2572257124,"AHYQ
+AHYR",MSCI World
+Amundi MSCI World UCITS ETF - EUR (D),LU2655993207,EWLD,MSCI World
+Amundi MSCI World II UCITS ETF EUR Hedged Dist,FR0011660927,"DJAB
+WLDH",MSCI World 100% Hedged to EUR
+iShares MSCI World EUR Hedged UCITS ETF (Acc),IE00B441G979,"IBCH
+IWDE",MSCI World 100% Hedged to EUR
+iShares Core MSCI World UCITS ETF EUR Hedged (Dist),IE00BKBF6H24,IWLE,MSCI World 100% Hedged to EUR
+Xtrackers MSCI World Swap UCITS ETF 4C EUR hedged,LU0659579733,XWEH,MSCI World 100% Hedged to EUR
+iShares MSCI World Consumer Discretionary Sector UCITS ETF USD (Dist),IE00BJ5JP212,"36BB
+WCDS",MSCI World Consumer Discretionary
+Xtrackers MSCI World Consumer Discretionary UCITS ETF 1C,IE00BM67HP23,XDWC,MSCI World Consumer Discretionary
+SPDR MSCI World Consumer Discretionary UCITS ETF,IE00BYTRR640,WCOD,MSCI World Consumer Discretionary
+Lyxor MSCI World Consumer Discretionary TR UCITS ETF - Acc (EUR),LU0533032008,"CODW
+DISW
+LYPA",MSCI World Consumer Discretionary
+Lyxor MSCI World Consumer Discretionary TR UCITS ETF - Acc (USD),LU0533032180,"0KF0
+LYCODW",MSCI World Consumer Discretionary
+Xtrackers MSCI World Consumer Staples UCITS ETF 1C,IE00BM67HN09,"XDWS
+XWCS",MSCI World Consumer Staples
+SPDR MSCI World Consumer Staples UCITS ETF,IE00BYTRR756,"SS40
+WCOS",MSCI World Consumer Staples
+iShares Edge MSCI World Multifactor UCITS ETF USD (Acc),IE00BZ0PKT83,"FSWD
+IBCZ
+IFSW",MSCI World Diversified Multiple-Factor
+iShares MSCI World Energy Sector UCITS ETF USD (Dist),IE00BJ5JP105,"5MVW
+WENS",MSCI World Energy
+Xtrackers MSCI World Energy UCITS ETF 1C,IE00BM67HM91,"XDW0
+XWES",MSCI World Energy
+SPDR MSCI World Energy UCITS ETF,IE00BYTRR863,"ENGW
+SS42
+WNRG",MSCI World Energy
+iShares Edge MSCI World Value Factor UCITS ETF USD (Dist),IE00BFYTYS33,"IWVG
+IWVU",MSCI World Enhanced Value
+Xtrackers MSCI World Value Factor UCITS ETF 1C,IE00BL25JM42,XDEV,MSCI World Enhanced Value
+iShares Edge MSCI World Value Factor UCITS ETF,IE00BP3QZB59,"IS3S
+IWFV
+IWVL",MSCI World Enhanced Value
+iShares MSCI World ESG Screened UCITS ETF USD (Acc),IE00BFNM3J75,"SAWD
+SNAW",MSCI World ESG Screened
+iShares MSCI World ESG Screened UCITS ETF USD (Dist),IE00BFNM3K80,"S6DW
+SDWD",MSCI World ESG Screened
+Xtrackers MSCI World ex USA UCITS ETF 1C,IE0006WW1TQ4,EXUS,MSCI World ex USA
+Xtrackers MSCI World Financials UCITS ETF 1C,IE00BM67HL84,"XDWF
+XWFS",MSCI World Financials
+SPDR MSCI World Financials UCITS ETF,IE00BYTRR970,"FNCW
+SS43
+WFIN",MSCI World Financials
+Amundi MSCI World Financials UCITS ETF EUR Acc,LU0533032859,"FINSW
+LYPD",MSCI World Financials
+Amundi MSCI World Financials UCITS ETF USD Acc,LU0533033071,"1DR0
+FINW
+LYFINW",MSCI World Financials
+iShares MSCI World Health Care Sector UCITS ETF USD (Dist),IE00BJ5JNZ06,"CBUF
+WHCS",MSCI World Health Care
+Xtrackers MSCI World Health Care UCITS ETF 1C,IE00BM67HK77,XDWH,MSCI World Health Care
+SPDR MSCI World Health Care UCITS ETF,IE00BYTRRB94,WHEA,MSCI World Health Care
+Amundi MSCI World Health Care UCITS ETF EUR Acc,LU0533033238,"HLTW
+LYPE",MSCI World Health Care
+Amundi MSCI World Health Care UCITS ETF USD Acc,LU0533033311,"7H60
+HLTW
+LYHLTW",MSCI World Health Care
+Xtrackers MSCI World High Dividend Yield UCITS ETF 1D USD,IE00BCHWNQ94,XDWY,MSCI World High Dividend Yield
+iShares MSCI World Quality Dividend UCITS ETF USD (Acc),IE00BKPSFC54,WQDA,MSCI World High Dividend Yield
+iShares MSCI World Quality Dividend UCITS ETF,IE00BYYHSQ67,"QDVW
+WQDS
+WQDV",MSCI World High Dividend Yield
+Xtrackers MSCI World Industrials UCITS ETF 1C,IE00BM67HV82,"XDWI
+XWIS",MSCI World Industrials
+SPDR MSCI World Industrials UCITS ETF,IE00BYTRRC02,"WIND
+WNDU",MSCI World Industrials
+iShares MSCI World Information Technology Sector UCITS ETF USD (Dist),IE00BJ5JNY98,"AYEW
+WITS",MSCI World Information Technology
+Xtrackers MSCI World Information Technology UCITS ETF 1C,IE00BM67HT60,XDWT,MSCI World Information Technology
+SPDR MSCI World Technology UCITS ETF,IE00BYTRRD19,"WTCH
+WTEC",MSCI World Information Technology
+Amundi MSCI World Information Technology UCITS ETF EUR Acc,LU0533033667,"LYPG
+TNOW",MSCI World Information Technology
+Amundi MSCI World Information Technology UCITS ETF USD Acc,LU0533033741,"8Q70
+LYTNOW
+TNOW",MSCI World Information Technology
+Xtrackers MSCI World ESG UCITS ETF 1C,IE00BZ02LR44,"XESW
+XZW0",MSCI World Low Carbon SRI Leaders
+Xtrackers MSCI World Materials UCITS ETF 1C,IE00BM67HS53,"XDWM
+XSMW",MSCI World Materials
+SPDR MSCI World Materials UCITS ETF,IE00BYTRRF33,"SS48
+WMAT",MSCI World Materials
+iShares Edge MSCI World Size Factor UCITS ETF,IE00BP3QZD73,"IS3T
+IWFS
+IWSZ",MSCI World Mid-Cap Equal Weighted
+iShares Edge MSCI World Minimum Volatility UCITS ETF USD (Acc),IE00B8FHGS14,"IQQ0
+MINV
+MVOL",MSCI World Minimum Volatility (USD)
+Xtrackers MSCI World Minimum Volatility UCITS ETF 1C,IE00BL25JN58,XDEB,MSCI World Minimum Volatility (USD)
+Xtrackers MSCI World Momentum Factor UCITS ETF 1C,IE00BL25JP72,XDEM,MSCI World Momentum
+iShares Edge MSCI World Momentum Factor UCITS ETF (Acc),IE00BP3QZ825,"IS3R
+IWFM
+IWMO",MSCI World Momentum
+Xtrackers MSCI World Momentum ESG UCITS ETF,IE000TL3PL69,"XWEM
+XWMS",MSCI World Momentum Low Carbon SRI Screened Select
+Xtrackers MSCI World Quality ESG UCITS ETF 1C,IE0003NQ0IY5,"XWEQ
+XWQS",MSCI World Quality Low Carbon SRI Screened Select
+Xtrackers MSCI World Quality Factor UCITS ETF 1C,IE00BL25JL35,XDEQ,MSCI World Sector Neutral Quality
+iShares Edge MSCI World Quality Factor UCITS ETF (Acc),IE00BP3QZ601,"IS3Q
+IWFQ
+IWQU",MSCI World Sector Neutral Quality
+SPDR MSCI World Small Cap UCITS ETF,IE00BCBJG560,"WDSC
+WOSC
+ZPRS",MSCI World Small Cap
+iShares MSCI World Small Cap UCITS ETF,IE00BF4RFH31,"IUSN
+WLDS
+WSML",MSCI World Small Cap
+iShares MSCI World SRI UCITS ETF USD (Dist),IE00BDZZTM54,"2B7J
+SUWS",MSCI World SRI Select Reduced Fossil Fuel
+iShares MSCI World SRI UCITS ETF EUR (Acc),IE00BYX2JD69,"2B7K
+SUSW",MSCI World SRI Select Reduced Fossil Fuel
+Xtrackers MSCI World Utilities UCITS ETF 1C,IE00BM67HQ30,"XDWU
+XWUS",MSCI World Utilities
+SPDR MSCI World Utilities UCITS ETF,IE00BYTRRH56,"SS46
+WUTI",MSCI World Utilities
+VanEck Semiconductor UCITS ETF,IE00BMC38736,"SMGB
+SMH
+SMHV
+VVSM",MVIS US Listed Semiconductor 10% Capped
+VanEck Crypto and Blockchain Innovators UCITS ETF,IE00BMDKNW35,"DAGB
+DAPP
+DAVV",MVIS US Listed Semiconductor 10% Capped
+WisdomTree Artificial Intelligence UCITS ETF USD Acc,IE00BDVPNG13,"INTL
+WTAI
+WTI2",Nasdaq CTA Artificial Intelligence
+Xtrackers Artificial Intelligence & Big Data UCITS ETF 1C,IE00BGV5VN51,XAIX,Nasdaq Global Artificial Intelligence and Big Data
+iShares Nasdaq 100 UCITS ETF (DE),DE000A0F5UF5,EXXT,Nasdaq-100
+Lyxor PEA Nasdaq 100 UCITS ETF - Capi,FR0011871110,PUST,Nasdaq-100
+Amundi PEA US Tech ESG UCITS ETF Acc,FR0013412269,PANX,Nasdaq-100
+Invesco Nasdaq-100 Swap UCITS ETF Dist,IE000RUF4QN8,EQQD,Nasdaq-100
+Invesco EQQQ Nasdaq-100 UCITS ETF,IE0032077012,"EQQQ
+EQQU",Nasdaq-100
+iShares Nasdaq 100 UCITS ETF (Acc),IE00B53SZB19,"CNDX
+CNX1
+CSNDX
+SXRV",Nasdaq-100
+Invesco EQQQ Nasdaq-100 UCITS ETF Acc,IE00BFZXGZ54,"EQAC
+EQQB",Nasdaq-100
+Xtrackers Nasdaq 100 UCITS ETF 1C,IE00BMFKG444,"XNAQ
+XNAS",Nasdaq-100
+Invesco Nasdaq-100 Swap UCITS ETF Acc,IE00BNRQM384,"EQQS
+EQQX
+EQSG",Nasdaq-100
+ComStage Nasdaq 100 UCITS ETF,LU0378449770,"C011
+CBNDX",Nasdaq-100
+Amundi Nasdaq 100 UCITS ETF EUR (C),LU1681038243,"6AQQ
+ANX",Nasdaq-100
+Amundi Nasdaq 100 UCITS ETF USD,LU1681038326,"10A4
+ANXG
+ANXU",Nasdaq-100
+Amundi Nasdaq-100 II UCITS ETF Acc,LU1829221024,"LYMS
+NASD
+NASL
+UST",Nasdaq-100
+Amundi Nasdaq-100 II UCITS ETF Dist,LU2197908721,NADQ,Nasdaq-100
+iShares Nasdaq 100 UCITS ETF EUR Hedged Acc,IE00BYVQ9F29,NQSE,Nasdaq-100 (EUR Hedged)
+Invesco Nasdaq-100 UCITS ETF EUR Hedged,IE00BYVTMS52,EQEU,Nasdaq-100 (EUR Hedged)
+Amundi Nasdaq 100 UCITS ETF Daily Hedged EUR (C),LU1681038599,"HNDX
+NDXH",Nasdaq-100 (EUR Hedged)
+Amundi Nasdaq-100 Daily (2x) Leveraged UCITS ETF Acc,FR0010342592,"L8I7
+LQQ",Nasdaq-100 Leveraged Notional Net
+Meesman Indexfonds Aandelen Wereldwijd,NL0010436663,,Northern Trust MSCI World Custom ESG
+Market Access NYSE Arca Gold Bugs UCITS ETF,LU0259322260,"GOLB
+M9SD
+MAGB",NYSE Arca Gold BUGS
+Lyxor NYSE Arca Gold BUGS (DR) UCITS ETF,LU0488317701,"CBGOLD
+CD91
+GLDM
+GLDU",NYSE Arca Gold BUGS
+iShares Physical Palladium ETC,IE00B4556L06,"IPDM
+SPDM",Palladium spot price
+Elementum Physical Palladium ETC,XS2265370234,"0IID
+TPAL
+TPDS",Palladium spot price
+Xtrackers Physical Palladium EUR Hedged ETC,DE000A1EK3B8,XAD4,Palladium spot price (EUR Hedged)
+L&G Artificial Intelligence UCITS ETF,IE00BK5BCD43,"AIAG
+AIAI
+XMLD",ROBO Global Artificial Intelligence
+L&G ROBO Global Robotics and Automation UCITS ETF,IE00BMW3QX54,"IROB
+ROBE
+ROBG
+ROBO",ROBO Global Robotics and Automation
+Amundi Russell 1000 Growth UCITS ETF Acc,FR0011119171,"RSGL
+RUSG",Russell 1000 Growth
+L&G Russell 2000 US Small Cap UCITS ETF,DE000A0Q8NE4,ETLZ,Russell 2000
+Lyxor Russell 2000 UCITS ETF C-USD,FR0011119254,"RU2K
+RUS2",Russell 2000
+L&G Russell 2000 US Small Cap UCITS ETF,IE00B3CNHJ55,"ETLZ
+RTWO
+RTWP",Russell 2000
+Invesco Russell 2000 UCITS ETF,IE00B60SX402,"RTYS
+SC0K
+SR2000",Russell 2000
+SPDR Russell 2000 US Small Cap UCITS ETF,IE00BJ38QD84,"R2SC
+R2US
+ZPRR",Russell 2000
+Xtrackers Russell 2000 UCITS ETF 1C,IE00BJZ2DD79,"XRS2
+XRSG
+XRSU",Russell 2000
+Amundi Russell 2000 UCITS ETF EUR (C),LU1681038672,RS2K,Russell 2000
+Amundi ETF Russell 2000 UCITS ETF USD,LU1681038839,"RS2G
+RS2U",Russell 2000
+Xtrackers Russell Midcap UCITS ETF 1C,IE00BJZ2DC62,"XRMU
+XRSM
+XRSS",Russell Midcap
+BNP Paribas Easy S&P 500 UCITS ETF USD,FR0011550177,"0XC5
+ESAP
+ESD",S&P 500
+BNP Paribas Easy S&P 500 UCITS ETF EUR,FR0011550185,"ESE
+ESEE",S&P 500
+BNP Paribas Easy S&P 500 UCITS ETF,FR0011550680,"ESDD
+ESEA",S&P 500
+Amundi PEA S&P 500 UCITS ETF Acc,FR0011871128,PSP5,S&P 500
+iShares S&P 500 Swap UCITS ETF USD (Dist),IE000D3BWBR2,I50D,S&P 500
+HSBC S&P 500 UCITS ETF USD (Acc),IE000JZ473P7,"H4ZN
+HSPA
+HSPS",S&P 500
+SPDR S&P 500 UCITS ETF (Acc),IE000XZSV718,"SP5A
+SPXL
+SPYL",S&P 500
+Xtrackers S&P 500 UCITS ETF 4C,IE000Z9SJA06,"XDPP
+XDPU",S&P 500
+iShares Core S&P 500 UCITS ETF USD (Dist),IE0031442068,"IDUS
+IUSA",S&P 500
+Vanguard S&P 500 UCITS ETF (USD) Distributing,IE00B3XXRP09,"VUSA
+VUSD",S&P 500
+Invesco S&P 500 UCITS ETF,IE00B3YCGJ38,"P500
+SPXP
+SPXS",S&P 500
+UBS ETF (IE) S&P 500 SF UCITS ETF (USD) A-acc,IE00B4JY5R22,S5USAS,S&P 500
+iShares Core S&P 500 UCITS ETF USD (Acc),IE00B5BMR087,"CSP1
+CSPX
+CSSPX
+SXR8",S&P 500
+HSBC S&P 500 UCITS ETF USD,IE00B5KQNG97,"H4ZF
+HHH
+HSPD
+HSPX",S&P 500
+SPDR S&P 500 UCITS ETF (Dist),IE00B6YX5C33,"SPX5
+SPY5",S&P 500
+UBS ETF (IE) S&P 500 UCITS ETF (USD) A-dis,IE00B7K93397,"SP5EUY
+SP5USY
+UBU9
+UC13",S&P 500
+Vanguard S&P 500 UCITS ETF (USD) Accumulating,IE00BFMXXD54,"VUAA
+VUAG",S&P 500
+iShares S&P 500 Swap UCITS ETF USD (Acc),IE00BMTX1Y45,I500,S&P 500
+Invesco S&P 500 UCITS ETF Dist,IE00BYML9W36,"D500
+SPXD",S&P 500
+Xtrackers S&P 500 Swap UCITS ETF 1C,LU0490618542,"D5BM
+XSPU
+XSPX",S&P 500
+Amundi S&P 500 II UCITS ETF EUR Dist,LU0496786574,"LYPS
+SP5
+SPX",S&P 500
+Amundi S&P 500 II UCITS ETF USD Dist,LU0496786657,"6TVM
+LSPU
+LSPX
+LYSP5",S&P 500
+Amundi S&P 500 II UCITS ETF Acc,LU1135865084,"LYP7
+SP5C
+SP5L",S&P 500
+Amundi S&P 500 UCITS ETF EUR (C),LU1681048804,"500
+500E
+A500
+AUM5",S&P 500
+Amundi ETF S&P 500 UCITS ETF USD,LU1681049018,"10AP
+500E
+500G
+500U
+500USD",S&P 500
+Xtrackers S&P 500 Swap UCITS ETF 1D,LU2009147757,"XSXD
+XSXG",S&P 500
+Amundi S&P 500 UCITS ETF USD (D),LU2391437253,500D,S&P 500
+iShares S&P 500 Communication Sector UCITS ETF USD (Acc),IE00BDDRF478,"IU5C
+IUCM",S&P 500 Capped 35/20 Communication Services
+iShares S&P 500 Consumer Staples Sector UCITS ETF,IE00B40B8R38,"2B7D
+ICSU
+IUCS",S&P 500 Capped 35/20 Consumer Staples Sector
+iShares S&P 500 Energy Sector UCITS ETF (Acc),IE00B42NKQ00,"IESU
+IUES
+QDVF",S&P 500 Capped 35/20 Energy
+iShares S&P 500 Information Technology Sector UCITS ETF USD (Acc),IE00B3WJKG14,"IITU
+IUIT
+QDVE",S&P 500 Capped 35/20 Information Technology
+Xtrackers S&P 500 Equal Weight UCITS ETF 2D,IE000CXLGK86,"XDED
+XDEU",S&P 500 Equal Weight
+iShares S&P 500 Equal Weight UCITS ETF USD (Acc),IE000MLMNYS0,"EWSP
+EWSX
+O4J0",S&P 500 Equal Weight
+Xtrackers S&P 500 Equal Weight UCITS ETF 1C,IE00BLNMYC90,"XDEW
+XDWE",S&P 500 Equal Weight
+Invesco S&P 500 Equal Weight UCITS ETF Dist,IE00BM8QRY62,"SP2D
+SPED
+SPES",S&P 500 Equal Weight
+Invesco S&P 500 Equal Weight UCITS ETF Acc,IE00BNGJJT35,"SP2Q
+SPEQ
+SPEX",S&P 500 Equal Weight
+SPDR S&P 500 ESG Leaders UCITS ETF (Acc),IE00BH4GPZ28,"500X
+SPPY",S&P 500 ESG Leaders
+Lyxor PEA S&P 500 UCITS ETF Couverte en EUR - Capi.,FR0011871136,PSPH,S&P 500 EUR Hedged
+BNP Paribas Easy S&P 500 UCITS ETF EUR Hedged,FR0013041530,ESEH,S&P 500 EUR Hedged
+iShares S&P 500 EUR Hedged UCITS ETF (Acc),IE00B3ZW0K18,"IBCF
+IUES
+IUSE",S&P 500 EUR Hedged
+UBS ETF (IE) S&P 500 UCITS ETF (hedged to EUR) A-dis,IE00BD34DJ91,"SP500F
+UEQ7",S&P 500 EUR Hedged
+UBS ETF (IE) S&P 500 UCITS ETF (hedged to EUR) A-acc,IE00BD34DK07,"SP500E
+UEQD",S&P 500 EUR Hedged
+Xtrackers S&P 500 UCITS ETF 1D EUR Hedged,IE00BGJWX091,XDPD,S&P 500 EUR Hedged
+Xtrackers S&P 500 UCITS ETF 1C EUR hedged,IE00BM67HW99,XDPE,S&P 500 EUR Hedged
+Invesco S&P 500 EUR Hedged UCITS ETF,IE00BRKWGL70,E500,S&P 500 EUR Hedged
+SPDR S&P 500 EUR Hedged UCITS ETF,IE00BYYW2V44,"SPPE
+SPXE",S&P 500 EUR Hedged
+Amundi S&P 500 II UCITS ETF EUR Hedged Dist,LU0959211243,"LYP2
+SP5H
+SPXH",S&P 500 EUR Hedged
+ComStage S&P 500 Euro Daily Hedged Net TR UCITS ETF,LU1033694362,C014,S&P 500 EUR Hedged
+Amundi S&P 500 UCITS ETF Daily Hedged EUR (C),LU1681049109,"500H
+H1D5
+H500",S&P 500 EUR Hedged
+iShares S&P 500 Health Care Sector UCITS ETF (Acc),IE00B43HR379,"IHCU
+IUHC
+QDVG",S&P 500 Health Care Sector
+Xtrackers S&P 500 2x Leveraged Daily Swap UCITS ETF 1C,LU0411078552,"DBPG
+XS2D
+XS2L",S&P 500 Leverage 2x Daily
+Invesco S&P 500 High Dividend Low Volatility UCITS ETF,IE00BWTN6Y99,"HDLG
+HDLV",S&P 500 Low Volatility High Dividend
+iShares Edge S&P 500 Minimum Volatility UCITS ETF (Acc),IE00B6SPMN59,"IBCK
+MVUS
+SPLV
+SPMV",S&P 500 Minimum Volatility
+iShares Edge S&P 500 Minimum Volatility UCITS ETF USD (Dist),IE00BD93YH54,SPMD,S&P 500 Minimum Volatility
+iShares Edge S&P 500 Minimum Volatility UCITS ETF EUR Hedged (Acc),IE00BYX8XD24,"IS31
+SPME",S&P 500 Minimum Volatility (EUR Hedged)
+Amundi S&P 500 VIX Futures Enhanced Roll UCITS ETF Acc,LU0832435464,"LVO
+VOOL",S&P 500 VIX Futures Enhanced Roll
+iShares Gold Producers UCITS ETF,IE00B6R52036,"IAUP
+IS0E
+SPGP",S&P Commodity Producers Gold
+SPDR S&P US Consumer Staples Select Sector UCITS ETF,IE00BWBXM385,"SXLP
+ZPDS",S&P Consumer Staples Select Sector
+SPDR S&P Euro Dividend Aristocrats UCITS ETF (Dist),IE00B5M1WJ87,"EUDI
+EUDV
+SPYW",S&P Euro High Yield Dividend Aristocrats
+iShares Global Clean Energy UCITS ETF,IE00B1XNHC34,"INRG
+IQQH",S&P Global Clean Energy
+SPDR S&P Global Dividend Aristocrats UCITS ETF,IE00B9CQXS71,"GBDV
+GLDV
+ZPRG",S&P Global Dividend Aristocrats
+Amundi S&P Global Luxury UCITS ETF EUR (C),LU1681048630,GLUX,S&P Global Luxury
+Amundi ETF S&P Global Luxury UCITS ETF USD,LU1681048713,"AFID
+LUXG
+LUXU",S&P Global Luxury
+VanEck Global Mining UCITS ETF A,IE00BDFBTQ78,"GDIG
+GIGB
+WMIN",S&P Global Mining Reduced Coal
+iShares Global Water UCITS ETF USD (Acc),IE000CFH1JX2,H2OA,S&P Global Water
+iShares Global Water UCITS ETF,IE00B1TXK627,"IH2O
+IQQQ",S&P Global Water
+SPDR S&P US Dividend Aristocrats UCITS ETF,IE00B6YX5D40,"SPYD
+UDVD
+USDV",S&P High Yield Dividend Aristocrats
+iShares Listed Private Equity UCITS ETF,IE00B1TXHL60,"IDPE
+IPRV
+IQQL",S&P Listed Private Equity
+SPDR S&P 400 US Mid Cap UCITS ETF,IE00B4YBJ215,SPY4,S&P MidCap 400
+ComStage S&P MidCap 400 UCITS ETF,LU0392495965,"CBUSAM
+X022",S&P MidCap 400
+Invesco US Technology Sector UCITS ETF,IE00B3VSSL01,"SML3
+XLKQ
+XLKS",S&P Select Sector Capped 20% Technology
+iShares S&P SmallCap 600 UCITS ETF,IE00B2QWCY14,"IDP6
+ISP6
+IUS3",S&P SmallCap 600
+Invesco S&P SmallCap 600 UCITS ETF A,IE00BH3YZ803,"SMLK
+USML",S&P SmallCap 600
+SPDR S&P US Technology Select Sector UCITS ETF,IE00BWBXM948,"GXLK
+SXLK
+ZPDT",S&P Technology Select Sector
+Ossiam Shiller Barclays CAPE® US Sector Value TR UCITS ETF 1C (EUR),LU1079841273,"CAPU
+USCP",Shiller Barclays CAPE US Sector Value
+WisdomTree Physical Silver,DE000A0N62F2,"OVZC
+VZLC",Silver spot price
+Xtrackers Physical Silver ETC (EUR),DE000A1E0HS6,"OXA6
+XAD6",Silver spot price
+Xtrackers IE Physical Silver ETC Securities,DE000A2T0VS9,XSLR,Silver spot price
+Xtrackers Physical Silver ETC,GB00B57Y9462,XSIL,Silver spot price
+Invesco Physical Silver,IE00B43VDT70,"SLVP
+SSLV",Silver spot price
+iShares Physical Silver ETC,IE00B4NCWG09,"ISLN
+PPFD
+SSLN",Silver spot price
+WisdomTree Physical Silver,JE00B1VS3333,"PHAG
+PHSP",Silver spot price
+iShares SMI (CH),CH0008899764,CSSMI,SMI
+UBS ETF (CH) SMI (CHF) A-dis,CH0017142719,SMICHA,SMI
+L&G Battery Value-Chain UCITS ETF,IE00BF0M2Z96,"BATE
+BATG
+BATT",Solactive Battery Value-Chain
+L&G Clean Water UCITS ETF,IE00BK5BC891,"GLGG
+GLUG
+XMLC",Solactive Clean Water
+Amundi Prime Eurozone UCITS ETF DR (D),LU1931974429,"ETFEZ
+PR1Z
+PRIZ",Solactive Euro 50
+Amundi Prime Eurozone UCITS ETF DR (C),LU2089238112,PRAZ,Solactive Euro 50
+Amundi EUR Overnight Return UCITS ETF Acc,FR0010510800,"CSH
+CSHD
+L8I3
+LEONIA",Solactive Euro Overnight Return
+Amundi Prime Euro Government Bonds 0-1Y UCITS ETF DR (C),LU2233156582,PRAB,Solactive Eurozone Government Bond 0-1 Year
+Amundi Prime Euro Gov Bonds 0-1Y - IE,LU2531807738,,Solactive Eurozone Government Bond 0-1 Year
+Amundi Prime Global UCITS ETF DR (D),LU1931974692,"ETFGLO
+PR1W
+PRIW",Solactive GBS Developed Markets Large & Mid Cap
+Amundi Prime Global UCITS ETF DR (C),LU2089238203,PRAW,Solactive GBS Developed Markets Large & Mid Cap
+L&G Gerd Kommer Multifactor Equity UCITS ETF USD Accumulating,IE0001UQQ933,GERD,Solactive Gerd Kommer Multifactor Equity
+L&G Gerd Kommer Multifactor Equity UCITS ETF USD Distributing,IE000FPWSL69,K0MR,Solactive Gerd Kommer Multifactor Equity
+VanEck Vectors Global Equal Weight UCITS ETF,NL0009690221,"T6ET
+TGET
+TGGB",Solactive Global Equity
+Global X SuperDividend,US37950E5490,,Solactive Global SuperDividend
+L&G Hydrogen Economy UCITS ETF USD Acc,IE00BMYDM794,"HTMW
+HTWG
+HTWO",Solactive Hydrogen Economy
+HANetf HAN-GINS Tech Megatrend Equal Weight UCITS ETF,IE00BDDRF700,"ITEK
+ITEP
+T3KE",Solactive Innovative Technologies
+Amundi Smart City UCITS ETF (C),LU2037748345,"AMEC
+SCITY",Solactive Smart City
+Amundi Smart Factory UCITS ETF - EUR (C),LU2037749822,"540S
+SFTRY
+SMAFY",Solactive Smart Factory
+HANetf The Travel UCITS ETF,IE00BMFNW783,"7RIP
+TRIP
+TRYP",Solactive Travel
+Xtrackers II EUR Overnight Rate Swap UCITS ETF 1C,LU0290358497,"DBXT
+XEON",Solactive €STR +8.5 Daily
+iShares STOXX Europe 50 UCITS ETF (DE),DE0005933949,EXW3,STOXX Europe 50
+Deka STOXX Europe 50 UCITS ETF,DE000ETFL250,EL4Y,STOXX Europe 50
+Amundi ETF STOXX Europe 50 UCITS ETF EUR (C),FR0010790980,"AE50
+C5E",STOXX Europe 50
+iShares STOXX Europe 50 UCITS ETF,IE0008470928,"EUN
+EUN1
+EUNA",STOXX Europe 50
+iShares STOXX Europe 600 UCITS ETF (DE),DE0002635307,"EXSA
+SXPIEX",STOXX Europe 600
+Amundi STOXX Europe 600 ESG II UCITS ETF Dist,DE000ETF9603,"CB1EU6
+E960",STOXX Europe 600
+BNP Paribas Easy STOXX Europe 600 UCITS ETF,FR0011550193,"ETSZ
+ETZ",STOXX Europe 600
+Invesco STOXX Europe 600 UCITS ETF,IE00B60SWW18,"S600
+SC0C
+SDJ600",STOXX Europe 600
+Xtrackers STOXX Europe 600 UCITS ETF 1C,LU0328475792,"DX2X
+XSX6",STOXX Europe 600
+ComStage STOXX Europe 600 UCITS ETF,LU0378434582,"C060
+CBEU6",STOXX Europe 600
+Amundi Stoxx Europe 600 UCITS ETF Acc,LU0908500753,"LYP6
+MEUD
+MEUS",STOXX Europe 600
+Amundi STOXX Europe 600 UCITS ETF EUR (C),LU1681040223,"AME6
+C6E",STOXX Europe 600
+iShares STOXX Europe 600 Automobiles & Parts UCITS ETF (DE),DE000A0Q4R28,EXV5,STOXX Europe 600 Automobiles & Parts
+Lyxor STOXX Europe 600 Automobiles & Parts UCITS ETF - Acc,LU1834983394,"AUT
+AUTP
+LAUT",STOXX Europe 600 Automobiles & Parts
+Lyxor STOXX Europe 600 Automobiles & Parts UCITS ETF - Dist,LU2082995908,"AUTD
+DFOA",STOXX Europe 600 Automobiles & Parts
+iShares STOXX Europe 600 Banks UCITS ETF (DE),DE000A0F5UJ7,EXV1,STOXX Europe 600 Banks
+Amundi STOXX Europe 600 Banks UCITS ETF Acc,LU1834983477,"BNK
+CB5
+LBNK
+LYBNK",STOXX Europe 600 Banks
+Amundi STOXX Europe 600 Banks UCITS ETF Dist,LU2082996112,INDA,STOXX Europe 600 Banks
+iShares STOXX Europe 600 Basic Resources UCITS ETF (DE),DE000A0F5UK5,"EXV6
+SXPPEX",STOXX Europe 600 Basic Resources
+Xtrackers STOXX Europe 600 Basic Resources Swap UCITS ETF 1C,LU0292100806,"DXSC
+XSPR",STOXX Europe 600 Basic Resources
+Amundi STOXX Europe 600 Basic Resources UCITS ETF Acc,LU1834983550,"BRES
+LBRE
+LYBRE",STOXX Europe 600 Basic Resources
+Amundi STOXX Europe 600 Basic Resources UCITS ETF Dist,LU2082996385,E6BR,STOXX Europe 600 Basic Resources
+iShares STOXX Europe 600 Food & Beverage UCITS ETF (DE),DE000A0H08H3,"EXH3
+SX3PEX",STOXX Europe 600 Food & Beverage
+Xtrackers STOXX Europe 600 Food & Beverage Swap UCITS ETF 1C,LU0292105359,"DXSK
+XS3R",STOXX Europe 600 Food & Beverage
+Lyxor STOXX Europe 600 Food & Beverage UCITS ETF - Acc,LU1834985845,"FOO
+LFOD",STOXX Europe 600 Food & Beverage
+Lyxor STOXX Europe 600 Food & Beverage UCITS ETF - Dist,LU2082997359,"DFOP
+FOOD",STOXX Europe 600 Food & Beverage
+iShares STOXX Europe 600 Health Care UCITS ETF (DE),DE000A0Q4R36,"EXV4
+SXDPEX",STOXX Europe 600 Health Care
+Xtrackers STOXX Europe 600 Health Care Swap UCITS ETF 1C,LU0292103222,"DXSE
+XSDR",STOXX Europe 600 Health Care
+ComStage STOXX Europe 600 Health Care UCITS ETF,LU0378435985,"C068
+CBHECA",STOXX Europe 600 Health Care
+Amundi STOXX Europe 600 Healthcare UCITS ETF Acc,LU1834986900,"CH5
+HLT
+LHTC
+LYHLT",STOXX Europe 600 Health Care
+iShares STOXX Europe 600 Industrial Goods & Services UCITS ETF (DE),DE000A0H08J9,"EXH4
+SXNPEX",STOXX Europe 600 Industrial Goods & Services
+Xtrackers STOXX Europe 600 Industrial Goods Swap UCITS ETF 1C,LU0292106084,"DXSL
+XSNR",STOXX Europe 600 Industrial Goods & Services
+Lyxor STOXX Europe 600 Industrial Goods & Services UCITS ETF - Acc,LU1834987890,"IND
+INDG
+LIGS",STOXX Europe 600 Industrial Goods & Services
+Lyxor STOXX Europe 600 Industrial Goods & Services UCITS ETF - Dist,LU2082997789,"INDU
+INGS",STOXX Europe 600 Industrial Goods & Services
+iShares STOXX Europe 600 Personal & Household Goods UCITS ETF (DE),DE000A0H08N1,"EXH7
+SXQPEX",STOXX Europe 600 Personal & Household Goods
+Lyxor STOXX Europe 600 Personal & Household Goods UCITS ETF - Acc,LU1834988351,"LPHG
+PHG",STOXX Europe 600 Personal & Household Goods
+Lyxor STOXX Europe 600 Personal & Household Goods UCITS ETF - Dist,LU2082998324,"MTDA
+PHGD",STOXX Europe 600 Personal & Household Goods
+SPDR STOXX Europe 600 SRI UCITS ETF,IE00BK5H8015,"600X
+ZPDX",STOXX Europe 600 SRI
+iShares STOXX Europe 600 Technology UCITS ETF (DE),DE000A0H08Q4,"EXV3
+SX8PEX",STOXX Europe 600 Technology
+Xtrackers STOXX Europe 600 Technology Swap UCITS ETF 1C,LU0292104469,"DXSH
+XS8R",STOXX Europe 600 Technology
+ComStage STOXX Europe 600 Technology UCITS ETF,LU0378437098,"C076
+CBTECH",STOXX Europe 600 Technology
+Amundi STOXX Europe 600 Technology UCITS ETF Acc,LU1834988518,"LTUG
+TNO",STOXX Europe 600 Technology
+iShares STOXX Europe Select Dividend 30 UCITS ETF (DE),DE0002635299,EXSH,STOXX Europe Select Dividend 30
+Amundi Stoxx Europe Select Dividend 30 UCITS ETF Dist,LU1812092168,"LYSEL
+SEL
+SELD",STOXX Europe Select Dividend 30
+Deka STOXX Europe Strong Growth 20 UCITS ETF,DE000ETFL037,EL4C,STOXX Europe Strong Growth 20
+iShares Ageing Population UCITS ETF,IE00BYZK4669,"2B77
+AGED
+AGES",STOXX Global Ageing Population
+iShares Healthcare Innovation UCITS ETF,IE00BYZK4776,"2B78
+DRDR
+HEAL",STOXX Global Breakthrough Healthcare
+iShares Digital Security UCITS ETF USD (Dist),IE00BG0J4841,"IS4S
+SHLD
+SHLG",STOXX Global Digital Security
+iShares Digital Security UCITS ETF USD (Acc),IE00BG0J4C88,"L0CK
+LOCK",STOXX Global Digital Security
+iShares Digitalisation UCITS ETF,IE00BYZK4883,"2B79
+DGIT
+DGTL",STOXX Global Digitalisation
+iShares Electric Vehicles and Driving Technology UCITS ETF USD (Acc),IE00BGL86Z12,"ECAR
+IEVD",STOXX Global Electric Vehicles & Driving Technology
+iShares STOXX Global Select Dividend 100 UCITS ETF (DE),DE000A0F5UH1,"ISPA
+SDGPEX",STOXX Global Select Dividend 100
+Xtrackers STOXX Global Select Dividend 100 Swap UCITS ETF 1D,LU0292096186,"DXSB
+XGDD
+XGSD",STOXX Global Select Dividend 100
+UBS ETF (CH) SXI Real Estate Funds (CHF) A-dis,CH0105994401,SRECHA,SXI Real Estate Funds Broad
+Amundi Japan TOPIX II UCITS ETF EUR Dist,FR0010245514,"JPN
+JPNC
+JPNL
+JPNU
+LYY4",TOPIX
+Amundi Japan TOPIX II UCITS ETF JPY Dist,FR0010377028,LYJPN,TOPIX
+Lyxor PEA Japon (TOPIX) UCITS ETF - Capi,FR0011871102,PJPN,TOPIX
+Amundi ETF PEA Japan Topix UCITS ETF,FR0013411980,PTPXE,TOPIX
+Amundi ETF Japan Topix UCITS ETF EUR,LU1681037609,TPXE,TOPIX
+Amundi ETF Japan Topix UCITS ETF JPY,LU1681037781,"TPXG
+TPXU
+TPXY",TOPIX
+Amundi Japan TOPIX II UCITS ETF EUR Hedged Dist,FR0011475078,JPNH,TOPIX (EUR Hedged)
+Amundi ETF PEA Japan Topix UCITS ETF EUR Hedged,FR0013411998,PTPXH,TOPIX (EUR Hedged)
+Amundi Japan Topix UCITS ETF Daily Hedged EUR (C),LU1681037864,"TPXH
+TTPX",TOPIX (EUR Hedged)
+UBS ETF (IE) CMCI Composite SF UCITS ETF (USD) A-acc,IE00B53H0131,"CCUSAS
+UC14
+UC15
+UIQK",UBS CMCI
+WisdomTree Emerging Markets Equity Income UCITS ETF Acc,IE00BDF12W49,"DEMR
+DEMS
+WTD8",WisdomTree Emerging Markets High Dividend
+WisdomTree Emerging Markets Equity Income UCITS ETF,IE00BQQ3Q067,"DEM
+DEMD
+WTEI",WisdomTree Emerging Markets High Dividend
+WisdomTree Emerging Markets SmallCap Dividend UCITS ETF,DE000A14ND04,WTED,WisdomTree Emerging Markets SmallCap Dividend
+WisdomTree Emerging Markets SmallCap Dividend UCITS ETF,IE00BQZJBM26,"DGSD
+DGSE
+WTED",WisdomTree Emerging Markets SmallCap Dividend
+WisdomTree Global Quality Dividend Growth UCITS ETF USD,IE00BZ56RN96,"GGRP
+GGRW",WisdomTree Global Developed Quality Dividend Growth
+WisdomTree Global Quality Dividend Growth UCITS ETF USD Acc,IE00BZ56SW52,"GGRA
+GGRG
+WTEM",WisdomTree Global Developed Quality Dividend Growth
+WisdomTree US Efficient Core UCITS ETF USD Unhedged Acc,IE000KF370H3,"NTSX
+WTEF",WisdomTree US Efficient Core
+Amundi MSCI New Energy ESG Screened UCITS ETF Dist,FR0010524777,"ENER
+LYM9
+LYNRJ
+NRJ
+NRJL
+NRJU",World Alternative Energy CW
+Amundi MSCI Water ESG Screened UCITS ETF Dist,FR0010527275,"LYM8
+LYWAT
+WAT
+WATL
+WATU",World Water
+Amundi PEA Eau (MSCI Water) UCITS ETF Capi,FR0011882364,AWAT,World Water
+BNP Paribas B Pension Sustainable Balanced,BE0026480963,,Active fund
+Star Fund Balanced,BE0026510298,,Active fund
+Interbeurs Hermes Pensioenfonds,BE0026534538,,Active fund
+Pricos Responsible Investing,BE0026535543,,Active fund
+Metropolitan-Rentastro Sustainable Growth,BE0026549684,,Active fund
+DPAM B Equities World Sustainable B,BE0058652646,,Active fund
+VDK Pension Fund,BE0152168721,,Active fund
+Belfius Pension Fund High Equities,BE0159537696,,Active fund
+BNP Paribas B Strategy - Global Sustainable Dynamic Classic-Capitalisation,BE0163304539,,Active fund
+Argenta Pension Fund,BE0172903495,,Active fund
+Dierickx Leys Fund II Equity C,BE0935007246,,Active fund
+Pricos Defensive Responsible Investing,BE0942006397,,Active fund
+Belfius Pension Fund Low Equities,BE0943599804,,Active fund
+BNP Paribas B Pension Sustainable Stability,BE0946410785,,Active fund
+BNP Paribas B Pension Sustainable Growth,BE0946411791,,Active fund
+Argenta Pension Fund Defensive,BE6208865897,,Active fund
+KBC Equity Fund World,BE6213775529,,Active fund
+DPAM B - Active Strategy B,BE6227496963,,Active fund
+Belfius Pension Fund Balanced Plus,BE6242862397,,Active fund
+Crelan Pension Fund Sustainable Balanced,BE6280093228,,Active fund
+Crelan Pension Fund Sustainable Growth,BE6280095249,,Active fund
+Crelan Pension Fund Sustainable Stability,BE6280097260,,Active fund
+Horizon - KBC Highly Dynamic Comfort Portfolio Shares Cap,BE6292610266,,Active fund
+Value Square Fund Equity World A Cap,BE6294297641,,Active fund
+C+F World Equities C Cap,BE6295855702,,Active fund
+C+F - World Equities D Cap,BE6295857724,,Active fund
+Belfius Managed Portfolio Equities World M Cap,BE6297977587,,Active fund
+Horizon KBC Dynamic Tolerant Responsible Investing Classic,BE6307334068,,Active fund
+PTAM Global Allocation R,DE000A1JCWX9,,Active fund
+JPMorgan Global Research Enhanced Index Equity (ESG) UCITS ETF USD (acc),IE00BF4G6Y48,,Active fund
+Vanguard LifeStrategy 20% Equity UCITS ETF Accumulating,IE00BMVB5K07,"V20A
+VNGA20",Active fund
+Vanguard LifeStrategy 40% Equity UCITS ETF Accumulating,IE00BMVB5M21,"V40A
+VNGA40",Active fund
+Vanguard LifeStrategy 60% Equity UCITS ETF Accumulating,IE00BMVB5P51,"V60A
+VNGA60",Active fund
+Vanguard LifeStrategy 80% Equity UCITS ETF Accumulating,IE00BMVB5R75,"V80A
+VNGA80",Active fund
+DP Global Strategy L - Medium B,LU0034463017,,Active fund
+DP Global Strategy L - High B,LU0035601805,,Active fund
+Eurizon Fund - Equity Emerging Markets Smart Volatility Class Unit R EUR Accumulation,LU0090981274,,Active fund
+Eurizon Fund - Equity World Smart Volatility Class Unit R EUR Accumulation,LU0114064917,,Active fund
+Fidelity Funds - Global Technology Fund E-Acc-EUR,LU0115773425,,Active fund
+Indépendance et Expansion SICAV - France Small A (C),LU0131510165,,Active fund
+JPMorgan Funds - Global Focus Fund A (dist) - EUR,LU0168341575,,Active fund
+Schroder International Selection Fund - Emerging Asia A,LU0248172537,,Active fund
+Franklin Technology Fund A (Acc) EUR,LU0260870158,,Active fund
+Universal Invest High D,LU0266643146,,Active fund
+Fidelity Funds - Global Technology Fund Y-Acc-EUR,LU0346389348,,Active fund
+MercLin Global Equity C,LU0379615668,,Active fund
+Pictet-Global Megatrend Selection R EUR,LU0391944815,,Active fund
+Xtrackers Portfolio UCITS ETF 1C,LU0397221945,,Active fund
+Man AHL Trend Alternative DNY H EUR Acc,LU0424370004,,Active fund
+Argenta Portfolio Dynamic R Cap,LU0476180459,,Active fund
+Amundi Funds - Volatility World A EUR (C),LU0557872479,,Active fund
+BlackRock Global Funds - European Equity Income Fund A2,LU0562822386,,Active fund
+ING Multi-Strategy Pure Equity RP Cap,LU0607225017,,Active fund
+ABN AMRO Funds - Global ESG Equities A EUR Capitalisation,LU0756526744,,Active fund
+BNP Paribas Comfort Sustainable Equity World Plus,LU1040910678,,Active fund
+Lyxor Smart Overnight Return UCITS ETF C-EUR,LU1190417599,,Active fund
+Argenta Portfolio Dynamic R Dis,LU1243878250,,Active fund
+Econopolis Sustainable Equities Fund,LU1248447622,,Active fund
+Allianz Global Investors Fund - Allianz Thematica A EUR,LU1479563717,,Active fund
+Allianz Global Investors Fund - Allianz Global Artificial Intelligence AT (H2-EUR),LU1548497772,,Active fund
+Argenta-Fund Longer Life Dynamic R Cap,LU1600559873,,Active fund
+FFPB MultiTrend Flex,LU1651191345,,Active fund
+ING ARIA - ING Global Index Portfolio Active A,LU1693143494,,Active fund
+CT (Lux) - Pan European Smaller Companies 1E (EUR Accumulation Shares),LU1829329819,,Active fund
+Kempen (Lux) Global Sustainable Equity Fund,LU1857108150,,Active fund
+CT (Lux) - European Smaller Companies 1E (EUR Accumulation),LU1864952335,,Active fund
+DWS Invest Enhanced Commodity Strategy LC,LU1881477043,,Active fund
+Eurizon Fund - Sustainable Multiasset Class R EUR Accumulation,LU2215042750,,Active fund
+Argenta Portfolio Dynamic Growth R Cap,LU2355196820,,Active fund
+Hoofbosch Beleggingsfonds,NL0006327413,,Active fund
+Rolinco N.V. EUR G,NL0010510798,,Active fund
+Goldman Sachs Global Fund,NL0010623286,,Active fund
+Funds Compare indexes Updates FAQ Send feedback,,,
