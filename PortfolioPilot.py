@@ -315,6 +315,7 @@ def register_callbacks(app):
             print(portfolio_con_benchmark)
 
             # Fornisci feedback all'utente e salva i dati nel Store
+            portfolio_con_benchmark.reset_index(inplace=True)
             return "", portfolio_con_benchmark.to_dict('records'), dati.to_dict('records')
 
         return "", "",""
@@ -357,11 +358,11 @@ def register_callbacks(app):
 
         # Create the line chart for the portfolio
         portfolio_fig = go.Figure()
-
+        column_except_date = [col for col in portfolio_df.columns if col != 'Date']
         # Create the line chart for the assets
-        for column in portfolio_df.columns:
+        for column in column_except_date:
             portfolio_fig.add_trace(go.Scatter(
-                x=portfolio_df.index,
+                x=portfolio_df["Date"],
                 y=portfolio_df[column],
                 mode='lines',
                 name=column,
