@@ -124,11 +124,10 @@ def create_layout(asset_list, initial_table_data):
                 className='mb-4'
             ),
 
-            # Dropdown e Pulsante nella stessa riga
             dbc.Row([
                 # Colonna per il pulsante
                 dbc.Col(
-                    dbc.Button("Crea Portafoglio", id='create-portfolio-button', color='warning',
+                    dbc.Button("Crea Portafoglio", id='create-portfolio-button', color='danger',
                                className='w-100 mt-4', style={'backgroundColor': '#8B4513', 'borderColor': '#8B4513'}),
                     md=2,  # Specifica la larghezza della colonna
                 ),
@@ -142,7 +141,18 @@ def create_layout(asset_list, initial_table_data):
                         className='mb-3',
                         style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
                     )
-                ], md=10),  # Specifica la larghezza della colonna
+                ], md=6),  # Specifica la larghezza della colonna
+                # Colonna per la selezione delle date
+                dbc.Col([
+                    dbc.Label("Seleziona il Periodo (Opzionale):", style={'color': '#000000'}),
+                    dcc.DatePickerRange(
+                        id='date-picker-range',
+                        start_date_placeholder_text='Data Inizio',
+                        end_date_placeholder_text='Data Fine',
+                        display_format='DD/MM/YYYY',
+                        style={'width': '100%'}
+                    )
+                ], md=4)  # Specifica la larghezza della colonna per la selezione delle date
             ], className='mb-4'),
 
             # Sommario Allocazione e Feedback
@@ -249,12 +259,17 @@ def register_callbacks(app):
     @app.callback(
         [Output('portfolio-feedback', 'children'),
          Output('portfolio-data', 'data'),
-         Output('assets-data','data')],  # Aggiungi questo output
-        [Input('create-portfolio-button', 'n_clicks')],
+         Output('assets-data', 'data')],  # Aggiungi questo output
+        [Input('create-portfolio-button', 'n_clicks')],  # Quando clicco
         [State('portfolio-table', 'data'),
-         State('benchmark-dropdown', 'value')]  # Ottieni il benchmark selezionato
+         State('benchmark-dropdown', 'value'),
+         State('date-picker-range', 'start_date'),  # Ottieni la data di inizio
+         State('date-picker-range', 'end_date')]  # Ottieni la data di fine
     )
-    def create_portfolio(n_clicks, table_data, benchmark):
+    def create_portfolio(n_clicks, table_data, benchmark, start_date, end_date):
+        print("=== Creazione del Portafoglio ===")
+        print(f"Data di Inizio: {start_date}")
+        print(f"Data di Fine: {end_date}")
         if n_clicks is None:
             return "", dash.no_update,  dash.no_update
 
@@ -273,16 +288,7 @@ def register_callbacks(app):
 
             # Converti i dati della tabella in DataFrame
             df = pd.DataFrame(table_data)
-
-            # Stampa il portafoglio nel terminale del server
-            print("=== Portafoglio Creato ===")
-            print(df.to_string(index=False))
-            print("===========================")
-
             indici = match_asset_name(df['ETF'])
-            print("=== Indici corrispondenti ===")
-            print(indici)
-            print("=============================")
 
             dati = importa_dati(indici)
             dati = dati.loc[:, ~dati.columns.duplicated()]
