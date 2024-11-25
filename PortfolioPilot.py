@@ -3,9 +3,10 @@ from dash import dcc, html, Input, Output, State
 import dash_bootstrap_components as dbc
 import pandas as pd
 import dash.dash_table
+import plotly.graph_objects as go
 
 # Costanti
-FILE_PATH = "/Users/danieleligato/PycharmProjects/DaniBacktester/data/Index_list.csv"  # Assicurati che questo CSV sia nella stessa directory dello script
+FILE_PATH = "/Users/danieleligato/PycharmProjects/DaniBacktester/data/Index_list_cleaned.csv"  # Assicurati che questo CSV sia nella stessa directory dello script
 APP_TITLE = "PortfolioPilot"
 
 
@@ -35,7 +36,14 @@ def create_layout(asset_list, initial_table_data):
         dbc.Container([
             dbc.Row(
                 dbc.Col(
-                    html.H1(APP_TITLE, className='text-center my-4', style={'color': '#000000'}),
+                    html.Img(
+                        src="/assets/Logo.png",  # Path to the logo in the assets folder
+                        style={
+                            'maxHeight': '100px',  # Set max height for the logo
+                            'margin': 'auto',     # Center the logo
+                            'display': 'block'
+                        }
+                    ),
                     width=12
                 ),
                 className='mb-4',  # Aggiunge un margine inferiore di 1.5rem
@@ -155,6 +163,15 @@ def create_layout(asset_list, initial_table_data):
             ]),
             dcc.Store(id='portfolio-data', storage_type='memory'),  # Aggiungi questo componente
             dcc.Store(id='assets-data', storage_type='memory'),  # Aggiungi questo componente
+            dbc.Toast(
+                id="allocation-error-toast",
+                header="Stai superando il 100% di allocazione del tuo portafoglio, rimuovi o modifica le percentuali.",
+                dismissable=True,
+                duration=3000,  # Durata in millisecondi (2 secondi)
+                is_open=False,  # Nascondi inizialmente
+                style={"position": "fixed", "top": 10, "right": 10, "zIndex": 1000},  # Posizionamento
+            ),
+
             # Div per Feedback Aggiuntivo
             dbc.Row([
                 dbc.Col(
@@ -182,7 +199,8 @@ def register_callbacks(app):
 
     # Callback per aggiungere un ETF alla tabella con la percentuale selezionata
     @app.callback(
-        Output('portfolio-table', 'data'),
+        [Output('portfolio-table', 'data'),
+         Output('allocation-error-toast', 'is_open')],
         [Input('add-etf-button', 'n_clicks')],
         [State('etf-dropdown', 'value'),
          State('percentage-slider', 'value'),
@@ -191,11 +209,11 @@ def register_callbacks(app):
     def add_etf_to_table(n_clicks, selected_etf, selected_percentage, current_data):
         if n_clicks is None:
             # Nessun clic ancora, restituisce i dati correnti invariati
-            return current_data
+            return current_data, False
 
         if n_clicks > 0:
             if not selected_etf:
-                return current_data  # Nessun ETF selezionato, nessun cambiamento
+                return current_data, False  # Nessun ETF selezionato, nessun cambiamento
 
             # Assicurati che current_data sia una lista di dizionari (righe della tabella)
             if current_data is None:
@@ -206,7 +224,7 @@ def register_callbacks(app):
 
             # Controlla se l'ETF esiste già nella tabella
             if 'ETF' in current_df.columns and not current_df[current_df['ETF'] == selected_etf].empty:
-                return current_data  # Non aggiungere ETF duplicati
+                return current_data, False  # Non aggiungere ETF duplicati
 
             # Assicurati che selected_percentage non sia None
             if selected_percentage is None:
@@ -215,8 +233,8 @@ def register_callbacks(app):
             # Controlla se l'aggiunta della nuova percentuale supera il 100%
             total_allocated = current_df['Percentuale'].sum() if not current_df.empty else 0
             if total_allocated + selected_percentage > 100:
-                # Opzionalmente, puoi fornire un feedback all'utente qui
-                return current_data
+
+                return current_data, True  # Mostra il toast di errore
 
             # Aggiungi il nuovo ETF alla tabella
             new_row = {
@@ -225,7 +243,7 @@ def register_callbacks(app):
             }
             current_data.append(new_row)  # Aggiungi la nuova riga ai dati della tabella
 
-        return current_data
+        return current_data, False
 
     # Callback per verificare l'allocazione totale e fornire feedback
     @app.callback(
@@ -246,9 +264,7 @@ def register_callbacks(app):
             return f"Avviso: L'allocazione totale supera il 100% di {total_percentage - 100:.2f}%."
         elif total_percentage == 100:
             return "Successo: L'allocazione totale è esattamente del 100%."
-        else:
-            remaining = 100 - total_percentage
-            return f"Allocazione totale: {total_percentage:.2f}%. Puoi allocare ancora {remaining:.2f}%."
+
 
     # Callback per gestire la creazione del portafoglio
     @app.callback(
@@ -290,24 +306,27 @@ def register_callbacks(app):
             print("=============================")
 
             dati = importa_dati(indici)
+            dati = dati.loc[:, ~dati.columns.duplicated()]
             if benchmark:
                 indice_benchmark = match_asset_name([benchmark])
                 dati_benckmark = importa_dati(indice_benchmark)
+                #Drop duplicates columns
+                dati_benckmark = dati_benckmark.loc[:, ~dati_benckmark.columns.duplicated()]
 
-            dati_normalizzati = dati.copy()
+            dati_scalati = dati.copy()
 
             for i in range(len(dati.columns)):
-                dati_normalizzati[dati.columns[i]] = dati[dati.columns[i]] * df['Percentuale'][i]
+                dati_scalati[dati.columns[i]] = dati[dati.columns[i]] * df['Percentuale'][i]
 
             #Somma delle colonne per trovare il valore del portafoglio
-            dati_normalizzati['Portfolio'] = dati_normalizzati.sum(axis=1)
-            dati_normalizzati = dati_normalizzati.drop(dati.columns, axis=1)
+            dati_scalati['Portfolio'] = dati_scalati.sum(axis=1)
+            dati_scalati = dati_scalati.drop(dati.columns, axis=1)
 
-            portfolio_con_benchmark = dati_normalizzati.copy()
+            portfolio_con_benchmark = dati_scalati.copy()
 
             if benchmark:
                 #Join dei dati del portafoglio con quelli del benchmark
-                portfolio_con_benchmark = dati_normalizzati.join(dati_benckmark[indice_benchmark[0]], how='inner', rsuffix='_benchmark')
+                portfolio_con_benchmark = dati_scalati.join(dati_benckmark[indice_benchmark[0]], how='inner', rsuffix='_benchmark')
                 portfolio_con_benchmark['Benchmark'] = portfolio_con_benchmark[indice_benchmark[0]] / portfolio_con_benchmark[indice_benchmark[0]].iloc[0] * 100
                 portfolio_con_benchmark = portfolio_con_benchmark.drop(columns=[indice_benchmark[0]])
                 portfolio_con_benchmark['Portfolio'] = portfolio_con_benchmark['Portfolio'] / portfolio_con_benchmark['Portfolio'].iloc[0] * 100
@@ -316,7 +335,7 @@ def register_callbacks(app):
             print(portfolio_con_benchmark)
 
             # Fornisci feedback all'utente e salva i dati nel Store
-            return "Portafoglio creato con successo! Controlla la console del server per i dettagli.", portfolio_con_benchmark.to_dict('records'), dati_normalizzati.to_dict('records')
+            return "Portafoglio creato con successo! Controlla la console del server per i dettagli.", portfolio_con_benchmark.to_dict('records'), dati.to_dict('records')
 
         return "", "",""
 
@@ -345,17 +364,41 @@ def register_callbacks(app):
         dati = dati / dati.iloc[0] * 100
 
         return dati
+
     @app.callback(
-        Output('additional-feedback', 'children'),  # Aggiungi un nuovo elemento nel layout per mostrare i risultati
+        Output('additional-feedback', 'children'),  # Output to display the charts
         [Input('portfolio-data', 'data'),
          Input('assets-data', 'data')]
     )
-    def elaborate_portfolio_data(portfolio_data, assets_data):
-        print("=== Elaborazione dei Dati del Portafoglio ===")
-        print(portfolio_data)
-        print("=============================================")
-        print("=== Dati degli Asset Importati ===")
-        print(assets_data)
+    def plot_data(portfolio_data, assets_data):
+
+        # Convert data back to DataFrame
+        portfolio_df = pd.DataFrame(portfolio_data)
+
+        # Create the line chart for the portfolio
+        portfolio_fig = go.Figure()
+
+        # Create the line chart for the assets
+        for column in portfolio_df.columns:
+            portfolio_fig.add_trace(go.Scatter(
+                x=portfolio_df.index,
+                y=portfolio_df[column],
+                mode='lines',
+                name=column,
+                line=dict(width=1, dash='dot')  # Use dotted lines for individual assets
+            ))
+
+        portfolio_fig.update_layout(
+            title="Performance del Portafoglio e degli Asset",
+            xaxis_title="Data",
+            yaxis_title="Valore Normalizzato",
+            template='plotly_white',
+            legend_title="Legenda",
+            margin=dict(l=40, r=40, t=40, b=40)
+        )
+
+        # Return the graph as a Dash component
+        return dcc.Graph(figure=portfolio_fig)
 
 def main():
     # Carica la lista degli asset
