@@ -314,14 +314,14 @@ def register_callbacks(app):
 
             # Converti i dati della tabella in DataFrame
             df = pd.DataFrame(table_data)
-            indici = match_asset_name(df['ETF'])
+            indici = match_asset_name(df['ETF']) #Questa lista di merda è in ordine alfabetico
 
             dati = importa_dati(indici)
             dati = dati.loc[:, ~dati.columns.duplicated()]
             dati_scalati = dati.copy()
 
             for i in range(len(dati.columns)):
-                dati_scalati[dati.columns[i]] = dati[dati.columns[i]] * df['Percentuale'][i]
+                dati_scalati[dati.columns[i]] = dati[dati.columns[i]] * df['Percentuale'][i] #BUG
 
             #Somma delle colonne per trovare il valore del portafoglio
             dati_scalati['Portfolio'] = dati_scalati.sum(axis=1)
@@ -364,7 +364,8 @@ def register_callbacks(app):
     # Callback per elaborare i dati del portafoglio e fornire feedback aggiuntivo
     def match_asset_name(nomi_assets):
         mapping = pd.read_csv(FILE_PATH)
-        nomi_indici = mapping[mapping['Fund'].isin(nomi_assets)]['Index'].tolist()
+        nomi_indici = [mapping[mapping['Fund'] == asset]['Index'].values[0] for asset in nomi_assets if
+                       asset in mapping['Fund'].values]
         return nomi_indici
 
     def importa_dati(nomi_indici):
