@@ -280,6 +280,10 @@ def register_callbacks(app):
             if pd.Timestamp(start_date) < pd.Timestamp.min:
                 start_date = 2000
 
+        # Convert input dates to datetime objects if they exist
+        start_dt = pd.to_datetime(start_date) if start_date else None
+        end_dt = pd.to_datetime(end_date) if end_date else None
+
         if n_clicks is None:
             return "", dash.no_update,  dash.no_update
 
@@ -305,7 +309,6 @@ def register_callbacks(app):
             if benchmark:
                 indice_benchmark = match_asset_name([benchmark])
                 dati_benckmark = importa_dati(indice_benchmark)
-                #Drop duplicates columns
                 dati_benckmark = dati_benckmark.loc[:, ~dati_benckmark.columns.duplicated()]
 
             dati_scalati = dati.copy()
@@ -325,10 +328,6 @@ def register_callbacks(app):
                 portfolio_con_benchmark['Benchmark'] = portfolio_con_benchmark[indice_benchmark[0]] / portfolio_con_benchmark[indice_benchmark[0]].iloc[0] * 100
                 portfolio_con_benchmark = portfolio_con_benchmark.drop(columns=[indice_benchmark[0]])
                 portfolio_con_benchmark['Portfolio'] = portfolio_con_benchmark['Portfolio'] / portfolio_con_benchmark['Portfolio'].iloc[0] * 100
-
-            # Convert input dates to datetime objects if they exist
-            start_dt = pd.to_datetime(start_date) if start_date else None
-            end_dt = pd.to_datetime(end_date) if end_date else None
 
             # Get the first and last dates of the portfolio
             first_portfolio_date = pd.to_datetime(portfolio_con_benchmark.index[0])
