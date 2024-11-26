@@ -268,6 +268,18 @@ def register_callbacks(app):
     )
     def create_portfolio(n_clicks, table_data, benchmark, start_date, end_date):
 
+        if end_date:
+            if pd.Timestamp(end_date) > pd.Timestamp.max:
+                end_date = 2024
+            if pd.Timestamp(end_date) < pd.Timestamp.min:
+                end_date = 2024
+
+        if start_date:
+            if pd.Timestamp(start_date) > pd.Timestamp.max:
+                start_date = 2000
+            if pd.Timestamp(start_date) < pd.Timestamp.min:
+                start_date = 2000
+
         if n_clicks is None:
             return "", dash.no_update,  dash.no_update
 
@@ -369,10 +381,9 @@ def register_callbacks(app):
 
     @app.callback(
         Output('additional-feedback', 'children'),  # Output to display the charts
-        [Input('portfolio-data', 'data'),
-         Input('assets-data', 'data')]
+        [Input('portfolio-data', 'data')]
     )
-    def plot_data(portfolio_data, assets_data):
+    def plot_data(portfolio_data): # ---------- THE KING -------------
 
         # Convert data back to DataFrame
         portfolio_df = pd.DataFrame(portfolio_data)
