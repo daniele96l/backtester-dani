@@ -166,7 +166,7 @@ def create_layout(asset_list, initial_table_data):
                         style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
                     )
                 ], md=2)  # Specifica la larghezza della colonna per Anno Fine
-            ]),
+            ], className='mt-5'),
 
             # Sommario Allocazione e Feedback
             dbc.Row([
@@ -314,19 +314,18 @@ def register_callbacks(app):
 
             # Converti i dati della tabella in DataFrame
             df = pd.DataFrame(table_data)
-            indici = match_asset_name(df['ETF']) #Questa lista di merda è in ordine alfabetico
+            indici = match_asset_name(df['ETF'])
 
             dati = importa_dati(indici)
             dati = dati.loc[:, ~dati.columns.duplicated()]
             dati_scalati = dati.copy()
 
             for i in range(len(dati.columns)):
-                dati_scalati[dati.columns[i]] = dati[dati.columns[i]] * df['Percentuale'][i] #BUG
+                dati_scalati[dati.columns[i]] = dati[dati.columns[i]] * df['Percentuale'][i]
 
             #Somma delle colonne per trovare il valore del portafoglio
             dati_scalati['Portfolio'] = dati_scalati.sum(axis=1)
             dati_scalati = dati_scalati.drop(dati.columns, axis=1)
-
             portfolio_con_benchmark = dati_scalati.copy()
 
             if benchmark:
