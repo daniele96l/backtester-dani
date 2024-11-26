@@ -147,6 +147,8 @@ def create_layout(asset_list, initial_table_data):
                     dbc.Label("Seleziona il Periodo (Opzionale):", style={'color': '#000000'}),
                     dcc.DatePickerRange(
                         id='date-picker-range',
+                        start_date="1990-01-01",
+                        end_date="2023-12-01",
                         start_date_placeholder_text='Data Inizio',
                         end_date_placeholder_text='Data Fine',
                         display_format='DD/MM/YYYY',
@@ -348,6 +350,7 @@ def register_callbacks(app):
 
             # Fornisci feedback all'utente e salva i dati nel Store
             portfolio_con_benchmark.reset_index(inplace=True)
+
             return "", portfolio_con_benchmark.to_dict('records'), dati.to_dict('records')
 
         return "", "",""
@@ -410,7 +413,13 @@ def register_callbacks(app):
         )
 
         # Return the graph as a Dash component
-        return dcc.Graph(figure=portfolio_fig)
+        #return dcc.Graph(figure=portfolio_fig)
+
+        # Return both graphs in a container
+        return html.Div([
+            dcc.Graph(figure=portfolio_fig),
+            dcc.Graph(figure=portfolio_fig)
+        ])
 
 def main():
     # Carica la lista degli asset
