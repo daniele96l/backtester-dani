@@ -127,7 +127,7 @@ def create_layout(asset_list, initial_table_data):
             dbc.Row([
                 # Colonna per il pulsante
                 dbc.Col(
-                    dbc.Button("Crea Portafoglio", id='create-portfolio-button', color='danger',
+                    dbc.Button("Crea/Aggiorna Portafoglio", id='create-portfolio-button', color='danger',
                                className='w-100 mt-4', style={'backgroundColor': '#8B4513', 'borderColor': '#8B4513'}),
                     md=2,  # Specifica la larghezza della colonna
                 ),
@@ -267,9 +267,7 @@ def register_callbacks(app):
          State('date-picker-range', 'end_date')]  # Ottieni la data di fine
     )
     def create_portfolio(n_clicks, table_data, benchmark, start_date, end_date):
-        print("=== Creazione del Portafoglio ===")
-        print(f"Data di Inizio: {start_date}")
-        print(f"Data di Fine: {end_date}")
+
         if n_clicks is None:
             return "", dash.no_update,  dash.no_update
 
@@ -316,8 +314,26 @@ def register_callbacks(app):
                 portfolio_con_benchmark = portfolio_con_benchmark.drop(columns=[indice_benchmark[0]])
                 portfolio_con_benchmark['Portfolio'] = portfolio_con_benchmark['Portfolio'] / portfolio_con_benchmark['Portfolio'].iloc[0] * 100
 
-            print("=== Dati Normalizzati con Benchmark ===")
-            print(portfolio_con_benchmark)
+            # Convert input dates to datetime objects if they exist
+            start_dt = pd.to_datetime(start_date) if start_date else None
+            end_dt = pd.to_datetime(end_date) if end_date else None
+
+            # Get the first and last dates of the portfolio
+            first_portfolio_date = pd.to_datetime(portfolio_con_benchmark.index[0])
+            last_portfolio_date = pd.to_datetime(portfolio_con_benchmark.index[-1])
+
+            # Calculate boolean conditions with descriptive names
+            is_duration_over_180 = (end_dt - start_dt).days > 180 if start_dt and end_dt else False
+            is_start_recent_enough = (last_portfolio_date - start_dt).days > 180 if start_dt else False
+            is_end_old_enough = (end_dt - first_portfolio_date).days > 180 if end_dt else False
+
+            # Apply slicing and normalization based on conditions
+            if (start_dt and start_dt > first_portfolio_date and is_duration_over_180 and is_start_recent_enough and is_end_old_enough):
+                portfolio_con_benchmark = portfolio_con_benchmark.loc[start_dt:]
+                portfolio_con_benchmark = (portfolio_con_benchmark / portfolio_con_benchmark.iloc[0]) * 100
+
+            if (end_dt and end_dt < last_portfolio_date and is_duration_over_180 and is_start_recent_enough and is_end_old_enough):
+                portfolio_con_benchmark = portfolio_con_benchmark.loc[:end_dt]
 
             # Fornisci feedback all'utente e salva i dati nel Store
             portfolio_con_benchmark.reset_index(inplace=True)
