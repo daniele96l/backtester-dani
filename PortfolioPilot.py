@@ -30,6 +30,7 @@ def initialize_table():
 
 
 def create_layout(asset_list, initial_table_data):
+    year_range = list(range(1990, 2025))
     """Definisce il layout dell'app Dash utilizzando componenti Bootstrap."""
     return html.Div([
         # Header Container - Occupa tutta la larghezza dello schermo
@@ -143,19 +144,29 @@ def create_layout(asset_list, initial_table_data):
                     )
                 ], md=6),  # Specifica la larghezza della colonna
                 # Colonna per la selezione delle date
+                # Colonna per la selezione degli anni
                 dbc.Col([
-                    dbc.Label("Seleziona il Periodo (Opzionale):", style={'color': '#000000'}),
-                    dcc.DatePickerRange(
-                        id='date-picker-range',
-                        start_date="1990-01-01",
-                        end_date="2023-12-01",
-                        start_date_placeholder_text='Data Inizio',
-                        end_date_placeholder_text='Data Fine',
-                        display_format='DD/MM/YYYY',
-                        style={'width': '100%'}
+                    dbc.Label("Anno Inizio (Opzionale):", style={'color': '#000000'}),
+                    dcc.Dropdown(
+                        id='start-year-dropdown',
+                        options=[{'label': str(year), 'value': year} for year in range(1990, 2025)],
+                        placeholder="Seleziona Anno Inizio",
+                        className='mb-3',
+                        style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
                     )
-                ], md=4)  # Specifica la larghezza della colonna per la selezione delle date
-            ], className='mb-4'),
+                ], md=2),  # Specifica la larghezza della colonna per Anno Inizio
+
+                dbc.Col([
+                    dbc.Label("Anno Fine (Opzionale):", style={'color': '#000000'}),
+                    dcc.Dropdown(
+                        id='end-year-dropdown',
+                        options=[{'label': str(year), 'value': year} for year in range(1990, 2025)],
+                        placeholder="Seleziona Anno Fine",
+                        className='mb-3',
+                        style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
+                    )
+                ], md=2)  # Specifica la larghezza della colonna per Anno Fine
+            ]),
 
             # Sommario Allocazione e Feedback
             dbc.Row([
@@ -261,46 +272,45 @@ def register_callbacks(app):
     @app.callback(
         [Output('portfolio-feedback', 'children'),
          Output('portfolio-data', 'data'),
-         Output('assets-data', 'data')],  # Aggiungi questo output
-        [Input('create-portfolio-button', 'n_clicks')],  # Quando clicco
+         Output('assets-data', 'data'),
+         Output('start-year-dropdown', 'options'),  # Dynamically update start year options
+         Output('end-year-dropdown', 'options')],  # Dynamically update end year options
+        [Input('create-portfolio-button', 'n_clicks')],
         [State('portfolio-table', 'data'),
          State('benchmark-dropdown', 'value'),
-         State('date-picker-range', 'start_date'),  # Ottieni la data di inizio
-         State('date-picker-range', 'end_date')]  # Ottieni la data di fine
+         State('start-year-dropdown', 'value'),
+         State('end-year-dropdown', 'value')]
     )
-    def create_portfolio(n_clicks, table_data, benchmark, start_date, end_date):
+    def create_portfolio(n_clicks, table_data, benchmark, start_year, end_year):
 
-        if end_date:
-            if pd.Timestamp(end_date) > pd.Timestamp.max:
-                end_date = 2024
-            if pd.Timestamp(end_date) < pd.Timestamp.min:
-                end_date = 2024
+        # Set default years if not provided
+        start_year = start_year or 1990
+        end_year = end_year or 2024
+        start_date = pd.Timestamp(f'{start_year}-01-01')
+        end_date = pd.Timestamp(f'{end_year}-12-31')
 
-        if start_date:
-            if pd.Timestamp(start_date) > pd.Timestamp.max:
-                start_date = 2000
-            if pd.Timestamp(start_date) < pd.Timestamp.min:
-                start_date = 2000
+        # Validate the date range
+        if start_date > end_date:
+            return "L'anno di inizio deve essere precedente all'anno di fine.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
         # Convert input dates to datetime objects if they exist
         start_dt = pd.to_datetime(start_date) if start_date else None
         end_dt = pd.to_datetime(end_date) if end_date else None
 
         if n_clicks is None:
-            return "", dash.no_update,  dash.no_update
+            return "", dash.no_update,  dash.no_update, dash.no_update, dash.no_update
 
         if n_clicks > 0:
             if not table_data:
-                return "Nessun ETF nel portafoglio da creare.", dash.no_update, dash.no_update
-
+                return "Nessun ETF nel portafoglio da creare.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
             # Calcola l'allocazione totale
             try:
                 total_percentage = sum(float(row.get('Percentuale', 0)) for row in table_data)
             except (ValueError, TypeError):
-                return "Valore percentuale non valido rilevato.", dash.no_update, dash.no_update
+                return "Valore percentuale non valido rilevato.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
             if total_percentage != 100:
-                return f"L'allocazione totale deve essere esattamente del 100%. Totale attuale: {total_percentage:.2f}%.", dash.no_update, dash.no_update
+                return f"L'allocazione totale deve essere esattamente del 100%. Totale attuale: {total_percentage:.2f}%.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
             # Converti i dati della tabella in DataFrame
             df = pd.DataFrame(table_data)
@@ -308,11 +318,6 @@ def register_callbacks(app):
 
             dati = importa_dati(indici)
             dati = dati.loc[:, ~dati.columns.duplicated()]
-            if benchmark:
-                indice_benchmark = match_asset_name([benchmark])
-                dati_benckmark = importa_dati(indice_benchmark)
-                dati_benckmark = dati_benckmark.loc[:, ~dati_benckmark.columns.duplicated()]
-
             dati_scalati = dati.copy()
 
             for i in range(len(dati.columns)):
@@ -325,7 +330,9 @@ def register_callbacks(app):
             portfolio_con_benchmark = dati_scalati.copy()
 
             if benchmark:
-                #Join dei dati del portafoglio con quelli del benchmark
+                indice_benchmark = match_asset_name([benchmark])
+                dati_benckmark = importa_dati(indice_benchmark)
+                dati_benckmark = dati_benckmark.loc[:, ~dati_benckmark.columns.duplicated()]
                 portfolio_con_benchmark = dati_scalati.join(dati_benckmark[indice_benchmark[0]], how='inner', rsuffix='_benchmark')
                 portfolio_con_benchmark['Benchmark'] = portfolio_con_benchmark[indice_benchmark[0]] / portfolio_con_benchmark[indice_benchmark[0]].iloc[0] * 100
                 portfolio_con_benchmark = portfolio_con_benchmark.drop(columns=[indice_benchmark[0]])
@@ -335,25 +342,24 @@ def register_callbacks(app):
             first_portfolio_date = pd.to_datetime(portfolio_con_benchmark.index[0])
             last_portfolio_date = pd.to_datetime(portfolio_con_benchmark.index[-1])
 
-            # Calculate boolean conditions with descriptive names
-            is_duration_over_180 = (end_dt - start_dt).days > 180 if start_dt and end_dt else False
-            is_start_recent_enough = (last_portfolio_date - start_dt).days > 180 if start_dt else False
-            is_end_old_enough = (end_dt - first_portfolio_date).days > 180 if end_dt else False
-
             # Apply slicing and normalization based on conditions
-            if (start_dt and start_dt > first_portfolio_date and is_duration_over_180 and is_start_recent_enough and is_end_old_enough):
+            if (start_dt and start_dt > first_portfolio_date ):
                 portfolio_con_benchmark = portfolio_con_benchmark.loc[start_dt:]
                 portfolio_con_benchmark = (portfolio_con_benchmark / portfolio_con_benchmark.iloc[0]) * 100
 
-            if (end_dt and end_dt < last_portfolio_date and is_duration_over_180 and is_start_recent_enough and is_end_old_enough):
+            if (end_dt and end_dt < last_portfolio_date):
                 portfolio_con_benchmark = portfolio_con_benchmark.loc[:end_dt]
+
+            first_year = first_portfolio_date.year
+            dynamic_years_start = [{'label': str(year), 'value': year} for year in range(first_year, 2025)] #Fist year is the fist year of the portfolio
+            dynamic_years_end = [{'label': str(year), 'value': year} for year in range(start_year, 2025)] #Start year è il primo anno dopo l'anno minimo settato dall'utente
 
             # Fornisci feedback all'utente e salva i dati nel Store
             portfolio_con_benchmark.reset_index(inplace=True)
 
-            return "", portfolio_con_benchmark.to_dict('records'), dati.to_dict('records')
+            return "", portfolio_con_benchmark.to_dict('records'), dati.to_dict('records'), dynamic_years_start, dynamic_years_end
 
-        return "", "",""
+        return "", "","", dash.no_update, dash.no_update
 
     # Callback per elaborare i dati del portafoglio e fornire feedback aggiuntivo
     def match_asset_name(nomi_assets):
