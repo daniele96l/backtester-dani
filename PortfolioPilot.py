@@ -391,22 +391,71 @@ def register_callbacks(app):
         Output('additional-feedback', 'children'),  # Output to display the charts
         [Input('portfolio-data', 'data')]
     )
-    def plot_data(portfolio_data): # ---------- THE KING -------------
-
+    def plot_data(portfolio_data):
         # Convert data back to DataFrame
         portfolio_df = pd.DataFrame(portfolio_data)
 
-        # Create the line chart for the portfolio
-        portfolio_fig = go.Figure()
+        # Ensure 'Date' column is datetime for calculations
+        portfolio_df['Date'] = pd.to_datetime(portfolio_df['Date'])
+
+        # Calculate CAGR and Volatility for each column except 'Date'
+        cagr = {}
+        volatility = {}
         column_except_date = [col for col in portfolio_df.columns if col != 'Date']
-        # Create the line chart for the assets
+
+        for column in column_except_date:
+            # Calculate total return
+            start_value = portfolio_df[column].iloc[0]
+            end_value = portfolio_df[column].iloc[-1]
+            num_years = (portfolio_df['Date'].iloc[-1] - portfolio_df['Date'].iloc[0]).days / 365.25
+            cagr[column] = ((end_value / start_value) ** (1 / num_years) - 1) * 100  # CAGR as percentage
+
+            # Calculate volatility (annualized standard deviation of monthly returns)
+            returns = portfolio_df[column].pct_change().dropna()
+            volatility[column] = returns.std() * (12 ** 0.5) * 100  # Annualized volatility as percentage
+
+        # Transform data for bar chart with X-axis as metrics
+        metrics_df = pd.DataFrame({
+            "Portfolio": column_except_date,
+            "CAGR": [cagr[col] for col in column_except_date],
+            "Volatility": [volatility[col] for col in column_except_date]
+        })
+
+        metrics_melted = metrics_df.melt(
+            id_vars="Portfolio",
+            var_name="Metric",
+            value_name="Value"
+        )
+
+        # Create bar chart
+        bar_chart_fig = go.Figure()
+        for portfolio in metrics_df["Portfolio"]:
+            filtered_data = metrics_melted[metrics_melted["Portfolio"] == portfolio]
+            bar_chart_fig.add_trace(go.Bar(
+                x=filtered_data["Metric"],
+                y=filtered_data["Value"],
+                name=portfolio
+            ))
+
+        bar_chart_fig.update_layout(
+            title="CAGR e Volatilità per Portafoglio",
+            xaxis_title="Metriche",
+            yaxis_title="Valore (%)",
+            barmode='group',  # Bars side by side
+            template='plotly_white',
+            legend_title="Portafogli e Benchmark",
+            margin=dict(l=40, r=40, t=40, b=40)
+        )
+
+        # Line chart for portfolio and assets
+        portfolio_fig = go.Figure()
         for column in column_except_date:
             portfolio_fig.add_trace(go.Scatter(
                 x=portfolio_df["Date"],
                 y=portfolio_df[column],
                 mode='lines',
                 name=column,
-                line=dict(width=1, dash='dot')  # Use dotted lines for individual assets
+                line=dict(width=1, dash='dot')  # Dotted lines for individual assets
             ))
 
         portfolio_fig.update_layout(
@@ -418,14 +467,12 @@ def register_callbacks(app):
             margin=dict(l=40, r=40, t=40, b=40)
         )
 
-        # Return the graph as a Dash component
-        #return dcc.Graph(figure=portfolio_fig)
-
         # Return both graphs in a container
         return html.Div([
             dcc.Graph(figure=portfolio_fig),
-            dcc.Graph(figure=portfolio_fig)
+            dcc.Graph(figure=bar_chart_fig)
         ])
+
 
 def main():
     # Carica la lista degli asset
