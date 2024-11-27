@@ -404,32 +404,25 @@ def register_callbacks(app):
         column_except_date = [col for col in portfolio_df.columns if col != 'Date']
 
         for column in column_except_date:
-            # Calculate total return
             start_value = portfolio_df[column].iloc[0]
             end_value = portfolio_df[column].iloc[-1]
             num_years = (portfolio_df['Date'].iloc[-1] - portfolio_df['Date'].iloc[0]).days / 365.25
             cagr[column] = ((end_value / start_value) ** (1 / num_years) - 1) * 100  # CAGR as percentage
+            volatility[column] = portfolio_df[column].pct_change().std() * (12 ** 0.5)*100
 
-            # Calculate volatility (annualized standard deviation of monthly returns)
-            returns = portfolio_df[column].pct_change().dropna()
-            volatility[column] = returns.std() * (12 ** 0.5) * 100  # Annualized volatility as percentage
 
-        # Transform data for bar chart with X-axis as metrics
-        metrics_df = pd.DataFrame({
-            "Portfolio": column_except_date,
-            "CAGR": [cagr[col] for col in column_except_date],
-            "Volatility": [volatility[col] for col in column_except_date]
-        })
+        #Round the values
+        cagr = {k: round(v, 2) for k, v in cagr.items()}
+        volatility = {k: round(v, 2) for k, v in volatility.items()}
+        # Create a DataFrame for the metrics
+        metrics_df = pd.DataFrame([cagr, volatility], index=['CAGR', 'Volatility']).reset_index()
+        metrics_df = metrics_df.rename(columns={'index': 'Metric'})
 
-        metrics_melted = metrics_df.melt(
-            id_vars="Portfolio",
-            var_name="Metric",
-            value_name="Value"
-        )
-
+        # Melt the DataFrame for plotting
+        metrics_melted = pd.melt(metrics_df, id_vars='Metric', var_name='Portfolio', value_name='Value')
         # Create bar chart
         bar_chart_fig = go.Figure()
-        for portfolio in metrics_df["Portfolio"]:
+        for portfolio in metrics_df.columns[1:]:
             filtered_data = metrics_melted[metrics_melted["Portfolio"] == portfolio]
             bar_chart_fig.add_trace(go.Bar(
                 x=filtered_data["Metric"],
