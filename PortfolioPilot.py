@@ -4,11 +4,18 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import dash.dash_table
 import plotly.graph_objects as go
+import Plot_line_chart as plc
 
 # Costanti
-FILE_PATH = "/Users/danieleligato/PycharmProjects/DaniBacktester/data/Index_list_cleaned.csv"  # Assicurati che questo CSV sia nella stessa directory dello script
+FILE_PATH = "data/Index_list_cleaned.csv"  # Assicurati che questo CSV sia nella stessa directory dello script
 APP_TITLE = "PortfolioPilot"
+# Define colors for benchmark and portfolio
+benchmark_color = 'rgba(250, 128, 114, 0.7)'  # Pastel orange
+portfolio_color = 'rgba(135, 206, 250, 0.7)'  # Pastel blue
 
+# Define a fallback color palette for other lines
+fallback_colors = ['rgba(186, 85, 211, 0.7)', 'rgba(144, 238, 144, 0.7)',
+                   'rgba(255, 182, 193, 0.7)', 'rgba(218, 112, 214, 0.7)']
 
 def load_asset_list(file_path):
     """Carica e processa la lista degli asset da un file CSV."""
@@ -80,10 +87,9 @@ def create_layout(asset_list, initial_table_data):
                         step=1,
                         value=100,
                         marks={i: f'{i}%' for i in range(0, 101, 10)},
-                        tooltip={"placement": "bottom", "always_visible": False},
+                        tooltip={"placement": "top", "always_visible": True},
                         updatemode='drag',
-                    ),
-                    html.Div(id='slider-value', className='text-center mt-2', style={'color': '#000000'})
+                    )
                 ], md=6),
             ], className='mb-4'),
 
@@ -209,15 +215,6 @@ def create_layout(asset_list, initial_table_data):
 def register_callbacks(app):
     """Registra tutti i callback per l'app Dash."""
 
-    # Visualizza il valore corrente dello slider
-    @app.callback(
-        Output('slider-value', 'children'),
-        [Input('percentage-slider', 'value')]
-    )
-    def display_slider_value(value):
-        if value is None:
-            value = 0  # Valore predefinito se lo slider non è impostato
-        return f"Percentuale Selezionata: {value}%"
 
     # Callback per aggiungere un ETF alla tabella con la percentuale selezionata
     @app.callback(
@@ -372,7 +369,7 @@ def register_callbacks(app):
         for i in nomi_indici:
             # Read the data and set Date as the index
             temp_data = pd.read_csv(
-                f"/Users/danieleligato/PycharmProjects/DaniBacktester/data/ETFs/{i}.csv",
+                f"data/ETFs/{i}.csv",
                 parse_dates=['Date']
             ).set_index('Date')
 
@@ -391,8 +388,9 @@ def register_callbacks(app):
         Output('additional-feedback', 'children'),  # Output to display the charts
         [Input('portfolio-data', 'data')]
     )
-    def plot_data(portfolio_data):
+    def plot_data(portfolio_data):  # ----------- KING
         # Convert data back to DataFrame
+
         portfolio_df = pd.DataFrame(portfolio_data)
 
         # Ensure 'Date' column is datetime for calculations
@@ -401,6 +399,7 @@ def register_callbacks(app):
         # Calculate CAGR and Volatility for each column except 'Date'
         cagr = {}
         volatility = {}
+        sharpe_ratio = {}
         column_except_date = [col for col in portfolio_df.columns if col != 'Date']
 
         for column in column_except_date:
@@ -408,62 +407,83 @@ def register_callbacks(app):
             end_value = portfolio_df[column].iloc[-1]
             num_years = (portfolio_df['Date'].iloc[-1] - portfolio_df['Date'].iloc[0]).days / 365.25
             cagr[column] = ((end_value / start_value) ** (1 / num_years) - 1) * 100  # CAGR as percentage
-            volatility[column] = portfolio_df[column].pct_change().std() * (12 ** 0.5)*100
+            volatility[column] = portfolio_df[column].pct_change().std() * (12 ** 0.5) * 100
+            sharpe_ratio[column] = cagr[column] / volatility[column] if volatility[column] != 0 else 0
 
-
-        #Round the values
+        # Round the values
         cagr = {k: round(v, 2) for k, v in cagr.items()}
         volatility = {k: round(v, 2) for k, v in volatility.items()}
+        sharpe_ratio = {k: round(v, 2) for k, v in sharpe_ratio.items()}
+
         # Create a DataFrame for the metrics
-        metrics_df = pd.DataFrame([cagr, volatility], index=['CAGR', 'Volatility']).reset_index()
+        metrics_df = pd.DataFrame([cagr, volatility,sharpe_ratio], index=['CAGR', 'Volatility','Sharpe Ratio']).reset_index()
         metrics_df = metrics_df.rename(columns={'index': 'Metric'})
 
         # Melt the DataFrame for plotting
         metrics_melted = pd.melt(metrics_df, id_vars='Metric', var_name='Portfolio', value_name='Value')
-        # Create bar chart
-        bar_chart_fig = go.Figure()
-        for portfolio in metrics_df.columns[1:]:
-            filtered_data = metrics_melted[metrics_melted["Portfolio"] == portfolio]
-            bar_chart_fig.add_trace(go.Bar(
-                x=filtered_data["Metric"],
-                y=filtered_data["Value"],
-                name=portfolio
-            ))
 
-        bar_chart_fig.update_layout(
-            title="CAGR e Volatilità per Portafoglio",
-            xaxis_title="Metriche",
-            yaxis_title="Valore (%)",
-            barmode='group',  # Bars side by side
+        # Split the metrics into separate DataFrames for each metric
+        cagr_data = metrics_melted[metrics_melted["Metric"] == "CAGR"]
+        volatility_data = metrics_melted[metrics_melted["Metric"] == "Volatility"]
+        sharpe_data = metrics_melted[metrics_melted["Metric"] == "Sharpe Ratio"]
+
+        sharpe_fig = go.Figure()
+        sharpe_fig.add_trace(go.Bar(
+            x=sharpe_data["Portfolio"],
+            y=sharpe_data["Value"],
+            name="Sharpe Ratio",
+            marker=dict(color=[portfolio_color, benchmark_color])
+        ))
+
+        sharpe_fig.update_layout(
+            title="Sharpe Ratio per Portafoglio",
+            xaxis_title="Portafogli",
+            yaxis_title="Sharpe Ratio",
             template='plotly_white',
-            legend_title="Portafogli e Benchmark",
             margin=dict(l=40, r=40, t=40, b=40)
         )
 
-        # Line chart for portfolio and assets
-        portfolio_fig = go.Figure()
-        for column in column_except_date:
-            portfolio_fig.add_trace(go.Scatter(
-                x=portfolio_df["Date"],
-                y=portfolio_df[column],
-                mode='lines',
-                name=column,
-                line=dict(width=1, dash='dot')  # Dotted lines for individual assets
-            ))
+        # Create separate bar charts for CAGR and Volatility
+        cagr_fig = go.Figure()
+        cagr_fig.add_trace(go.Bar(
+            x=cagr_data["Portfolio"],
+            y=cagr_data["Value"],
+            name="CAGR",
+            marker=dict(color=[portfolio_color, benchmark_color])
 
-        portfolio_fig.update_layout(
-            title="Performance del Portafoglio e degli Asset",
-            xaxis_title="Data",
-            yaxis_title="Valore Normalizzato",
+
+        ))
+        cagr_fig.update_layout(
+            title="CAGR per Portafoglio",
+            xaxis_title="Portafogli",
+            yaxis_title="CAGR (%)",
             template='plotly_white',
-            legend_title="Legenda",
             margin=dict(l=40, r=40, t=40, b=40)
         )
 
-        # Return both graphs in a container
+        volatility_fig = go.Figure()
+        volatility_fig.add_trace(go.Bar(
+            x=volatility_data["Portfolio"],
+            y=volatility_data["Value"],
+            name="Volatility",
+            marker=dict(color=[portfolio_color, benchmark_color])
+        ))
+        volatility_fig.update_layout(
+            title="Volatilità per Portafoglio",
+            xaxis_title="Portafogli",
+            yaxis_title="Volatilità (%)",
+            template='plotly_white',
+            margin=dict(l=40, r=40, t=40, b=40)
+        )
+
+        portfolio_fig = plc.plot_line_chart(column_except_date, portfolio_df, portfolio_color, benchmark_color, fallback_colors)
+
+        # Return both graphs side by side, and the line chart below
         return html.Div([
-            dcc.Graph(figure=portfolio_fig),
-            dcc.Graph(figure=bar_chart_fig)
+            html.Div(dcc.Graph(figure=portfolio_fig), style={'width': '100%'}),
+            html.Div(dcc.Graph(figure=cagr_fig), style={'width': '33%', 'display': 'inline-block'}),
+            html.Div(dcc.Graph(figure=volatility_fig), style={'width': '33%', 'display': 'inline-block'}),
+            html.Div(dcc.Graph(figure=sharpe_fig), style={'width': '33%', 'display': 'inline-block'}),
         ])
 
 
