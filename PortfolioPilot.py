@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import dash.dash_table
 import plotly.graph_objects as go
-import Plot_line_chart as plc
+import PlotLineChart as plc
 
 # Costanti
 FILE_PATH = "data/Index_list_cleaned.csv"  # Assicurati che questo CSV sia nella stessa directory dello script
@@ -149,7 +149,6 @@ def create_layout(asset_list, initial_table_data):
                         style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
                     )
                 ], md=6),  # Specifica la larghezza della colonna
-                # Colonna per la selezione delle date
                 # Colonna per la selezione degli anni
                 dbc.Col([
                     dbc.Label("Anno Inizio (Opzionale):", style={'color': '#000000'}),
@@ -315,13 +314,21 @@ def register_callbacks(app):
 
             dati = importa_dati(indici)
             dati = dati.loc[:, ~dati.columns.duplicated()]
-            dati_scalati = dati.copy()
 
-            for i in range(len(dati.columns)):
-                dati_scalati[dati.columns[i]] = dati[dati.columns[i]] * df['Percentuale'][i]
+            #Calcola i ritorni pe ogni asset
 
-            #Somma delle colonne per trovare il valore del portafoglio
-            dati_scalati['Portfolio'] = dati_scalati.sum(axis=1)
+            pct_change = dati.pct_change()/100
+            #Drop nan values
+            pct_change = pct_change.dropna()
+            #Scala i ritorni per il peso e poi fanne la media
+            dati_scalati = pct_change * df['Percentuale'].values
+
+            dati_scalati['Portfolio_return'] = dati_scalati.mean(axis=1)*len(dati_scalati.columns)
+
+            dati_scalati['Portfolio'] = 100 * (1 + dati_scalati['Portfolio_return']).cumprod()
+
+            dati_scalati = dati_scalati.drop(columns=['Portfolio_return'])
+
             dati_scalati = dati_scalati.drop(dati.columns, axis=1)
             portfolio_con_benchmark = dati_scalati.copy()
 
@@ -338,6 +345,10 @@ def register_callbacks(app):
             first_portfolio_date = pd.to_datetime(portfolio_con_benchmark.index[0])
             last_portfolio_date = pd.to_datetime(portfolio_con_benchmark.index[-1])
 
+            if (first_portfolio_date > end_dt):
+                end_dt = last_portfolio_date
+                start_dt = first_portfolio_date
+
             # Apply slicing and normalization based on conditions
             if (start_dt and start_dt > first_portfolio_date ):
                 portfolio_con_benchmark = portfolio_con_benchmark.loc[start_dt:]
@@ -346,9 +357,10 @@ def register_callbacks(app):
             if (end_dt and end_dt < last_portfolio_date):
                 portfolio_con_benchmark = portfolio_con_benchmark.loc[:end_dt]
 
+
             first_year = first_portfolio_date.year
             dynamic_years_start = [{'label': str(year), 'value': year} for year in range(first_year, 2025)] #Fist year is the fist year of the portfolio
-            dynamic_years_end = [{'label': str(year), 'value': year} for year in range(start_year, 2025)] #Start year è il primo anno dopo l'anno minimo settato dall'utente
+            dynamic_years_end = [{'label': str(year), 'value': year} for year in range(first_year, 2025)] #Start year è il primo anno dopo l'anno minimo settato dall'utente
 
             # Fornisci feedback all'utente e salva i dati nel Store
             portfolio_con_benchmark.reset_index(inplace=True)
