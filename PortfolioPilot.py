@@ -317,15 +317,16 @@ def register_callbacks(app):
 
             #Calcola i ritorni pe ogni asset
 
-            pct_change = dati.pct_change()/100
+            pct_change = dati.pct_change()
             #Drop nan values
             pct_change = pct_change.dropna()
             #Scala i ritorni per il peso e poi fanne la media
-            dati_scalati = pct_change * df['Percentuale'].values
+            dati_scalati = pct_change * df['Percentuale'].values/100
 
-            dati_scalati['Portfolio_return'] = dati_scalati.mean(axis=1)*len(dati_scalati.columns)
+            dati_scalati['Portfolio_return'] = dati_scalati.sum(axis=1)
 
             dati_scalati['Portfolio'] = 100 * (1 + dati_scalati['Portfolio_return']).cumprod()
+
 
             dati_scalati = dati_scalati.drop(columns=['Portfolio_return'])
 
