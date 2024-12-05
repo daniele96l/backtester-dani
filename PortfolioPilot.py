@@ -11,12 +11,9 @@ import webbrowser
 FILE_PATH = "data/Index_list_cleaned.csv"  # Assicurati che questo CSV sia nella stessa directory dello script
 APP_TITLE = "PortfolioPilot"
 # Define colors for benchmark and portfolio
-benchmark_color = 'rgba(250, 128, 114, 0.7)'  # Pastel orange
-portfolio_color = 'rgba(135, 206, 250, 0.7)'  # Pastel blue
+benchmark_color = 'rgba(250, 128, 114, 0.7)'
+portfolio_color = 'rgba(135, 206, 250, 0.7)'
 
-# Define a fallback color palette for other lines
-fallback_colors = ['rgba(186, 85, 211, 0.7)', 'rgba(144, 238, 144, 0.7)',
-                   'rgba(255, 182, 193, 0.7)', 'rgba(218, 112, 214, 0.7)']
 
 def load_asset_list(file_path):
     """Carica e processa la lista degli asset da un file CSV."""
@@ -435,6 +432,18 @@ def register_callbacks(app):
 
         return dati
 
+    def calculate_rolling_returns(portfolio_df, period):
+        rolling_returns = portfolio_df.copy()
+        rolling_returns = rolling_returns.set_index('Date')
+        rolling_returns = rolling_returns.pct_change().rolling(window=period).sum()
+        rolling_returns = rolling_returns.dropna()
+        rolling_returns = rolling_returns.reset_index()
+        return rolling_returns
+    def add_rolling_traces(portfolio_df, period, portfolio_color,column_except_date):
+        rolling_returns = calculate_rolling_returns(portfolio_df, period)
+        return plc.plot_line_chart_rolling(column_except_date, rolling_returns, portfolio_color, benchmark_color,period)
+
+
     @app.callback(
         Output('additional-feedback', 'children'),  # Output to display the charts
         [Input('portfolio-data', 'data')]
@@ -447,11 +456,25 @@ def register_callbacks(app):
         # Ensure 'Date' column is datetime for calculations
         portfolio_df['Date'] = pd.to_datetime(portfolio_df['Date'])
 
+        rolling_periods = [36, 60, 120]
+
+
+        # Create the figures
+        rolling1 = go.Figure()
+        rolling2 = go.Figure()
+        rolling3 = go.Figure()
+        column_except_date = [col for col in portfolio_df.columns if col != 'Date']
+
+        # Add traces to each figure
+        rolling1 = add_rolling_traces(portfolio_df, rolling_periods[0], portfolio_color,column_except_date)
+        rolling2 = add_rolling_traces(portfolio_df, rolling_periods[1], portfolio_color,column_except_date)
+        rolling3 = add_rolling_traces(portfolio_df, rolling_periods[2], portfolio_color,column_except_date)
+
         # Calculate CAGR and Volatility for each column except 'Date'
         cagr = {}
         volatility = {}
         sharpe_ratio = {}
-        column_except_date = [col for col in portfolio_df.columns if col != 'Date']
+
 
         for column in column_except_date:
             start_value = portfolio_df[column].iloc[0]
@@ -477,6 +500,7 @@ def register_callbacks(app):
         cagr_data = metrics_melted[metrics_melted["Metric"] == "CAGR"]
         volatility_data = metrics_melted[metrics_melted["Metric"] == "Volatility"]
         sharpe_data = metrics_melted[metrics_melted["Metric"] == "Sharpe Ratio"]
+
 
         sharpe_fig = go.Figure()
         sharpe_fig.add_trace(go.Bar(
@@ -527,7 +551,7 @@ def register_callbacks(app):
             margin=dict(l=40, r=40, t=40, b=40)
         )
 
-        portfolio_fig = plc.plot_line_chart(column_except_date, portfolio_df, portfolio_color, benchmark_color, fallback_colors)
+        portfolio_fig = plc.plot_line_chart(column_except_date, portfolio_df, portfolio_color, benchmark_color)
 
         # Return both graphs side by side, and the line chart below
         return html.Div([
@@ -535,9 +559,9 @@ def register_callbacks(app):
             html.Div(dcc.Graph(figure=cagr_fig), style={'width': '33%', 'display': 'inline-block'}),
             html.Div(dcc.Graph(figure=volatility_fig), style={'width': '33%', 'display': 'inline-block'}),
             html.Div(dcc.Graph(figure=sharpe_fig), style={'width': '33%', 'display': 'inline-block'}),
-            html.Div(dcc.Graph(figure=portfolio_fig), style={'width': '100%'}), #Rolling 3y
-            html.Div(dcc.Graph(figure=portfolio_fig), style={'width': '100%'}), #Rolling 5y
-            html.Div(dcc.Graph(figure=portfolio_fig), style={'width': '100%'}), #Rolling 10y
+            html.Div(dcc.Graph(figure=rolling1), style={'width': '100%'}), #Rolling 3y
+            html.Div(dcc.Graph(figure=rolling2), style={'width': '100%'}), #Rolling 5y
+            html.Div(dcc.Graph(figure=rolling3), style={'width': '100%'}), #Rolling 10y
         ])
 
 
