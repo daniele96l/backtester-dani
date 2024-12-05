@@ -5,6 +5,7 @@ import pandas as pd
 import dash.dash_table
 import plotly.graph_objects as go
 import PlotLineChart as plc
+import plotly.graph_objects as go
 
 # Costanti
 FILE_PATH = "data/Index_list_cleaned.csv"  # Assicurati che questo CSV sia nella stessa directory dello script
