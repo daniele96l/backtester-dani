@@ -97,8 +97,18 @@ def create_layout(asset_list, initial_table_data):
             # Pulsante Aggiungi ETF
             dbc.Row(
                 dbc.Col(
-                    dbc.Button("Aggiungi ETF", id='add-etf-button', color='danger', className='w-100',
-                               style={'backgroundColor': '#FA8072', 'borderColor': '#FA8072'}),
+                    dbc.Button(
+                        "Aggiungi ETF",
+                        id='add-etf-button',
+                        color='danger',
+                        className='w-100',
+                        style={
+                            'backgroundColor': '#FA8072',
+                            'borderColor': '#FA8072',
+                            'minWidth': '100px',  # Minimum width
+                            'minHeight': '40px'  # Minimum height
+                        }
+                    ),
                     width=2
                 ),
                 className='mb-4'
@@ -525,6 +535,9 @@ def register_callbacks(app):
             html.Div(dcc.Graph(figure=cagr_fig), style={'width': '33%', 'display': 'inline-block'}),
             html.Div(dcc.Graph(figure=volatility_fig), style={'width': '33%', 'display': 'inline-block'}),
             html.Div(dcc.Graph(figure=sharpe_fig), style={'width': '33%', 'display': 'inline-block'}),
+            html.Div(dcc.Graph(figure=portfolio_fig), style={'width': '100%'}), #Rolling 3y
+            html.Div(dcc.Graph(figure=portfolio_fig), style={'width': '100%'}), #Rolling 5y
+            html.Div(dcc.Graph(figure=portfolio_fig), style={'width': '100%'}), #Rolling 10y
         ])
 
 
