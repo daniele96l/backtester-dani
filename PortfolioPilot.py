@@ -216,22 +216,14 @@ def create_layout(asset_list, initial_table_data):
             ]),
             # Floating Button
             dbc.Button(
-                children="Info",
+                children="Info",  # Text on the button
                 id="floating-button",
                 color="primary",
-                className="btn-floating",
-                style={
-                    "position": "fixed",
-                    "bottom": "20px",
-                    "left": "20px",
-                    "borderRadius": "50%",
-                    "width": "60px",
-                    "height": "60px",
-                    "boxShadow": "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                    "zIndex": "1000",
-                },
+                className="btn-floating",  # Use the CSS class defined in styles.css
             ),
+
             dcc.Location(id="url", refresh=True)
+
         ], className='px-4', style={'backgroundColor': '#FFFFFF'})
 
     ])
@@ -247,7 +239,7 @@ def register_callbacks(app):
     )
     def redirect_to_link(n_clicks):
         # Restituisci il link dove vuoi reindirizzare
-        webbrowser.open_new_tab("https://danieleligato-eng.notion.site/Portfolio-Pilot-153922846a1680f6add6d81b635743a4")
+        webbrowser.open_new_tab("https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577")
 
 
     # Callback per aggiungere un ETF alla tabella con la percentuale selezionata
