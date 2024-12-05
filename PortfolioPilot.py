@@ -6,7 +6,7 @@ import dash.dash_table
 import plotly.graph_objects as go
 import PlotLineChart as plc
 import plotly.graph_objects as go
-
+import webbrowser
 # Costanti
 FILE_PATH = "data/Index_list_cleaned.csv"  # Assicurati che questo CSV sia nella stessa directory dello script
 APP_TITLE = "PortfolioPilot"
@@ -93,7 +93,6 @@ def create_layout(asset_list, initial_table_data):
                     )
                 ], md=6),
             ], className='mb-4'),
-
 
             # Pulsante Aggiungi ETF
             dbc.Row(
@@ -208,12 +207,40 @@ def create_layout(asset_list, initial_table_data):
                     width=12
                 )
             ]),
-        ], className='px-4', style={'backgroundColor': '#FFFFFF'})  # Container con margini orizzontali
+            # Floating Button
+            dbc.Button(
+                children="Info",
+                id="floating-button",
+                color="primary",
+                className="btn-floating",
+                style={
+                    "position": "fixed",
+                    "bottom": "20px",
+                    "left": "20px",
+                    "borderRadius": "50%",
+                    "width": "60px",
+                    "height": "60px",
+                    "boxShadow": "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                    "zIndex": "1000",
+                },
+            ),
+            dcc.Location(id="url", refresh=True)
+        ], className='px-4', style={'backgroundColor': '#FFFFFF'})
+
     ])
 
 
 def register_callbacks(app):
     """Registra tutti i callback per l'app Dash."""
+
+    @app.callback(
+        Output("url", "href"),
+        Input("floating-button", "n_clicks"),
+        prevent_initial_call=True
+    )
+    def redirect_to_link(n_clicks):
+        # Restituisci il link dove vuoi reindirizzare
+        webbrowser.open_new_tab("https://danieleligato-eng.notion.site/Portfolio-Pilot-153922846a1680f6add6d81b635743a4")
 
 
     # Callback per aggiungere un ETF alla tabella con la percentuale selezionata
