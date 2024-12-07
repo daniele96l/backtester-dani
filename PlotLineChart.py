@@ -28,7 +28,7 @@ def plot_line_chart(column_except_date, portfolio_df, portfolio_color, benchmark
     # Update layout for better visuals
     portfolio_fig.update_layout(
         title={
-            'text': "Performance del Portafoglio e degli Asset",
+            'text': "Performance storiche",
             'y': 0.9,  # Vertical alignment of the title
             'x': 0.5,  # Center align the title
             'xanchor': 'center',
@@ -82,14 +82,14 @@ def plot_line_chart_rolling(column_except_date, portfolio_df, portfolio_color, b
     # Update layout for better visuals
     portfolio_fig.update_layout(
         title={
-            'text': f"Performance del Portafoglio e degli Asset con Rolling Window di {rolling_window} mesi",
+            'text': f"Performance con Rolling Window di {rolling_window} mesi",
             'y': 0.9,  # Vertical alignment of the title
             'x': 0.5,  # Center align the title
             'xanchor': 'center',
             'yanchor': 'top'
         },
         xaxis_title="Data",
-        yaxis_title="Ritorni totali % nel periodo",
+        yaxis_title="Ritorni totali nel periodo (%)",
         xaxis=dict(showgrid=True, gridcolor='lightgrey'),
         yaxis=dict(showgrid=True, gridcolor='lightgrey'),
         template='plotly_white',  # Clean background style

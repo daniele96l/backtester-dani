@@ -431,10 +431,29 @@ def register_callbacks(app):
         rolling_returns = rolling_returns.dropna()
         rolling_returns = rolling_returns.reset_index()
         return rolling_returns
-    def add_rolling_traces(portfolio_df, period, portfolio_color,column_except_date):
-        rolling_returns = calculate_rolling_returns(portfolio_df, period)
-        return plc.plot_line_chart_rolling(column_except_date, rolling_returns, portfolio_color, benchmark_color,period)
 
+    def add_rolling_traces(portfolio_df, period, portfolio_color, column_except_date):
+        # Calculate rolling returns
+        rolling_returns = calculate_rolling_returns(portfolio_df, period)
+
+        # Generate the rolling chart
+        figure = plc.plot_line_chart_rolling(column_except_date, rolling_returns, portfolio_color, benchmark_color,
+                                             period)
+
+        # Check if the figure is empty or its data is empty
+        if not figure.data or len(figure.data[0].x) == 0:
+            # Create a new figure with an annotation
+            figure = go.Figure()
+            figure.add_annotation(
+                text=f"Intervallo rolling di {period} mesi troppo lungo per i dati forniti",
+                showarrow=False,
+                xref='paper',
+                yref='paper',
+                x=0.5,
+                y=0.5
+            )
+
+        return figure
 
     @app.callback(
         Output('additional-feedback', 'children'),  # Output to display the charts
@@ -451,16 +470,13 @@ def register_callbacks(app):
         rolling_periods = [36, 60, 120]
 
 
-        # Create the figures
-        rolling1 = go.Figure()
-        rolling2 = go.Figure()
-        rolling3 = go.Figure()
         column_except_date = [col for col in portfolio_df.columns if col != 'Date']
 
         # Add traces to each figure
         rolling1 = add_rolling_traces(portfolio_df, rolling_periods[0], portfolio_color,column_except_date)
         rolling2 = add_rolling_traces(portfolio_df, rolling_periods[1], portfolio_color,column_except_date)
         rolling3 = add_rolling_traces(portfolio_df, rolling_periods[2], portfolio_color,column_except_date)
+
 
         # Calculate CAGR and Volatility for each column except 'Date'
         cagr = {}
