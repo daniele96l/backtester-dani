@@ -7,17 +7,10 @@ import plotly.graph_objects as go
 import PlotLineChart as plc
 import plotly.graph_objects as go
 import webbrowser
+import config
 # Costanti
 
-test = True
-
-if(test):
-    FILE_PATH = "data/Index_list_cleaned.csv"  # Assicurati che questo CSV sia nella stessa directory dello script
-    ETF_BASE_PATH = "data/ETFs"
-else:
-    FILE_PATH = "/home/kusky/backtester/backtester-dani/data/Index_list_cleaned.csv"
-    ETF_BASE_PATH = "/home/kusky/backtester/backtester-dani/data/ETFs"
-
+FILE_PATH = config.FILE_PATH
 
 APP_TITLE = "PortfolioPilot"
 # Define colors for benchmark and portfolio
