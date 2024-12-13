@@ -11,6 +11,7 @@ import config
 # Costanti
 
 FILE_PATH = config.FILE_PATH
+ETF_BASE_PATH = config.ETF_BASE_PATH
 
 APP_TITLE = "PortfolioPilot"
 # Define colors for benchmark and portfolio
