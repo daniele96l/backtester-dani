@@ -225,12 +225,12 @@ def create_layout(asset_list, initial_table_data):
                 )
             ]),
             # Floating Button
-            dbc.Button(
-                children="Info",  # Text on the button
-                id="floating-button",
-                color="primary",
-                className="btn-floating",  # Use the CSS class defined in styles.css
-            ),
+            #dbc.Button(
+             #   children="Info",  # Text on the button
+              #  id="floating-button",
+               # color="primary",
+               # className="btn-floating",  # Use the CSS class defined in styles.css
+            #),
 
             dcc.Location(id="url", refresh=True)
 
