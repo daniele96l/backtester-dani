@@ -8,6 +8,12 @@ import PlotLineChart as plc
 import plotly.graph_objects as go
 import webbrowser
 import config
+import logging
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)  # Show only errors
+
 # Costanti
 
 FILE_PATH = config.FILE_PATH
@@ -414,7 +420,7 @@ def register_callbacks(app):
             # Read the data and set Date as the index
             temp_data = pd.read_csv(
                 f"{ETF_BASE_PATH}/{i}.csv",  # Use the base path
-                parse_dates=['Date']
+                parse_dates=['Date'],
             ).set_index('Date')
 
             if dati is None:
@@ -436,8 +442,12 @@ def register_callbacks(app):
         rolling_returns = rolling_returns.reset_index()
         return rolling_returns
     def add_rolling_traces(portfolio_df, period, portfolio_color,column_except_date):
-        rolling_returns = calculate_rolling_returns(portfolio_df, period)
-        return plc.plot_line_chart_rolling(column_except_date, rolling_returns, portfolio_color, benchmark_color,period)
+        if(len(portfolio_df) < period):
+            rolling = go.Figure()
+            return rolling.add_trace(go.Scatter(x=[0], y=[0], mode='text', text=f'Non ci sono abbastanza dati per calcolare i rendimenti rolling per {period} mesi'))
+        else:
+            rolling_returns = calculate_rolling_returns(portfolio_df, period)
+            return plc.plot_line_chart_rolling(column_except_date, rolling_returns, portfolio_color, benchmark_color,period)
 
 
     @app.callback(
@@ -454,14 +464,12 @@ def register_callbacks(app):
 
         rolling_periods = [36, 60, 120]
 
+        column_except_date = [col for col in portfolio_df.columns if col != 'Date']
 
-        # Create the figures
         rolling1 = go.Figure()
         rolling2 = go.Figure()
         rolling3 = go.Figure()
-        column_except_date = [col for col in portfolio_df.columns if col != 'Date']
 
-        # Add traces to each figure
         rolling1 = add_rolling_traces(portfolio_df, rolling_periods[0], portfolio_color,column_except_date)
         rolling2 = add_rolling_traces(portfolio_df, rolling_periods[1], portfolio_color,column_except_date)
         rolling3 = add_rolling_traces(portfolio_df, rolling_periods[2], portfolio_color,column_except_date)
