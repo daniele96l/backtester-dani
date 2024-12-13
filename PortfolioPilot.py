@@ -8,7 +8,17 @@ import PlotLineChart as plc
 import plotly.graph_objects as go
 import webbrowser
 # Costanti
-FILE_PATH = "data/Index_list_cleaned.csv"  # Assicurati che questo CSV sia nella stessa directory dello script
+
+test = True
+
+if(test):
+    FILE_PATH = "data/Index_list_cleaned.csv"  # Assicurati che questo CSV sia nella stessa directory dello script
+    ETF_BASE_PATH = "data/ETFs"
+else:
+    FILE_PATH = "/home/kusky/backtester/backtester-dani/data/Index_list_cleaned.csv"
+    ETF_BASE_PATH = "/home/kusky/backtester/backtester-dani/data/ETFs"
+
+
 APP_TITLE = "PortfolioPilot"
 # Define colors for benchmark and portfolio
 benchmark_color = 'rgba(250, 128, 114, 0.7)'
@@ -409,7 +419,7 @@ def register_callbacks(app):
         for i in nomi_indici:
             # Read the data and set Date as the index
             temp_data = pd.read_csv(
-                f"data/ETFs/{i}.csv",
+                f"{ETF_BASE_PATH}/{i}.csv",  # Use the base path
                 parse_dates=['Date']
             ).set_index('Date')
 
