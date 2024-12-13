@@ -15,7 +15,7 @@ log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)  # Show only errors
 
 # Costanti
-
+DEBUG = config.DEBUG
 FILE_PATH = config.FILE_PATH
 ETF_BASE_PATH = config.ETF_BASE_PATH
 
@@ -587,7 +587,7 @@ def main():
     register_callbacks(app)
 
     # Esegui l'app
-    app.run_server(debug=False, port=80, host='0.0.0.0')
+    app.run_server(debug=DEBUG, port=80, host='0.0.0.0')
 
 
 if __name__ == '__main__':
