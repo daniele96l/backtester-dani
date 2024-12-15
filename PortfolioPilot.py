@@ -15,7 +15,7 @@ log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)  # Show only errors
 
 # Costanti
-
+DEBUG = config.DEBUG
 FILE_PATH = config.FILE_PATH
 ETF_BASE_PATH = config.ETF_BASE_PATH
 
@@ -225,12 +225,12 @@ def create_layout(asset_list, initial_table_data):
                 )
             ]),
             # Floating Button
-            dbc.Button(
-                children="Info",  # Text on the button
-                id="floating-button",
-                color="primary",
-                className="btn-floating",  # Use the CSS class defined in styles.css
-            ),
+            #dbc.Button(
+             #   children="Info",  # Text on the button
+              #  id="floating-button",
+               # color="primary",
+               # className="btn-floating",  # Use the CSS class defined in styles.css
+            #),
 
             dcc.Location(id="url", refresh=True)
 
@@ -587,7 +587,7 @@ def main():
     register_callbacks(app)
 
     # Esegui l'app
-    app.run_server(debug=False, port=80, host='0.0.0.0')
+    app.run_server(debug=DEBUG, port=80, host='0.0.0.0')
 
 
 if __name__ == '__main__':
