@@ -225,12 +225,12 @@ def create_layout(asset_list, initial_table_data):
                 )
             ]),
             # Floating Button
-            #dbc.Button(
-             #   children="Info",  # Text on the button
-              #  id="floating-button",
-               # color="primary",
-               # className="btn-floating",  # Use the CSS class defined in styles.css
-            #),
+            dbc.Button(
+                children="Info",  # Text on the button
+                id="floating-button",
+                color="primary",
+                className="btn-floating",  # Use the CSS class defined in styles.css
+            ),
 
             dcc.Location(id="url", refresh=True)
 
@@ -248,8 +248,7 @@ def register_callbacks(app):
         prevent_initial_call=True
     )
     def redirect_to_link(n_clicks):
-        # Restituisci il link dove vuoi reindirizzare
-        webbrowser.open_new_tab("https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577")
+        return "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577"
 
 
     # Callback per aggiungere un ETF alla tabella con la percentuale selezionata
@@ -474,6 +473,9 @@ def register_callbacks(app):
         rolling2 = add_rolling_traces(portfolio_df, rolling_periods[1], portfolio_color,column_except_date)
         rolling3 = add_rolling_traces(portfolio_df, rolling_periods[2], portfolio_color,column_except_date)
 
+        #drawdown = go.Figure()
+        #drawdown = plc.plot_drawdown(portfolio_df, portfolio_color,benchmark_color,column_except_date)
+
         # Calculate CAGR and Volatility for each column except 'Date'
         cagr = {}
         volatility = {}
@@ -566,6 +568,7 @@ def register_callbacks(app):
             html.Div(dcc.Graph(figure=rolling1), style={'width': '100%'}), #Rolling 3y
             html.Div(dcc.Graph(figure=rolling2), style={'width': '100%'}), #Rolling 5y
             html.Div(dcc.Graph(figure=rolling3), style={'width': '100%'}), #Rolling 10y
+            html.Div(dcc.Graph(figure=drawdown), style={'width': '100%'}),  # Drawdown
         ])
 
 
