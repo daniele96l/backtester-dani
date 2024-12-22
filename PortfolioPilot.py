@@ -473,8 +473,8 @@ def register_callbacks(app):
         rolling2 = add_rolling_traces(portfolio_df, rolling_periods[1], portfolio_color,column_except_date)
         rolling3 = add_rolling_traces(portfolio_df, rolling_periods[2], portfolio_color,column_except_date)
 
-        #drawdown = go.Figure()
-        #drawdown = plc.plot_drawdown(portfolio_df, portfolio_color,benchmark_color,column_except_date)
+        drawdown = go.Figure()
+        drawdown = plc.plot_drawdown(portfolio_df, portfolio_color,benchmark_color,column_except_date)
 
         # Calculate CAGR and Volatility for each column except 'Date'
         cagr = {}
