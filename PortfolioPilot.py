@@ -451,12 +451,14 @@ def register_callbacks(app):
 
     @app.callback(
         Output('additional-feedback', 'children'),  # Output to display the charts
-        [Input('portfolio-data', 'data')]
+        [Input('portfolio-data', 'data'),
+         Input('assets-data', 'data')]
     )
-    def plot_data(portfolio_data):  # ----------- KING
+    def plot_data(portfolio_data, dati):  # ----------- KING
         # Convert data back to DataFrame
 
         portfolio_df = pd.DataFrame(portfolio_data)
+        dati_df = pd.DataFrame(dati)
 
         # Ensure 'Date' column is datetime for calculations
         portfolio_df['Date'] = pd.to_datetime(portfolio_df['Date'])
@@ -506,6 +508,17 @@ def register_callbacks(app):
         cagr_data = metrics_melted[metrics_melted["Metric"] == "CAGR"]
         volatility_data = metrics_melted[metrics_melted["Metric"] == "Volatility"]
         sharpe_data = metrics_melted[metrics_melted["Metric"] == "Sharpe Ratio"]
+
+
+        correlation_matrix = dati_df.corr()
+
+        correlation_fig = go.Figure()
+        correlation_fig.add_trace(go.Heatmap(
+            z=correlation_matrix.values,
+            x=correlation_matrix.columns,
+            y=correlation_matrix.columns,
+            colorscale='RdBu'
+        ))
 
 
         sharpe_fig = go.Figure()
@@ -569,6 +582,7 @@ def register_callbacks(app):
             html.Div(dcc.Graph(figure=rolling2), style={'width': '100%'}), #Rolling 5y
             html.Div(dcc.Graph(figure=rolling3), style={'width': '100%'}), #Rolling 10y
             html.Div(dcc.Graph(figure=drawdown), style={'width': '100%'}),  # Drawdown
+            html.Div(dcc.Graph(figure=correlation_fig), style={'width': '50%'}),  # Correlation between assets
         ])
 
 
