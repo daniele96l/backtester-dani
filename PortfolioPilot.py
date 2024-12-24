@@ -537,6 +537,12 @@ def register_callbacks(app):
             colorscale=custom_colorscale
         ))
 
+        correlation_fig.update_layout(
+            title="Correlazione tra gli Asset",
+            template='plotly_white',
+            margin=dict(l=40, r=40, t=40, b=40)
+        )
+
 
         sharpe_fig = go.Figure()
         sharpe_fig.add_trace(go.Bar(

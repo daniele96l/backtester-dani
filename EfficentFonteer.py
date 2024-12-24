@@ -81,7 +81,7 @@ def calcola_frontiera_efficente(dati):
     ))
 
     colors = ['red', 'blue', 'green']
-    markers = ['circle', 'circle', 'circle']
+    markers = ['circle', 'star', 'triangle-up']
     for i, (_, portfolio) in enumerate(all_model_portfolios.iterrows()):
         scatter_fig.add_trace(go.Scatter(
             x=[portfolio['Annual Volatility']],
