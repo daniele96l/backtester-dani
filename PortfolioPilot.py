@@ -5,11 +5,15 @@ import pandas as pd
 import dash.dash_table
 import plotly.graph_objects as go
 import PlotLineChart as plc
+import EfficentFonteer as ef
 import plotly.graph_objects as go
 import webbrowser
 import config
 import logging
 import warnings
+import numpy as np
+
+
 warnings.filterwarnings("ignore", category=UserWarning)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)  # Show only errors
@@ -349,7 +353,7 @@ def register_callbacks(app):
             indici = match_asset_name(df['ETF'])
 
             dati = importa_dati(indici)
-            dati = dati.loc[:, ~dati.columns.duplicated()]
+            #dati = dati.loc[:, ~dati.columns.duplicated()] #Rimosso perchè dava problemi se mettevo due ETF uguali tra la lista
 
             #Calcola i ritorni pe ogni asset
 
@@ -357,7 +361,7 @@ def register_callbacks(app):
             #Drop nan values
             pct_change = pct_change.dropna()
             #Scala i ritorni per il peso e poi fanne la media
-            dati_scalati = pct_change * df['Percentuale'].values/100
+            dati_scalati = pct_change * df['Percentuale'].values/100 #WHAT IF I CLICK ON THE SAME INDEX?
 
             dati_scalati['Portfolio_return'] = dati_scalati.sum(axis=1)
 
@@ -448,6 +452,13 @@ def register_callbacks(app):
             rolling_returns = calculate_rolling_returns(portfolio_df, period)
             return plc.plot_line_chart_rolling(column_except_date, rolling_returns, portfolio_color, benchmark_color,period)
 
+    import numpy as np
+    import pandas as pd
+    import plotly.graph_objects as go
+
+    import numpy as np
+    import pandas as pd
+    import plotly.graph_objects as go
 
     @app.callback(
         Output('additional-feedback', 'children'),  # Output to display the charts
@@ -509,15 +520,21 @@ def register_callbacks(app):
         volatility_data = metrics_melted[metrics_melted["Metric"] == "Volatility"]
         sharpe_data = metrics_melted[metrics_melted["Metric"] == "Sharpe Ratio"]
 
-
         correlation_matrix = dati_df.corr()
+
+        scatter_fig,pie_fig = ef.calcola_frontiera_efficente(dati_df)
+
+        custom_colorscale = [
+            [0, benchmark_color],  # Start of the scale
+            [1, portfolio_color]  # End of the scale
+        ]
 
         correlation_fig = go.Figure()
         correlation_fig.add_trace(go.Heatmap(
             z=correlation_matrix.values,
             x=correlation_matrix.columns,
             y=correlation_matrix.columns,
-            colorscale='RdBu'
+            colorscale=custom_colorscale
         ))
 
 
@@ -582,7 +599,9 @@ def register_callbacks(app):
             html.Div(dcc.Graph(figure=rolling2), style={'width': '100%'}), #Rolling 5y
             html.Div(dcc.Graph(figure=rolling3), style={'width': '100%'}), #Rolling 10y
             html.Div(dcc.Graph(figure=drawdown), style={'width': '100%'}),  # Drawdown
-            html.Div(dcc.Graph(figure=correlation_fig), style={'width': '50%'}),  # Correlation between assets
+            html.Div(dcc.Graph(figure=correlation_fig), style={'width': '100%'}),  # Correlation between assets
+            html.Div(dcc.Graph(figure=scatter_fig), style={'width': '100%'}),  # Efficent fronteer
+            html.Div(dcc.Graph(figure=pie_fig), style={'width': '100%'}),  # Efficent fronteer
         ])
 
 

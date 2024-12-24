@@ -8,11 +8,11 @@ Vanguard FTSE Europe ETF,US9220428742,VGK,MSCI Europe
 iShares Russell 2000 ETF,US4642876555,IWM,Russell 2000
 iShares MSCI China UCITS ETF,IE00B44T3H88,MCHI,MSCI China
 iShares MSCI Japan ETF,US46434G8226,IJP,MSCI Japan
-iShares MSCI World ETF,US46434G1031,IWRD,MSCI World
 iShares AEX UCITS ETF,IE00B0M62Y33,IAEX,AEX
 iShares AEX UCITS ETF EUR (Acc),IE00BMTX2B82,IAEA,AEX
 VanEck AEX UCITS ETF,NL0009272749,TDT,AEX
 Amundi BEL 20 UCITS ETF Dist,FR0000021842,BEL,BEL 20
+WisdomTree Physical Gold,DE000A0N62G0,VZLD,Gold spot price
 Bitcoin,BTC,BTC,Bitcoin
 21Shares Bitcoin ETP,CH0454664001,"21XB
 ABTC",Bitcoin
@@ -570,7 +570,6 @@ iShares Global Government Bond UCITS ETF,IE00BYZ28V50,IGLA,FTSE World Government
 UBS ETF (CH) Gold (USD) A-dis,CH0106027193,AUUSI,Gold spot price
 Gold Bullion Securities,DE000A0LP781,"GG9B
 OGG9",Gold spot price
-WisdomTree Physical Gold,DE000A0N62G0,VZLD,Gold spot price
 Xetra-Gold,DE000A0S9GB0,"4GLD
 OGLD",Gold spot price
 WisdomTree Physical Swiss Gold,DE000A1DCTL3,"GZUR
