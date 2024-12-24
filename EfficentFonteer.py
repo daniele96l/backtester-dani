@@ -100,8 +100,13 @@ def calcola_frontiera_efficente(dati):
     # Update layout to move the legend inside the figure
     scatter_fig.update_layout(
         title='Frontiera efficent dati gli asset selezionati',
-        xaxis=dict(title='Annual Volatility'),
-        yaxis=dict(title='Annual Return'),
+        xaxis=dict(title='Volatilità Annuale (%)',
+                   tickformat='.2%'  # Multiply by 100 and display with 2 decimal places
+                   ),
+        yaxis=dict(title='Ritorno Annuale (%)',
+                   tickformat='.2%'  # Multiply by 100 and display with 2 decimal places
+
+                   ),
         coloraxis_colorbar=dict(title='Sharpe Ratio'),
         showlegend=True,  # Enable legend
         legend=dict(
@@ -132,7 +137,6 @@ def calcola_frontiera_efficente(dati):
 
         for i, (_, portfolio) in enumerate(all_model_portfolios.iterrows()):
             weights = portfolio[weight_columns]
-
             # Filter out positions smaller than 5%
             significant_weights = weights[weights >= 0.05]
 
@@ -147,9 +151,9 @@ def calcola_frontiera_efficente(dati):
 
             pie_fig.add_trace(go.Pie(
                 labels=labels,
-                values=values,
+                values=values.astype(float).round(2),
                 name=portfolio['Portfolio'],
-                title=f"{portfolio['Portfolio']}<br>Return: {portfolio['Annual Return']:.2%}<br>Volatility: {portfolio['Annual Volatility']:.2%}<br>Sharpe: {portfolio['Sharpe Ratio']:.2f}",
+                title=f"{portfolio['Portfolio']}<br>Ritorno: {portfolio['Annual Return']:.2%}<br>Volatilità: {portfolio['Annual Volatility']:.2%}<br>Sharpe: {portfolio['Sharpe Ratio']:.2f}",
                 textinfo='label+percent',
                 hoverinfo='label+value',
                 marker=dict(colors=pastel_colors[:len(labels)]),
