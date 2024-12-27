@@ -161,7 +161,7 @@ def calcola_frontiera_efficente(dati):
             ))
 
         pie_fig.update_layout(
-            title='Asset Allocation e Performance dei Portafogli scelti (Da inizio della storia)',
+            title='Asset Allocation e Performance dei Portafogli scelti',
             grid=dict(rows=1, columns=3, pattern="independent")
         )
 

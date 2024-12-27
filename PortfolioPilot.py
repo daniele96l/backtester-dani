@@ -83,7 +83,7 @@ def create_layout(asset_list, initial_table_data):
                     dbc.Label("Seleziona un ETF (Scrivi il nome completo):", style={'color': '#000000'}),
                     dcc.Dropdown(
                         id='etf-dropdown',
-                        options=[{'label': etf, 'value': etf} for etf in asset_list],
+                        options=[{'label': etf, 'value': etf} for etf in asset_list],#Posso cercare anche con il ticker? AKA una diversa asset list
                         placeholder="Seleziona un ETF",
                         className='mb-3',
                         style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
