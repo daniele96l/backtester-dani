@@ -36,7 +36,7 @@ def calcola_frontiera_efficente(dati):
     # Portfolio metrics
     portfolio_returns = np.dot(weights, annual_returns)
     portfolio_std_devs = np.sqrt(np.einsum('ij,ji->i', weights.dot(cov_matrix), weights.T))
-    risk_free_rate = 0.02
+    risk_free_rate = 0.00
     sharpe_ratios = (portfolio_returns - risk_free_rate) / portfolio_std_devs
 
     # Key portfolios
@@ -161,7 +161,7 @@ def calcola_frontiera_efficente(dati):
             ))
 
         pie_fig.update_layout(
-            title='Asset Allocation e Performance dei Portafogli scelti',
+            title='Asset Allocation e Performance dei Portafogli scelti (Da inizio della storia)',
             grid=dict(rows=1, columns=3, pattern="independent")
         )
 

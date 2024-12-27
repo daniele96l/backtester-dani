@@ -392,11 +392,14 @@ def register_callbacks(app):
 
             # Apply slicing and normalization based on conditions
             if (start_dt and start_dt > first_portfolio_date ):
+                dati = dati.loc[start_dt:]
+                dati = (dati / dati.iloc[0]) * 100
                 portfolio_con_benchmark = portfolio_con_benchmark.loc[start_dt:]
                 portfolio_con_benchmark = (portfolio_con_benchmark / portfolio_con_benchmark.iloc[0]) * 100
 
             if (end_dt and end_dt < last_portfolio_date):
                 portfolio_con_benchmark = portfolio_con_benchmark.loc[:end_dt]
+                dati = dati.loc[:end_dt]
 
 
             first_year = first_portfolio_date.year
@@ -522,7 +525,7 @@ def register_callbacks(app):
 
         correlation_matrix = dati_df.corr()
 
-        scatter_fig,pie_fig = ef.calcola_frontiera_efficente(dati_df)
+        scatter_fig,pie_fig = ef.calcola_frontiera_efficente(dati_df) #ATTENZIONE QUI SI PRENDE TUTTA LA STORIA SEMPRE
 
         custom_colorscale = [
             [0, benchmark_color],  # Start of the scale
