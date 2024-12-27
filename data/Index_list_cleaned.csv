@@ -1,7 +1,17 @@
 Fund,ISIN,Tickers,Index
+SPDR S&P 500 ETF,US78462F1030,SPY,S&P 500
+iShares Core MSCI World UCITS ETF,IE00B4L5Y983,IWDA,MSCI World
+Vanguard FTSE All-World UCITS ETF,IE00B3RBWM25,VT,FTSE All-World
+iShares MSCI Emerging Markets UCITS ETF,IE00BKM4GZ66,IEMG,MSCI Emerging Markets
+Nasdaq 100,US46090E1038,QQQ,Nasdaq-100
+iShares MSCI China UCITS ETF,IE00B44T3H88,MCHI,MSCI China
+iShares MSCI Japan ETF,US46434G8226,IJP,MSCI Japan
+Amundi STOXX Europe 600 UCITS ETF EUR (C),LU1681040223,"AME6
+C6E",STOXX Europe 600
+WisdomTree Physical Gold,DE000A0N62G0,VZLD,Gold spot price
+WisdomTree Physical Silver,DE000A0N62F2,"OVZC
+VZLC",Silver spot price
 iShares AEX UCITS ETF,IE00B0M62Y33,IAEX,AEX
-iShares AEX UCITS ETF EUR (Acc),IE00BMTX2B82,IAEA,AEX
-VanEck AEX UCITS ETF,NL0009272749,TDT,AEX
 Amundi BEL 20 UCITS ETF Dist,FR0000021842,BEL,BEL 20
 Bitcoin,BTC,BTC,Bitcoin
 21Shares Bitcoin ETP,CH0454664001,"21XB
@@ -465,9 +475,6 @@ FWRG",FTSE All-World
 Vanguard FTSE All-World UCITS ETF (USD) Distributing,IE00B3RBWM25,"VGWL
 VWRD
 VWRL",FTSE All-World
-Vanguard FTSE All-World UCITS ETF (USD) Accumulating,IE00BK5BQT80,"VWCE
-VWRA
-VWRP",FTSE All-World
 Vanguard FTSE All-World High Dividend Yield UCITS ETF Distributing,IE00B8GKDB10,"VGWD
 VHYD
 VHYL",FTSE All-World High Dividend Yield
@@ -563,7 +570,6 @@ iShares Global Government Bond UCITS ETF,IE00BYZ28V50,IGLA,FTSE World Government
 UBS ETF (CH) Gold (USD) A-dis,CH0106027193,AUUSI,Gold spot price
 Gold Bullion Securities,DE000A0LP781,"GG9B
 OGG9",Gold spot price
-WisdomTree Physical Gold,DE000A0N62G0,VZLD,Gold spot price
 Xetra-Gold,DE000A0S9GB0,"4GLD
 OGLD",Gold spot price
 WisdomTree Physical Swiss Gold,DE000A1DCTL3,"GZUR
