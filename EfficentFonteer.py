@@ -163,7 +163,7 @@ def calcola_frontiera_efficente(dati): # TODO non plottare gli indici ma i nomi 
             ))
 
         pie_fig.update_layout(
-            title='Portafogli Efficenti con le relative allocazioni degli indici corrispondenti',
+            title='Portafogli Efficenti usando gli indici dei tuoi ETF',
             grid=dict(rows=1, columns=3, pattern="independent"),
         )
 
