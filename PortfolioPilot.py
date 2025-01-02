@@ -350,7 +350,8 @@ def register_callbacks(app):
 
             # Converti i dati della tabella in DataFrame
             df = pd.DataFrame(table_data)
-            indici = match_asset_name(df['ETF'])
+            nomi_etf = df['ETF']
+            indici = match_asset_name(nomi_etf)
 
             dati = importa_dati(indici)
             #dati = dati.loc[:, ~dati.columns.duplicated()] #Rimosso perchè dava problemi se mettevo due ETF uguali tra la lista
@@ -472,7 +473,8 @@ def register_callbacks(app):
         # Convert data back to DataFrame
 
         portfolio_df = pd.DataFrame(portfolio_data)
-        dati_df = pd.DataFrame(dati)
+        dati_df = pd.DataFrame(dati) #Sto ricevendo un DICT e non un DataFrame, quindi le colonne duplicate erano state rimosse
+        # Questo vuol dire che se metto due ETF uguali nella lista, uno dei due verrà rimosso
 
         # Ensure 'Date' column is datetime for calculations
         portfolio_df['Date'] = pd.to_datetime(portfolio_df['Date'])
@@ -525,7 +527,7 @@ def register_callbacks(app):
 
         correlation_matrix = dati_df.corr()
 
-        scatter_fig,pie_fig = ef.calcola_frontiera_efficente(dati_df) #ATTENZIONE QUI SI PRENDE TUTTA LA STORIA SEMPRE
+        scatter_fig,pie_fig = ef.calcola_frontiera_efficente(dati_df) # TODO non plottare gli indici ma i nomi degli etf
 
         custom_colorscale = [
             [0, benchmark_color],  # Start of the scale

@@ -11,7 +11,7 @@ custom_colorscale = [
     [1, portfolio_color]     # End of the scale
 ]
 
-def calcola_frontiera_efficente(dati):
+def calcola_frontiera_efficente(dati): # TODO non plottare gli indici ma i nomi degli etf
     if dati is None or dati.empty:
         raise ValueError("Input data is missing or empty.")
 
@@ -29,7 +29,7 @@ def calcola_frontiera_efficente(dati):
     cov_matrix = monthly_returns.cov() * 12
 
     # Monte Carlo simulation
-    num_portfolios = 10000
+    num_portfolios = 5000
     weights = np.random.random((num_portfolios, len(symbols)))
     weights /= weights.sum(axis=1, keepdims=True)
 
@@ -147,6 +147,8 @@ def calcola_frontiera_efficente(dati):
                 significant_weights = significant_weights * scaling_factor
 
             labels = significant_weights.index.str.replace(' Weight', '')
+            labels = [label.replace(" ", "<br>") if len(label) > 20 else label for label in
+                      labels]  # Add line breaks if label is too long
             values = significant_weights.values
 
             pie_fig.add_trace(go.Pie(
@@ -161,9 +163,10 @@ def calcola_frontiera_efficente(dati):
             ))
 
         pie_fig.update_layout(
-            title='Asset Allocation e Performance dei Portafogli scelti',
-            grid=dict(rows=1, columns=3, pattern="independent")
+            title='Portafogli Efficenti con le relative allocazioni degli indici corrispondenti',
+            grid=dict(rows=1, columns=3, pattern="independent"),
         )
+
 
     else:
         pie_fig = None
