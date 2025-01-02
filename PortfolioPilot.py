@@ -568,15 +568,15 @@ def register_callbacks(app):
         cagr_fig.add_trace(go.Bar(
             x=cagr_data["Portfolio"],
             y=cagr_data["Value"],
-            name="CAGR",
+            name="Ritorno Composto Annuo",
             marker=dict(color=[portfolio_color, benchmark_color])
 
 
         ))
         cagr_fig.update_layout(
-            title="CAGR per Portafoglio",
+            title="Ritorno per Portafoglio",
             xaxis_title="Portafogli",
-            yaxis_title="CAGR (%)",
+            yaxis_title="Ritorno (%)",
             template='plotly_white',
             margin=dict(l=40, r=40, t=40, b=40)
         )
