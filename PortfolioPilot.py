@@ -83,7 +83,7 @@ def create_layout(asset_list, initial_table_data):
                     dbc.Label("Seleziona un ETF (Scrivi il nome completo):", style={'color': '#000000'}),
                     dcc.Dropdown(
                         id='etf-dropdown',
-                        options=[{'label': etf, 'value': etf} for etf in asset_list],
+                        options=[{'label': etf, 'value': etf} for etf in asset_list],#Posso cercare anche con il ticker? AKA una diversa asset list
                         placeholder="Seleziona un ETF",
                         className='mb-3',
                         style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
@@ -350,7 +350,8 @@ def register_callbacks(app):
 
             # Converti i dati della tabella in DataFrame
             df = pd.DataFrame(table_data)
-            indici = match_asset_name(df['ETF'])
+            nomi_etf = df['ETF']
+            indici = match_asset_name(nomi_etf)
 
             dati = importa_dati(indici)
             #dati = dati.loc[:, ~dati.columns.duplicated()] #Rimosso perchè dava problemi se mettevo due ETF uguali tra la lista
@@ -392,11 +393,14 @@ def register_callbacks(app):
 
             # Apply slicing and normalization based on conditions
             if (start_dt and start_dt > first_portfolio_date ):
+                dati = dati.loc[start_dt:]
+                dati = (dati / dati.iloc[0]) * 100
                 portfolio_con_benchmark = portfolio_con_benchmark.loc[start_dt:]
                 portfolio_con_benchmark = (portfolio_con_benchmark / portfolio_con_benchmark.iloc[0]) * 100
 
             if (end_dt and end_dt < last_portfolio_date):
                 portfolio_con_benchmark = portfolio_con_benchmark.loc[:end_dt]
+                dati = dati.loc[:end_dt]
 
 
             first_year = first_portfolio_date.year
@@ -469,7 +473,8 @@ def register_callbacks(app):
         # Convert data back to DataFrame
 
         portfolio_df = pd.DataFrame(portfolio_data)
-        dati_df = pd.DataFrame(dati)
+        dati_df = pd.DataFrame(dati) #Sto ricevendo un DICT e non un DataFrame, quindi le colonne duplicate erano state rimosse
+        # Questo vuol dire che se metto due ETF uguali nella lista, uno dei due verrà rimosso
 
         # Ensure 'Date' column is datetime for calculations
         portfolio_df['Date'] = pd.to_datetime(portfolio_df['Date'])
@@ -522,7 +527,7 @@ def register_callbacks(app):
 
         correlation_matrix = dati_df.corr()
 
-        scatter_fig,pie_fig = ef.calcola_frontiera_efficente(dati_df)
+        scatter_fig,pie_fig = ef.calcola_frontiera_efficente(dati_df) # TODO non plottare gli indici ma i nomi degli etf
 
         custom_colorscale = [
             [0, benchmark_color],  # Start of the scale
@@ -565,15 +570,15 @@ def register_callbacks(app):
         cagr_fig.add_trace(go.Bar(
             x=cagr_data["Portfolio"],
             y=cagr_data["Value"],
-            name="CAGR",
+            name="Ritorno Composto Annuo",
             marker=dict(color=[portfolio_color, benchmark_color])
 
 
         ))
         cagr_fig.update_layout(
-            title="CAGR per Portafoglio",
+            title="Ritorno per Portafoglio",
             xaxis_title="Portafogli",
-            yaxis_title="CAGR (%)",
+            yaxis_title="Ritorno (%)",
             template='plotly_white',
             margin=dict(l=40, r=40, t=40, b=40)
         )
