@@ -6,12 +6,12 @@ import dash.dash_table
 import plotly.graph_objects as go
 import PlotLineChart as plc
 import EfficentFonteer as ef
-import plotly.graph_objects as go
 import webbrowser
 import config
 import logging
 import warnings
 import numpy as np
+import statsmodels.api as sm
 
 
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -22,6 +22,7 @@ log.setLevel(logging.ERROR)  # Show only errors
 DEBUG = config.DEBUG
 FILE_PATH = config.FILE_PATH
 ETF_BASE_PATH = config.ETF_BASE_PATH
+BASE_PATH = config.BASE_PATH
 
 APP_TITLE = "PortfolioPilot"
 # Define colors for benchmark and portfolio
@@ -479,13 +480,67 @@ def register_callbacks(app):
             rolling_returns = calculate_rolling_returns(portfolio_df, period)
             return plc.plot_line_chart_rolling(column_except_date, rolling_returns, portfolio_color, benchmark_color,period)
 
-    import numpy as np
-    import pandas as pd
-    import plotly.graph_objects as go
+    def import_fama_french():
+        fama_french = pd.read_csv(f"{BASE_PATH}/Developed_5_Factors.csv", parse_dates=['Date'])
+        fama_french = fama_french.set_index('Date')
+        fama_french = fama_french / 100
+        return fama_french
 
-    import numpy as np
-    import pandas as pd
-    import plotly.graph_objects as go
+    # Function to calculate factor exposure directly inside the function
+    def calculate_factor_exposure(portfolio_df):
+        # Calculate the percentage change (returns) and drop missing values
+        portfolio_df['Date'] = pd.to_datetime(portfolio_df['Date'])
+        portfolio_df.set_index('Date', inplace=True)
+
+        # Calculate returns for the portfolio and rename the column to 'Adj Close'
+        data = portfolio_df.pct_change().dropna()
+        data["Adj Close"] = data # Rename the column to 'Adj Close'
+
+        fundsret = data["Adj Close"]
+
+        # Import the Fama-French factors
+        factors = import_fama_french()
+
+        # Merge portfolio returns and factors using an inner join on the index (Date)
+        merge = pd.merge(fundsret, factors, left_index=True, right_index=True, how='inner')
+
+        # Adjust the portfolio returns by subtracting the risk-free rate (RF)
+        merge["Adj Close"] = merge["Adj Close"] - merge["RF"]
+
+        # Normalize the factors by dividing by 100
+        merge[["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]] = merge[["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]] / 100
+
+        # Set the dependent variable (y) as the portfolio excess returns
+        y = merge["Adj Close"]
+
+        # Set the independent variables (X) as the factors (Mkt-RF, SMB, HML, RMW, CMA)
+        X = merge[["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]]
+        X_sm = sm.add_constant(X)  # Add a constant to the model for the intercept
+
+        # Fit the OLS regression model
+        model = sm.OLS(y, X_sm)
+        results = model.fit()
+
+        # Extract the results summary
+        results_summary = results.summary()
+        tables = results_summary.tables
+
+        # Extract coefficients and variable names from the regression results
+        dataframes = []
+        for i, table in enumerate(tables):
+            df = pd.DataFrame(table[1:], columns=table[0])
+            dataframes.append(df)
+
+        coef_data = dataframes[1].iloc[:, 1]
+        coef_data = coef_data.apply(lambda x: float(x.data.strip()))
+        variable_names = dataframes[1].iloc[:, 0]
+
+        # Exclude first and last values for better visualization
+        coef_data_to_plot = coef_data[1:-1]
+        variable_names_to_plot = variable_names[1:-1]
+
+        # Return the coefficients (exposures) and the factor names
+        return coef_data_to_plot, variable_names_to_plot
 
     @app.callback(
         Output('additional-feedback', 'children'),  # Output to display the charts
@@ -516,6 +571,14 @@ def register_callbacks(app):
 
         drawdown = go.Figure()
         drawdown = plc.plot_drawdown(portfolio_df, portfolio_color,benchmark_color,column_except_date)
+
+        # Calculate factor exposure for the portfolio
+        factor_exposure_portfolio, factor_names = calculate_factor_exposure(portfolio_df[["Portfolio","Date"]])
+        #If the benchmark column exists calculate the factor exposure for the benchmark
+        if 'Benchmark' in portfolio_df.columns:
+            factor_exposure_benchmark, factor_names = calculate_factor_exposure(portfolio_df[["Benchmark","Date"]])
+
+
 
         # Calculate CAGR and Volatility for each column except 'Date'
         cagr = {}
@@ -556,6 +619,47 @@ def register_callbacks(app):
             [0, benchmark_color],  # Start of the scale
             [1, portfolio_color]  # End of the scale
         ]
+
+        # Assuming 'factor_names' is a list of factor names (probably from the regression results)
+        factor_names = [cell.data for cell in factor_names]
+
+        # Map the factor names to Italian using the dictionary
+        factor_name_translation = {
+            "Mkt-RF": "Mercato-RF",
+            "SMB": "Small Cap",
+            "HML": "Value",
+            "RMW": "Profitabilità",
+            "CMA": "Investimenti conservativi",
+            "RF": "Tasso privo di rischio",
+        }
+
+        # Apply the translation to the factor names
+        factor_names_italian = [factor_name_translation.get(name, name) for name in factor_names]
+
+        # Create a bar chart for the factor exposure
+        factor_exposure_fig = go.Figure()
+        factor_exposure_fig.add_trace(go.Bar(
+            x=factor_names_italian,  # Use translated names here
+            y=factor_exposure_portfolio,
+            name="Portfolio",
+            marker=dict(color=portfolio_color)
+        ))
+
+        if 'Benchmark' in portfolio_df.columns:
+            factor_exposure_fig.add_trace(go.Bar(
+                x=factor_names_italian,  # Use translated names here
+                y=factor_exposure_benchmark,
+                name="Benchmark",
+                marker=dict(color=benchmark_color)
+            ))
+
+        factor_exposure_fig.update_layout(
+            title="Esposizione ai Fattori",
+            xaxis_title="Fattori",
+            yaxis_title="Esposizione",
+            template='plotly_white',
+            margin=dict(l=40, r=40, t=40, b=40)
+        )
 
         correlation_fig = go.Figure()
         correlation_fig.add_trace(go.Heatmap(
@@ -636,6 +740,7 @@ def register_callbacks(app):
             html.Div(dcc.Graph(figure=correlation_fig), style={'width': '100%'}),  # Correlation between assets
             html.Div(dcc.Graph(figure=scatter_fig), style={'width': '100%'}),  # Efficent fronteer
             html.Div(dcc.Graph(figure=pie_fig), style={'width': '100%'}),  # Efficent fronteer
+            html.Div(dcc.Graph(figure=factor_exposure_fig), style={'width': '100%'}),  # Factor Exposure
         ])
 
 
