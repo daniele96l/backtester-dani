@@ -233,19 +233,26 @@ def create_layout(asset_list, initial_table_data):
             dbc.Button(
                 children="Info",  # Text on the button
                 id="floating-button",
-                color="primary",
+                style={
+                    "backgroundColor": portfolio_color,  # Use the color variable
+                    "color": "#000",  # Text color (adjust for contrast)
+
+                },
                 className="btn-floating",  # Use the CSS class defined in styles.css
             ),
 
-            #dbc.Button(
-            #    "Esporta il Portafoglio in PDF",
-            #    id="save-pdf-button",
-            #    color="primary",
-            #    className="mt-3",
-            #    style={'width': '100%'}
-            #),
-            #html.Div(id="hidden-div", style={"display": "none"}),
-
+            dbc.Button(
+                "Esporta il Report in PDF",
+                id="save-pdf-button",
+                style={
+                    "backgroundColor": portfolio_color,  # Use the color variable
+                    "color": "#000",  # Text color
+                    "width": "100%",
+                    "marginBottom": "50px",  # Add space below the button
+                },
+                className="mt-3",
+            ),
+            html.Div(id="hidden-div", style={"display": "none"}),
 
             dcc.Location(id="url", refresh=True)
 
@@ -265,19 +272,19 @@ def register_callbacks(app):
     def redirect_to_link(n_clicks):
         return "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577"
 
-    #app.clientside_callback(
-    #    """
-    #      function(n_clicks) {
-    #        if (n_clicks > 0) {
-    #            // Open the print dialog; users can choose 'Save as PDF' in the dialog
-    #            window.print();
-    #        }
-    #        return '';
-    #    }
-    #    """,
-    #    Output('hidden-div', 'children'),  # Dummy output
-    #    Input('save-pdf-button', 'n_clicks')  # Triggered by button clicks
-    #)
+    app.clientside_callback(
+        """
+          function(n_clicks) {
+            if (n_clicks > 0) {
+                // Open the print dialog; users can choose 'Save as PDF' in the dialog
+                window.print();
+            }
+            return '';
+        }
+        """,
+        Output('hidden-div', 'children'),  # Dummy output
+        Input('save-pdf-button', 'n_clicks')  # Triggered by button clicks
+    )
 
     # Callback per aggiungere un ETF alla tabella con la percentuale selezionata
     @app.callback(
