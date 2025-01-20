@@ -268,7 +268,7 @@ def create_layout(asset_list, initial_table_data):
             ),
 
             dbc.Button(
-                "Esporta il Report in PDF",
+                "Esporta il Report in PDF.",
                 id="save-pdf-button",
                 style={
                     "backgroundColor": portfolio_color,  # Use the color variable
@@ -287,19 +287,30 @@ def create_layout(asset_list, initial_table_data):
     ])
 
 
-
-
-
 def register_callbacks(app):
     """Registra tutti i callback per l'app Dash."""
 
     @app.callback(
         Output("portfolio-toast", "is_open"),
         Input("create-portfolio-button", "n_clicks"),
+        State("portfolio-table", "data"),
         prevent_initial_call=True
     )
-    def show_calculation_message(n_clicks):
-        return True  # Mostra il toast per 2 secondi
+    def show_calculation_message(n_clicks, table_data):
+        if n_clicks is None or not table_data:
+            return False  # Non aprire il toast se non ci sono dati
+
+        # Calcola l'allocazione totale
+        try:
+            total_percentage = sum(float(row.get('Percentuale', 0)) for row in table_data)
+        except (ValueError, TypeError):
+            return False  # Non aprire il toast se c'è un errore nei dati
+
+        # Apri il toast solo se l'allocazione è corretta (100%)
+        if total_percentage == 100:
+            return True  # Mostra il toast se l'allocazione è esattamente 100%
+
+        return False  # Non mostrare il toast se l'allocazione non è 100%
 
     @app.callback(
         Output("url", "href"),
