@@ -19,7 +19,6 @@ log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)  # Show only errors
 
 # Costanti
-DEBUG = config.DEBUG
 FILE_PATH = config.FILE_PATH
 ETF_BASE_PATH = config.ETF_BASE_PATH
 BASE_PATH = config.BASE_PATH

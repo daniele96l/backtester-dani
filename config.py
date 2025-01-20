@@ -1,8 +1,8 @@
 # config.py
 
-# Paths and Constants
-DEBUG = True
-if DEBUG:
+#Loacal = True
+Loacal = False
+if Loacal:
     FILE_PATH = "data/Index_list_cleaned.csv"  # Ensure this CSV is in the same directory as the script
     ETF_BASE_PATH = "data/ETFs"
     BASE_PATH = "data"
