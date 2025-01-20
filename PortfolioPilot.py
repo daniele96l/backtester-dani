@@ -221,6 +221,32 @@ def create_layout(asset_list, initial_table_data):
                 style={"position": "fixed", "top": 10, "right": 10, "zIndex": 1000},  # Posizionamento
             ),
 
+            dbc.Toast(
+                [
+                    html.Div([
+                        html.P("🤖", style={"fontSize": "60px", "marginBottom": "10px"}),  # Emoji robot grande
+                        html.P("Calcolo con algoritmi universitari...", style={"margin": "0", "fontSize": "22px", "fontWeight": "bold"})
+                    ], style={"textAlign": "center"})
+                ],
+                id="portfolio-toast",
+                dismissable=False,  # Non chiudibile manualmente
+                duration=3000,  #
+                is_open=False,
+                style={
+                    "position": "fixed",
+                    "top": "50%",  # Centrare verticalmente
+                    "left": "50%",  # Centrare orizzontalmente
+                    "transform": "translate(-50%, -50%)",  # Perfetto centramento
+                    "zIndex": 1500,  # In primo piano rispetto agli altri elementi
+                    "backgroundColor": "rgba(0, 0, 0, 0.8)",  # Sfondo scuro trasparente
+                    "color": "#ffffff",  # Testo bianco
+                    "padding": "30px",
+                    "borderRadius": "10px",
+                    "textAlign": "center",
+                    "boxShadow": "0 4px 8px rgba(0,0,0,0.2)",  # Aggiunge un'ombra leggera
+                },
+            ),
+
             # Div per Feedback Aggiuntivo
             dbc.Row([
                 dbc.Col(
@@ -261,8 +287,19 @@ def create_layout(asset_list, initial_table_data):
     ])
 
 
+
+
+
 def register_callbacks(app):
     """Registra tutti i callback per l'app Dash."""
+
+    @app.callback(
+        Output("portfolio-toast", "is_open"),
+        Input("create-portfolio-button", "n_clicks"),
+        prevent_initial_call=True
+    )
+    def show_calculation_message(n_clicks):
+        return True  # Mostra il toast per 2 secondi
 
     @app.callback(
         Output("url", "href"),
