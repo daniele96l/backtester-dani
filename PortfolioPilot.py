@@ -28,13 +28,33 @@ APP_TITLE = "PortfolioPilot"
 benchmark_color = 'rgba(250, 128, 114, 0.7)'
 portfolio_color = 'rgba(135, 206, 250, 0.7)'
 
+def filter_etf(asset_df, search_value):
+    """
+    Filter asset_df where the search value matches either one of Fund, ISIN or Ticker value
+    and return a list of corresponding Fund names.
+
+    :param asset_df: Full asset list as DataFrame
+    :param search_value: Value to search for
+    :return: List of Fund names that match the search value
+    """
+    # If search_value is None, empty string, or whitespace, return all Fund names
+    if not search_value or search_value.isspace():
+        return asset_df['Fund'].tolist()
+
+    # Create a mask that checks if the search value exists in any of the specified columns
+    mask = (asset_df['Fund'].astype(str).str.contains(search_value, case=False, na=False)) | \
+           (asset_df['ISIN'].astype(str).str.contains(search_value, case=False, na=False)) | \
+           (asset_df['Tickers'].astype(str).str.contains(search_value, case=False, na=False))
+
+    # Filter the DataFrame and return the list of Fund names
+    filtered_funds = asset_df.loc[mask, 'Fund'].tolist()
+
+    return filtered_funds
 
 def load_asset_list(file_path):
     """Carica e processa la lista degli asset da un file CSV."""
     try:
-        data = pd.read_csv(file_path)
-        asset_list = data['Fund'].apply(lambda x: x.split('.csv')[0]).tolist()
-        return asset_list
+        return pd.read_csv(file_path)
     except FileNotFoundError:
         print(f"Errore: Il file {file_path} non è stato trovato.")
         return []
@@ -48,10 +68,11 @@ def initialize_table():
     return pd.DataFrame(columns=['ETF', 'Percentuale'])
 
 
-def create_layout(asset_list, initial_table_data):
+def create_layout(asset_df, initial_table_data):
     year_range = list(range(1990, 2025))
     """Definisce il layout dell'app Dash utilizzando componenti Bootstrap."""
     return html.Div([
+        dcc.Store(id='asset_list', data=asset_df.to_dict(orient='records')),
         # Header Container - Occupa tutta la larghezza dello schermo
         dbc.Container([
             dbc.Row(
@@ -83,7 +104,6 @@ def create_layout(asset_list, initial_table_data):
                     dbc.Label("Seleziona un ETF (Scrivi il nome completo):", style={'color': '#000000'}),
                     dcc.Dropdown(
                         id='etf-dropdown',
-                        options=[{'label': etf, 'value': etf} for etf in asset_list],#Posso cercare anche con il ticker? AKA una diversa asset list
                         placeholder="Seleziona un ETF",
                         className='mb-3',
                         style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
@@ -164,7 +184,6 @@ def create_layout(asset_list, initial_table_data):
                     dbc.Label("Scegli il tuo Benchmark (Opzionale):", style={'color': '#000000'}),
                     dcc.Dropdown(
                         id='benchmark-dropdown',
-                        options=[{'label': etf, 'value': etf} for etf in asset_list],
                         placeholder="Seleziona un Benchmark",
                         className='mb-3',
                         style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
@@ -335,21 +354,33 @@ def register_callbacks(app):
 
     # Callback per aggiungere un ETF alla tabella con la percentuale selezionata
     @app.callback(
-        [Output('portfolio-table', 'data'),
-         Output('allocation-error-toast', 'is_open')],
-        [Input('add-etf-button', 'n_clicks')],
-        [State('etf-dropdown', 'value'),
-         State('percentage-slider', 'value'),
-         State('portfolio-table', 'data')]
+        [
+            Output('etf-dropdown', 'options'),
+            Output('portfolio-table', 'data'),
+            Output('allocation-error-toast', 'is_open')
+        ],
+        [
+            Input('asset_list', 'data'),
+            Input('etf-dropdown', 'search_value'),
+            Input('add-etf-button', 'n_clicks')
+        ],
+        [
+            State('etf-dropdown', 'value'),
+            State('percentage-slider', 'value'),
+            State('portfolio-table', 'data')
+        ]
     )
-    def add_etf_to_table(n_clicks, selected_etf, selected_percentage, current_data):
+    def add_etf_to_table(asset_json, search_value, n_clicks, selected_etf, selected_percentage, current_data):
+
+        etf_options = [{'label': etf, 'value': etf, 'search': search_value} for etf in filter_etf(pd.DataFrame(asset_json), search_value)]
+
         if n_clicks is None:
             # Nessun clic ancora, restituisce i dati correnti invariati
-            return current_data, False
+            return etf_options, current_data, False
 
         if n_clicks > 0:
             if not selected_etf:
-                return current_data, False  # Nessun ETF selezionato, nessun cambiamento
+                return etf_options, current_data, False  # Nessun ETF selezionato, nessun cambiamento
 
             # Assicurati che current_data sia una lista di dizionari (righe della tabella)
             if current_data is None:
@@ -360,7 +391,7 @@ def register_callbacks(app):
 
             # Controlla se l'ETF esiste già nella tabella
             if 'ETF' in current_df.columns and not current_df[current_df['ETF'] == selected_etf].empty:
-                return current_data, False  # Non aggiungere ETF duplicati
+                return etf_options, current_data, False  # Non aggiungere ETF duplicati
 
             # Assicurati che selected_percentage non sia None
             if selected_percentage is None:
@@ -369,8 +400,7 @@ def register_callbacks(app):
             # Controlla se l'aggiunta della nuova percentuale supera il 100%
             total_allocated = current_df['Percentuale'].sum() if not current_df.empty else 0
             if total_allocated + selected_percentage > 100:
-
-                return current_data, True  # Mostra il toast di errore
+                return etf_options, current_data, True  # Mostra il toast di errore
 
             # Aggiungi il nuovo ETF alla tabella
             new_row = {
@@ -379,23 +409,33 @@ def register_callbacks(app):
             }
             current_data.append(new_row)  # Aggiungi la nuova riga ai dati della tabella
 
-        return current_data, False
-
+        return etf_options, current_data, False
 
     # Callback per gestire la creazione del portafoglio
     @app.callback(
-        [Output('portfolio-feedback', 'children'),
-         Output('portfolio-data', 'data'),
-         Output('assets-data', 'data'),
-         Output('start-year-dropdown', 'options'),  # Dynamically update start year options
-         Output('end-year-dropdown', 'options')],  # Dynamically update end year options
-        [Input('create-portfolio-button', 'n_clicks')],
-        [State('portfolio-table', 'data'),
-         State('benchmark-dropdown', 'value'),
-         State('start-year-dropdown', 'value'),
-         State('end-year-dropdown', 'value')]
+        [
+            Output('benchmark-dropdown', 'options'),
+            Output('portfolio-feedback', 'children'),
+            Output('portfolio-data', 'data'),
+            Output('assets-data', 'data'),
+            Output('start-year-dropdown', 'options'),  # Dynamically update start year options
+            Output('end-year-dropdown', 'options')
+        ],  # Dynamically update end year options
+        [
+            Input('asset_list', 'data'),
+            Input('benchmark-dropdown', 'search_value'),
+            Input('create-portfolio-button', 'n_clicks')
+        ],
+        [
+            State('portfolio-table', 'data'),
+            State('benchmark-dropdown', 'value'),
+            State('start-year-dropdown', 'value'),
+            State('end-year-dropdown', 'value')
+        ]
     )
-    def create_portfolio(n_clicks, table_data, benchmark, start_year, end_year):
+    def create_portfolio(asset_json, search_value, n_clicks, table_data, benchmark, start_year, end_year):
+
+        etf_options = [{'label': etf, 'value': etf, 'search': search_value} for etf in filter_etf(pd.DataFrame(asset_json), search_value)]
 
         # Set default years if not provided
         start_year = start_year or 1990
@@ -405,26 +445,26 @@ def register_callbacks(app):
 
         # Validate the date range
         if start_date > end_date:
-            return "L'anno di inizio deve essere precedente all'anno di fine.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
+            return etf_options, "L'anno di inizio deve essere precedente all'anno di fine.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
         # Convert input dates to datetime objects if they exist
         start_dt = pd.to_datetime(start_date) if start_date else None
         end_dt = pd.to_datetime(end_date) if end_date else None
 
         if n_clicks is None:
-            return "", dash.no_update,  dash.no_update, dash.no_update, dash.no_update
+            return etf_options, "", dash.no_update,  dash.no_update, dash.no_update, dash.no_update
 
         if n_clicks > 0:
             if not table_data:
-                return "Nessun ETF nel portafoglio da creare.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
+                return etf_options, "Nessun ETF nel portafoglio da creare.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
             # Calcola l'allocazione totale
             try:
                 total_percentage = sum(float(row.get('Percentuale', 0)) for row in table_data)
             except (ValueError, TypeError):
-                return "Valore percentuale non valido rilevato.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
+                return etf_options, "Valore percentuale non valido rilevato.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
             if total_percentage != 100:
-                return f"L'allocazione totale deve essere esattamente del 100%. Totale attuale: {total_percentage:.2f}%.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
+                return etf_options, f"L'allocazione totale deve essere esattamente del 100%. Totale attuale: {total_percentage:.2f}%.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
             # Converti i dati della tabella in DataFrame
             df = pd.DataFrame(table_data)
@@ -488,9 +528,9 @@ def register_callbacks(app):
             # Fornisci feedback all'utente e salva i dati nel Store
             portfolio_con_benchmark.reset_index(inplace=True)
 
-            return "", portfolio_con_benchmark.to_dict('records'), dati.to_dict('records'), dynamic_years_start, dynamic_years_end
+            return etf_options, "", portfolio_con_benchmark.to_dict('records'), dati.to_dict('records'), dynamic_years_start, dynamic_years_end
 
-        return "", "","", dash.no_update, dash.no_update
+        return etf_options, "", "","", dash.no_update, dash.no_update
 
     # Callback per elaborare i dati del portafoglio e fornire feedback aggiuntivo
     def match_asset_name(nomi_assets):
