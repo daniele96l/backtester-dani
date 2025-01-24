@@ -101,7 +101,7 @@ def create_layout(asset_df, initial_table_data):
             # Riga di Selezione: Dropdown ETF e Slider Percentuale
             dbc.Row([
                 dbc.Col([
-                    dbc.Label("Seleziona un ETF (Scrivi il nome completo):", style={'color': '#000000'}),
+                    dbc.Label("Seleziona un ETF (Nome, ISIN, Ticker):", style={'color': '#000000'}),
                     dcc.Dropdown(
                         id='etf-dropdown',
                         placeholder="Seleziona un ETF",
