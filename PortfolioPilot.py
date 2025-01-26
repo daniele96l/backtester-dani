@@ -285,6 +285,20 @@ def create_layout(asset_df, initial_table_data):
                 className="btn-floating",  # Use the CSS class defined in styles.css
             ),
 
+            # Floating Button
+            dbc.Button(
+                children="Donate",  # Text on the button
+                id="floating-button2",
+                style={
+                    "backgroundColor": portfolio_color,  # Use the color variable
+                    "color": "#000",  # Text color (adjust for contrast)
+
+                },
+                className="btn-donating",  # Use the CSS class defined in styles.css
+            ),
+
+
+
             dbc.Button(
                 "Esporta il Report in PDF.",
                 id="save-pdf-button",
@@ -333,10 +347,19 @@ def register_callbacks(app):
     @app.callback(
         Output("url", "href"),
         Input("floating-button", "n_clicks"),
+        Input("floating-button2", "n_clicks"),
         prevent_initial_call=True
     )
-    def redirect_to_link(n_clicks):
-        return "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577"
+    def redirect_to_link(n_clicks, n_clicks2):
+        ctx = dash.callback_context
+        if not ctx.triggered:
+            return dash.no_update
+        else:
+            button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+            if button_id == "floating-button":
+                return "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577"
+            elif button_id == "floating-button2":
+                return "https://buymeacoffee.com/n2bxhw3too"
 
     app.clientside_callback(
         """
