@@ -645,15 +645,10 @@ def register_callbacks(app):
 
         column_except_date = [col for col in portfolio_df.columns if col != 'Date']
 
-        rolling1 = go.Figure()
-        rolling2 = go.Figure()
-        rolling3 = go.Figure()
-
         rolling1 = add_rolling_traces(portfolio_df, rolling_periods[0], portfolio_color,column_except_date)
         rolling2 = add_rolling_traces(portfolio_df, rolling_periods[1], portfolio_color,column_except_date)
         rolling3 = add_rolling_traces(portfolio_df, rolling_periods[2], portfolio_color,column_except_date)
 
-        drawdown = go.Figure()
         drawdown = plc.plot_drawdown(portfolio_df, portfolio_color,benchmark_color,column_except_date)
 
         # Calculate factor exposure for the portfolio
@@ -662,13 +657,10 @@ def register_callbacks(app):
         if 'Benchmark' in portfolio_df.columns:
             factor_exposure_benchmark, factor_names = calculate_factor_exposure(portfolio_df[["Benchmark","Date"]])
 
-
-
         # Calculate CAGR and Volatility for each column except 'Date'
         cagr = {}
         volatility = {}
         sharpe_ratio = {}
-
 
         for column in column_except_date:
             start_value = portfolio_df[column].iloc[0]
