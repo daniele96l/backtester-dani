@@ -263,7 +263,7 @@ def create_layout(asset_list, initial_table_data):
             ]),
             # Floating Button
             dbc.Button(
-                children="Info",  # Text on the button
+                children="Tutorial",  # Text on the button
                 id="floating-button",
                 style={
                     "backgroundColor": portfolio_color,  # Use the color variable
