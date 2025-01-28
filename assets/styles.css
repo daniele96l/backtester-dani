@@ -1,33 +1,22 @@
-/* Keyframes for bouncing */
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0); /* Default position */
-    }
-    50% {
-        transform: translateY(-10px); /* Bounce upward */
-    }
-}
-
 /* Keyframes for fading out */
 @keyframes fadeOut {
     0% {
         opacity: 1; /* Fully visible */
     }
     100% {
-        opacity: 0.5; /* Fade out to 50% opacity */
+        opacity: 0.2; /* Fade out to 50% opacity */
     }
 }
 
 /* Floating button styles */
 .btn-floating {
-    animation: bounce 1s ease-in-out 5, fadeOut 15s ease-in-out 5s forwards;
-    /* Bounce for 3 seconds (1s x 3 iterations), then fade out */
+    animation: fadeOut 15s ease-in-out 5s forwards; /* Only fade out */
     position: fixed;
     bottom: 20px;
     left: 20px;
-    border-radius: 50%; /* Keep the button round */
-    width: 70px; /* Fixed width */
-    height: 70px; /* Fixed height */
+    border-radius: 10px; /* Make the button squared */
+    width: 60px; /* Fixed width */
+    height: 60px; /* Fixed height */
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
     background-color: #FF5722;
     border: 2px solid white;
@@ -38,12 +27,39 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px; /* Adjust text size to fit */
+    font-size: 12px; /* Adjust text size to fit */
     font-weight: bold;
     color: white;
     text-align: center;
-    padding: 0; /* Remove padding to maintain round shape */
-    overflow: hidden; /* Prevent overflow from breaking circle */
+    padding: 0; /* Remove padding to maintain shape */
+    overflow: hidden; /* Prevent overflow from breaking shape */
+}
+
+/* Floating button styles */
+.btn-donating {
+    animation: fadeOut 15s ease-in-out 5s forwards; /* Only fade out */
+    position: fixed;
+    bottom: 90px;
+    left: 20px;
+    border-radius: 10px; /* Make the button squared */
+    width: 60px; /* Fixed width */
+    height: 60px; /* Fixed height */
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
+    background-color: #FF5722;
+    border: 2px solid white;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    opacity: 1; /* Start fully visible */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px; /* Adjust text size to fit */
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    padding: 0; /* Remove padding to maintain shape */
+    overflow: hidden; /* Prevent overflow from breaking shape */
 }
 
 /* Glow effect on hover (restore full visibility) */
