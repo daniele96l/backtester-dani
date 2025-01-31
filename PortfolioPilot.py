@@ -347,7 +347,7 @@ def register_callbacks(app):
             if button_id == "floating-button":
                 return "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577"
             elif button_id == "floating-button2":
-                return "https://buymeacoffee.com/n2bxhw3too"
+                return "https://www.paypal.com/donate/?hosted_button_id=M378MEXMSSQT6"
 
     app.clientside_callback(
         """
