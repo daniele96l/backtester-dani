@@ -13,7 +13,6 @@ import warnings
 import numpy as np
 import statsmodels.api as sm
 
-
 warnings.filterwarnings("ignore", category=UserWarning)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)  # Show only errors
@@ -285,8 +284,6 @@ def create_layout(asset_list, initial_table_data):
                 className="btn-donating",  # Use the CSS class defined in styles.css
             ),
 
-
-
             dbc.Button(
                 "Esporta il Report in PDF.",
                 id="save-pdf-button",
@@ -300,9 +297,59 @@ def create_layout(asset_list, initial_table_data):
             ),
             html.Div(id="hidden-div", style={"display": "none"}),
 
-            dcc.Location(id="url", refresh=True)
+            dcc.Location(id="url", refresh=True),
 
-        ], className='px-4', style={'backgroundColor': '#FFFFFF'})
+        ], className='px-4', style={'backgroundColor': '#FFFFFF'}),
+
+        dbc.Container([
+            dbc.Row([
+                html.Footer(
+                    className="mt-5",
+                    style={
+                        'width': '100%',
+                        'backgroundColor': '#f8f9fa',
+                        'borderTop': '1px solid #dee2e6',
+                        'padding': '2rem 0',
+                    },
+                    children=[
+                        dbc.Container(
+                            fluid=True,
+                            style={'maxWidth': '100%', 'paddingLeft': '0', 'paddingRight': '0'},
+                            children=[
+                                html.Div(
+                                    className="text-center",
+                                    style={'marginLeft': 'auto', 'marginRight': 'auto', 'maxWidth': '1200px'},
+                                    children=[
+                                        # Contributors section
+                                        html.Div([
+                                            html.H4("Contributors", className="mb-3"),
+                                            html.Ul([
+                                                html.Li("Koki - Server Backend"),
+                                                html.Li("Marco Zeuli - Developer"),
+                                            ], className="list-unstyled"),
+                                        ], className="col-md-4 mx-auto"),
+
+                                        # Link to contribute
+                                        html.Div(
+                                            [
+                                                html.Span(
+                                                    "Se vuoi contribuire al progetto open source il codice è pubblico "),
+                                                html.A(
+                                                    "QUI",
+                                                    href="https://github.com/daniele96l/backtester-dani",
+                                                    style={'color': 'gray', 'textDecoration': 'none'}
+                                                )
+                                            ],
+                                            style={'color': 'gray', 'marginTop': '1rem'}
+                                        ),
+                                    ]
+                                )
+                            ]
+                        )
+                    ],
+                )
+            ], className='mt-5'),
+        ], fluid=True)
 
     ])
 
