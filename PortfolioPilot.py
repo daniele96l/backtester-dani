@@ -63,7 +63,7 @@ def create_layout(asset_list, initial_table_data):
             dbc.Row(
                 dbc.Col(
                     html.Img(
-                        src="/assets/Logo.png",  # Path to the logo in the assets folder
+                        src="/assets/Logo2.png",  # Path to the logo in the assets folder
                         style={
                             'maxHeight': '100px',  # Set max height for the logo
                             'margin': 'auto',     # Center the logo
@@ -324,6 +324,7 @@ def create_layout(asset_list, initial_table_data):
                                         html.Div([
                                             html.H4("Contributors", className="mb-3"),
                                             html.Ul([
+                                                html.Li("Dani & Dati - Founder"),
                                                 html.Li("Koki - Server Backend"),
                                                 html.Li("Marco Zeuli - Developer"),
                                             ], className="list-unstyled"),
