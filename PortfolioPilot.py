@@ -219,6 +219,7 @@ def create_layout(asset_df, initial_table_data):
                     html.Div(id='allocation-summary', className='mt-4 text-center',
                              style={'fontSize': '1.1em', 'color': '#000000'}),
                     width=12
+
                 )
             ]),
             dbc.Row([
