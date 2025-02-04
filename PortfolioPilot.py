@@ -6,27 +6,15 @@ import dash.dash_table
 import plotly.graph_objects as go
 import PlotLineChart as plc
 import EfficentFonteer as ef
-import webbrowser
-import config
 import logging
 import warnings
-import numpy as np
 import statsmodels.api as sm
+
+from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
 
 warnings.filterwarnings("ignore", category=UserWarning)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)  # Show only errors
-
-# Costanti
-FILE_PATH = config.FILE_PATH
-ETF_BASE_PATH = config.ETF_BASE_PATH
-BASE_PATH = config.BASE_PATH
-
-APP_TITLE = "PortfolioPilot"
-# Define colors for benchmark and portfolio
-benchmark_color = 'rgba(250, 128, 114, 0.7)'
-portfolio_color = 'rgba(135, 206, 250, 0.7)'
-
 
 def load_asset_list(file_path):
     """Carica e processa la lista degli asset da un file CSV."""
@@ -262,7 +250,7 @@ def create_layout(asset_list, initial_table_data):
                 children="Tutorial",  # Text on the button
                 id="floating-button",
                 style={
-                    "backgroundColor": portfolio_color,  # Use the color variable
+                    "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
                     "color": "#000",  # Text color (adjust for contrast)
 
                 },
@@ -274,7 +262,7 @@ def create_layout(asset_list, initial_table_data):
                 children="Donate",  # Text on the button
                 id="floating-button2",
                 style={
-                    "backgroundColor": portfolio_color,  # Use the color variable
+                    "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
                     "color": "#000",  # Text color (adjust for contrast)
 
                 },
@@ -285,7 +273,7 @@ def create_layout(asset_list, initial_table_data):
                 "Esporta il Report in PDF.",
                 id="save-pdf-button",
                 style={
-                    "backgroundColor": portfolio_color,  # Use the color variable
+                    "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
                     "color": "#000",  # Text color
                     "width": "100%",
                     "marginBottom": "50px",  # Add space below the button
@@ -583,7 +571,7 @@ def register_callbacks(app):
 
     # Callback per elaborare i dati del portafoglio e fornire feedback aggiuntivo
     def match_asset_name(nomi_assets):
-        mapping = pd.read_csv(FILE_PATH)
+        mapping = pd.read_csv(INDEX_LIST_FILE_PATH)
         nomi_indici = [mapping[mapping['Fund'] == asset]['Index'].values[0] for asset in nomi_assets if
                        asset in mapping['Fund'].values]
         return nomi_indici
@@ -632,16 +620,16 @@ def register_callbacks(app):
         rolling_returns = rolling_returns.dropna()
         rolling_returns = rolling_returns.reset_index()
         return rolling_returns
-    def add_rolling_traces(portfolio_df, period, portfolio_color,column_except_date):
+    def add_rolling_traces(portfolio_df, period, PORTFOLIO_COLOR,column_except_date):
         if(len(portfolio_df) < period):
             rolling = go.Figure()
             return rolling.add_trace(go.Scatter(x=[0], y=[0], mode='text', text=f'Non ci sono abbastanza dati per calcolare i rendimenti rolling per {period} mesi'))
         else:
             rolling_returns = calculate_rolling_returns(portfolio_df, period)
-            return plc.plot_line_chart_rolling(column_except_date, rolling_returns, portfolio_color, benchmark_color,period)
+            return plc.plot_line_chart_rolling(column_except_date, rolling_returns, PORTFOLIO_COLOR, BENCHMARK_COLOR,period)
 
     def import_fama_french():
-        fama_french = pd.read_csv(f"{BASE_PATH}/Developed_5_Factors.csv", parse_dates=['Date'])
+        fama_french = pd.read_csv(f"{DEV_FIVE_FACTORS_FILE_PATH}", parse_dates=['Date'])
         fama_french = fama_french.set_index('Date')
         fama_french = fama_french / 100
         return fama_french
@@ -721,11 +709,11 @@ def register_callbacks(app):
 
         column_except_date = [col for col in portfolio_df.columns if col != 'Date']
 
-        rolling1 = add_rolling_traces(portfolio_df, rolling_periods[0], portfolio_color,column_except_date)
-        rolling2 = add_rolling_traces(portfolio_df, rolling_periods[1], portfolio_color,column_except_date)
-        rolling3 = add_rolling_traces(portfolio_df, rolling_periods[2], portfolio_color,column_except_date)
+        rolling1 = add_rolling_traces(portfolio_df, rolling_periods[0], PORTFOLIO_COLOR,column_except_date)
+        rolling2 = add_rolling_traces(portfolio_df, rolling_periods[1], PORTFOLIO_COLOR,column_except_date)
+        rolling3 = add_rolling_traces(portfolio_df, rolling_periods[2], PORTFOLIO_COLOR,column_except_date)
 
-        drawdown = plc.plot_drawdown(portfolio_df, portfolio_color,benchmark_color,column_except_date)
+        drawdown = plc.plot_drawdown(portfolio_df, PORTFOLIO_COLOR,BENCHMARK_COLOR,column_except_date)
 
         # Calculate factor exposure for the portfolio
         factor_exposure_portfolio, factor_names = calculate_factor_exposure(portfolio_df[["Portfolio","Date"]])
@@ -768,8 +756,8 @@ def register_callbacks(app):
         scatter_fig,pie_fig = ef.calcola_frontiera_efficente(dati_df) # TODO non plottare gli indici ma i nomi degli etf
 
         custom_colorscale = [
-            [0, benchmark_color],  # Start of the scale
-            [1, portfolio_color]  # End of the scale
+            [0, BENCHMARK_COLOR],  # Start of the scale
+            [1, PORTFOLIO_COLOR]  # End of the scale
         ]
 
         # Assuming 'factor_names' is a list of factor names (probably from the regression results)
@@ -794,7 +782,7 @@ def register_callbacks(app):
             x=factor_names_italian,  # Use translated names here
             y=factor_exposure_portfolio,
             name="Portfolio",
-            marker=dict(color=portfolio_color)
+            marker=dict(color=PORTFOLIO_COLOR)
         ))
 
         if 'Benchmark' in portfolio_df.columns:
@@ -802,7 +790,7 @@ def register_callbacks(app):
                 x=factor_names_italian,  # Use translated names here
                 y=factor_exposure_benchmark,
                 name="Benchmark",
-                marker=dict(color=benchmark_color)
+                marker=dict(color=BENCHMARK_COLOR)
             ))
 
         factor_exposure_fig.update_layout(
@@ -833,7 +821,7 @@ def register_callbacks(app):
             x=sharpe_data["Portfolio"],
             y=sharpe_data["Value"],
             name="Sharpe Ratio",
-            marker=dict(color=[portfolio_color, benchmark_color])
+            marker=dict(color=[PORTFOLIO_COLOR, BENCHMARK_COLOR])
         ))
 
         sharpe_fig.update_layout(
@@ -850,7 +838,7 @@ def register_callbacks(app):
             x=cagr_data["Portfolio"],
             y=cagr_data["Value"],
             name="Ritorno Composto Annuo",
-            marker=dict(color=[portfolio_color, benchmark_color])
+            marker=dict(color=[PORTFOLIO_COLOR, BENCHMARK_COLOR])
 
 
         ))
@@ -867,7 +855,7 @@ def register_callbacks(app):
             x=volatility_data["Portfolio"],
             y=volatility_data["Value"],
             name="Volatility",
-            marker=dict(color=[portfolio_color, benchmark_color])
+            marker=dict(color=[PORTFOLIO_COLOR, BENCHMARK_COLOR])
         ))
         volatility_fig.update_layout(
             title="Volatilità per Portafoglio",
@@ -877,7 +865,7 @@ def register_callbacks(app):
             margin=dict(l=40, r=40, t=40, b=40)
         )
 
-        portfolio_fig = plc.plot_line_chart(column_except_date, portfolio_df, portfolio_color, benchmark_color)
+        portfolio_fig = plc.plot_line_chart(column_except_date, portfolio_df, PORTFOLIO_COLOR, BENCHMARK_COLOR)
 
         # Return both graphs side by side, and the line chart below
         return html.Div([
@@ -898,7 +886,7 @@ def register_callbacks(app):
 
 def main():
     # Carica la lista degli asset
-    asset_list = load_asset_list(FILE_PATH)
+    asset_list = load_asset_list(INDEX_LIST_FILE_PATH)
 
     # Inizializza l'app Dash con il tema Bootstrap e stili personalizzati
     app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -914,7 +902,7 @@ def main():
     register_callbacks(app)
 
     # Esegui l'app
-    app.run_server(port=80, host='0.0.0.0')
+    app.run_server(port=SERVER_PORT, host=SERVER_HOST)
 
 
 if __name__ == '__main__':
