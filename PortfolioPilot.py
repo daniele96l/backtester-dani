@@ -63,7 +63,7 @@ def create_layout(asset_list, initial_table_data):
             dbc.Row(
                 dbc.Col(
                     html.Img(
-                        src="/assets/Logo.png",  # Path to the logo in the assets folder
+                        src="/assets/Logo2.png",  # Path to the logo in the assets folder
                         style={
                             'maxHeight': '100px',  # Set max height for the logo
                             'margin': 'auto',     # Center the logo
@@ -98,15 +98,12 @@ def create_layout(asset_list, initial_table_data):
 
                 dbc.Col([
                     dbc.Label("Percentuale di Allocazione:", style={'color': '#000000'}),
-                    dcc.Slider(
-                        id='percentage-slider',
-                        min=1,
-                        max=100,
-                        step=1,
+                    dbc.Input(
+                        id='percentage-input',
+                        type='number',
+                        min=0.1,
                         value=100,
-                        marks={i: f'{i}%' for i in range(0, 101, 10)},
-                        tooltip={"placement": "top", "always_visible": True},
-                        updatemode='drag',
+                        style={'width': '100%'},
                     )
                 ], md=6),
             ], className='mb-4'),
@@ -138,10 +135,10 @@ def create_layout(asset_list, initial_table_data):
                         id='portfolio-table',
                         columns=[
                             {"name": "ETF", "id": "ETF", "editable": False},
-                            {"name": "Percentuale (%)", "id": "Percentuale", "editable": True, 'type': 'numeric',
+                            {"name": "Percentuale (%)", "id": "Percentuale", "editable": False, 'type': 'numeric',
                              'format': {'specifier': '.2f'}},
                         ],
-                        data=initial_table_data.to_dict('records'),
+                        data=initial_table_data.to_dict('records'),  # Ensure your data includes "Inizio storia"
                         editable=True,
                         row_deletable=True,
                         style_table={'width': '100%', 'overflowX': 'auto', 'backgroundColor': '#FFFFFF'},
@@ -324,6 +321,7 @@ def create_layout(asset_list, initial_table_data):
                                         html.Div([
                                             html.H4("Contributors", className="mb-3"),
                                             html.Ul([
+                                                html.Li("Dani & Dati - Founder"),
                                                 html.Li("Koki - Server Backend"),
                                                 html.Li("Marco Zeuli - Developer"),
                                             ], className="list-unstyled"),
@@ -416,10 +414,11 @@ def register_callbacks(app):
          Output('allocation-error-toast', 'is_open')],
         [Input('add-etf-button', 'n_clicks')],
         [State('etf-dropdown', 'value'),
-         State('percentage-slider', 'value'),
+         State('percentage-input', 'value'),
          State('portfolio-table', 'data')]
     )
     def add_etf_to_table(n_clicks, selected_etf, selected_percentage, current_data):
+        selected_percentage = round(selected_percentage, 2)
         if n_clicks is None:
             # Nessun clic ancora, restituisce i dati correnti invariati
             return current_data, False
@@ -442,6 +441,11 @@ def register_callbacks(app):
             # Assicurati che selected_percentage non sia None
             if selected_percentage is None:
                 selected_percentage = 0
+
+            if selected_percentage > 100:
+                selected_percentage = 100
+            if selected_percentage <= 0:
+                selected_percentage = 0.1
 
             # Controlla se l'aggiunta della nuova percentuale supera il 100%
             total_allocated = current_df['Percentuale'].sum() if not current_df.empty else 0
@@ -475,6 +479,7 @@ def register_callbacks(app):
     def create_portfolio(n_clicks, table_data, benchmark, start_year, end_year):
 
         # Set default years if not provided
+        warnings_data_benchmark = []
         start_year = start_year or 1990
         end_year = end_year or 2024
         start_date = pd.Timestamp(f'{start_year}-01-01')
@@ -508,19 +513,17 @@ def register_callbacks(app):
             nomi_etf = df['ETF']
             indici = match_asset_name(nomi_etf)
 
-            dati = importa_dati(indici)
+            dati,warnings_data = importa_dati(indici)
+            print(warnings_data)
             #dati = dati.loc[:, ~dati.columns.duplicated()] #Rimosso perchè dava problemi se mettevo due ETF uguali tra la lista
 
-            #Calcola i ritorni pe ogni asset
-
+            #Calcola i ritorni per ogni asset
             pct_change = dati.pct_change()
-            #Drop nan values
             pct_change = pct_change.dropna()
             #Scala i ritorni per il peso e poi fanne la media
             dati_scalati = pct_change * df['Percentuale'].values/100 #WHAT IF I CLICK ON THE SAME INDEX?
 
             dati_scalati['Portfolio_return'] = dati_scalati.sum(axis=1)
-
             dati_scalati['Portfolio'] = 100 * (1 + dati_scalati['Portfolio_return']).cumprod()
 
 
@@ -531,12 +534,19 @@ def register_callbacks(app):
 
             if benchmark:
                 indice_benchmark = match_asset_name([benchmark])
-                dati_benckmark = importa_dati(indice_benchmark)
+                dati_benckmark, warnings_data_benchmark = importa_dati(indice_benchmark)
                 dati_benckmark = dati_benckmark.loc[:, ~dati_benckmark.columns.duplicated()]
                 portfolio_con_benchmark = dati_scalati.join(dati_benckmark[indice_benchmark[0]], how='inner', rsuffix='_benchmark')
                 portfolio_con_benchmark['Benchmark'] = portfolio_con_benchmark[indice_benchmark[0]] / portfolio_con_benchmark[indice_benchmark[0]].iloc[0] * 100
                 portfolio_con_benchmark = portfolio_con_benchmark.drop(columns=[indice_benchmark[0]])
                 portfolio_con_benchmark['Portfolio'] = portfolio_con_benchmark['Portfolio'] / portfolio_con_benchmark['Portfolio'].iloc[0] * 100
+                #Compare the warning_data and the warning_data_benchmark
+                #Check which one has the ealriest data
+                if warnings_data[0] < warnings_data_benchmark[0]:
+                    warnings_data = warnings_data_benchmark
+
+            warnings_data_string = f"L'analisi inizia dal {warnings_data[0]} sull'indice più recente: {warnings_data[1]}"
+
 
             # Get the first and last dates of the portfolio
             first_portfolio_date = pd.to_datetime(portfolio_con_benchmark.index[0])
@@ -565,7 +575,7 @@ def register_callbacks(app):
             # Fornisci feedback all'utente e salva i dati nel Store
             portfolio_con_benchmark.reset_index(inplace=True)
 
-            return "", portfolio_con_benchmark.to_dict('records'), dati.to_dict('records'), dynamic_years_start, dynamic_years_end
+            return warnings_data_string, portfolio_con_benchmark.to_dict('records'), dati.to_dict('records'), dynamic_years_start, dynamic_years_end
 
         return "", "","", dash.no_update, dash.no_update
 
@@ -578,6 +588,9 @@ def register_callbacks(app):
 
     def importa_dati(nomi_indici):
         dati = None  # Initialize an empty dataframe for merging
+        latest_start_date = None  # Track the latest start date
+        latest_start_etf = None  # Track the ETF name with the latest start date
+
         for i in nomi_indici:
             # Read the data and set Date as the index
             temp_data = pd.read_csv(
@@ -585,16 +598,30 @@ def register_callbacks(app):
                 parse_dates=['Date'],
             ).set_index('Date')
 
+            # Get the first date available for the current ETF
+            first_date = temp_data.index.min()
+
+            # Check if this ETF has a later start date than the current latest
+            if latest_start_date is None or first_date > latest_start_date:
+                latest_start_date = first_date
+                latest_start_etf = i
+
+            # Print the first date available for the current ETF
+            first_date = temp_data.index.min()
             if dati is None:
                 dati = temp_data  # For the first dataframe, initialize `dati`
             else:
                 dati = pd.concat([dati, temp_data], axis=1)  # Concatenate on index (Date)
 
         dati.dropna(inplace=True)  # Drop rows with missing values
-        #Normalize all the columns making them start from 100
+        # Normalize all the columns making them start from 100
         dati = dati / dati.iloc[0] * 100
 
-        return dati
+        # Prepare the warning message
+        first_date_str = latest_start_date.strftime('%Y-%m')
+        warning = [first_date_str, latest_start_etf]
+
+        return dati, warning
 
     def calculate_rolling_returns(portfolio_df, period):
         rolling_returns = portfolio_df.copy()
