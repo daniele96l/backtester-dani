@@ -418,7 +418,7 @@ def register_callbacks(app):
          State('portfolio-table', 'data')]
     )
     def add_etf_to_table(n_clicks, selected_etf, selected_percentage, current_data):
-        selected_percentage = round(selected_percentage, 2)
+
         if n_clicks is None:
             # Nessun clic ancora, restituisce i dati correnti invariati
             return current_data, False
@@ -446,6 +446,8 @@ def register_callbacks(app):
                 selected_percentage = 100
             if selected_percentage <= 0:
                 selected_percentage = 0.1
+
+            selected_percentage = round(selected_percentage, 2)
 
             # Controlla se l'aggiunta della nuova percentuale supera il 100%
             total_allocated = current_df['Percentuale'].sum() if not current_df.empty else 0
