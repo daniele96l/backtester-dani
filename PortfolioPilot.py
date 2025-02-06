@@ -123,7 +123,7 @@ def create_layout(asset_list, initial_table_data):
                         id='portfolio-table',
                         columns=[
                             {"name": "ETF", "id": "ETF", "editable": False},
-                            {"name": "Percentuale (%)", "id": "Percentuale", "editable": False, 'type': 'numeric',
+                            {"name": "Percentuale (%)", "id": "Percentuale", "editable": True, 'type': 'numeric',
                              'format': {'specifier': '.2f'}},
                         ],
                         data=initial_table_data.to_dict('records'),  # Ensure your data includes "Inizio storia"
