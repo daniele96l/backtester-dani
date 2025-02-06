@@ -202,6 +202,7 @@ def create_layout(asset_list, initial_table_data):
             ]),
             dcc.Store(id='portfolio-data', storage_type='memory'),  # Aggiungi questo componente
             dcc.Store(id='assets-data', storage_type='memory'),  # Aggiungi questo componente
+            dcc.Store(id='pesi-correnti', storage_type='memory'),
             dbc.Toast(
                 id="allocation-error-toast",
                 header="Stai superando il 100% di allocazione del tuo portafoglio, rimuovi o modifica le percentuali.",
@@ -462,7 +463,8 @@ def register_callbacks(app):
          Output('portfolio-data', 'data'),
          Output('assets-data', 'data'),
          Output('start-year-dropdown', 'options'),  # Dynamically update start year options
-         Output('end-year-dropdown', 'options')],  # Dynamically update end year options
+         Output('end-year-dropdown', 'options'),  # Dynamically update end year options
+         Output('pesi-correnti', 'data')],  # New output for pesi_correnti
         [Input('create-portfolio-button', 'n_clicks')],
         [State('portfolio-table', 'data'),
          State('benchmark-dropdown', 'value'),
@@ -470,7 +472,6 @@ def register_callbacks(app):
          State('end-year-dropdown', 'value')]
     )
     def create_portfolio(n_clicks, table_data, benchmark, start_year, end_year):
-
         # Set default years if not provided
         warnings_data_benchmark = []
         start_year = start_year or 1990
@@ -480,45 +481,44 @@ def register_callbacks(app):
 
         # Validate the date range
         if start_date > end_date:
-            return "L'anno di inizio deve essere precedente all'anno di fine.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
+            return "L'anno di inizio deve essere precedente all'anno di fine.", dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
         # Convert input dates to datetime objects if they exist
         start_dt = pd.to_datetime(start_date) if start_date else None
         end_dt = pd.to_datetime(end_date) if end_date else None
 
         if n_clicks is None:
-            return "", dash.no_update,  dash.no_update, dash.no_update, dash.no_update
+            return "", dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
         if n_clicks > 0:
             if not table_data:
-                return "Nessun ETF nel portafoglio da creare.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
+                return "Nessun ETF nel portafoglio da creare.", dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
             # Calcola l'allocazione totale
             try:
                 total_percentage = sum(float(row.get('Percentuale', 0)) for row in table_data)
             except (ValueError, TypeError):
-                return "Valore percentuale non valido rilevato.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
+                return "Valore percentuale non valido rilevato.", dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
             if total_percentage != 100:
-                return f"L'allocazione totale deve essere esattamente del 100%. Totale attuale: {total_percentage:.2f}%.", dash.no_update, dash.no_update, dash.no_update, dash.no_update
+                return f"L'allocazione totale deve essere esattamente del 100%. Totale attuale: {total_percentage:.2f}%.", dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
             # Converti i dati della tabella in DataFrame
             df = pd.DataFrame(table_data)
             nomi_etf = df['ETF']
             indici = match_asset_name(nomi_etf)
 
-            dati,warnings_data = importa_dati(indici)
-            print(warnings_data)
-            #dati = dati.loc[:, ~dati.columns.duplicated()] #Rimosso perchè dava problemi se mettevo due ETF uguali tra la lista
+            dati, warnings_data = importa_dati(indici)
 
             #Calcola i ritorni per ogni asset
             pct_change = dati.pct_change()
             pct_change = pct_change.dropna()
-            #Scala i ritorni per il peso e poi fanne la media
-            dati_scalati = pct_change * df['Percentuale'].values/100 #WHAT IF I CLICK ON THE SAME INDEX?
+            # Scala i ritorni per il peso e poi fanne la media
+            dati_scalati = pct_change * df['Percentuale'].values / 100
+
+            pesi_correnti = df['Percentuale'].values / 100
 
             dati_scalati['Portfolio_return'] = dati_scalati.sum(axis=1)
             dati_scalati['Portfolio'] = 100 * (1 + dati_scalati['Portfolio_return']).cumprod()
-
 
             dati_scalati = dati_scalati.drop(columns=['Portfolio_return'])
 
@@ -529,17 +529,17 @@ def register_callbacks(app):
                 indice_benchmark = match_asset_name([benchmark])
                 dati_benckmark, warnings_data_benchmark = importa_dati(indice_benchmark)
                 dati_benckmark = dati_benckmark.loc[:, ~dati_benckmark.columns.duplicated()]
-                portfolio_con_benchmark = dati_scalati.join(dati_benckmark[indice_benchmark[0]], how='inner', rsuffix='_benchmark')
-                portfolio_con_benchmark['Benchmark'] = portfolio_con_benchmark[indice_benchmark[0]] / portfolio_con_benchmark[indice_benchmark[0]].iloc[0] * 100
+                portfolio_con_benchmark = dati_scalati.join(dati_benckmark[indice_benchmark[0]], how='inner',
+                                                            rsuffix='_benchmark')
+                portfolio_con_benchmark['Benchmark'] = portfolio_con_benchmark[indice_benchmark[0]] / \
+                                                       portfolio_con_benchmark[indice_benchmark[0]].iloc[0] * 100
                 portfolio_con_benchmark = portfolio_con_benchmark.drop(columns=[indice_benchmark[0]])
-                portfolio_con_benchmark['Portfolio'] = portfolio_con_benchmark['Portfolio'] / portfolio_con_benchmark['Portfolio'].iloc[0] * 100
-                #Compare the warning_data and the warning_data_benchmark
-                #Check which one has the ealriest data
+                portfolio_con_benchmark['Portfolio'] = portfolio_con_benchmark['Portfolio'] / \
+                                                       portfolio_con_benchmark['Portfolio'].iloc[0] * 100
                 if warnings_data[0] < warnings_data_benchmark[0]:
                     warnings_data = warnings_data_benchmark
 
             warnings_data_string = f"L'analisi inizia dal {warnings_data[0]} sull'indice più recente: {warnings_data[1]}"
-
 
             # Get the first and last dates of the portfolio
             first_portfolio_date = pd.to_datetime(portfolio_con_benchmark.index[0])
@@ -550,7 +550,7 @@ def register_callbacks(app):
                 start_dt = first_portfolio_date
 
             # Apply slicing and normalization based on conditions
-            if (start_dt and start_dt > first_portfolio_date ):
+            if (start_dt and start_dt > first_portfolio_date):
                 dati = dati.loc[start_dt:]
                 dati = (dati / dati.iloc[0]) * 100
                 portfolio_con_benchmark = portfolio_con_benchmark.loc[start_dt:]
@@ -560,7 +560,6 @@ def register_callbacks(app):
                 portfolio_con_benchmark = portfolio_con_benchmark.loc[:end_dt]
                 dati = dati.loc[:end_dt]
 
-
             first_year = first_portfolio_date.year
             dynamic_years_start = [{'label': str(year), 'value': year} for year in range(first_year, 2025)] #Fist year is the fist year of the portfolio
             dynamic_years_end = [{'label': str(year), 'value': year} for year in range(first_year, 2025)] #Start year è il primo anno dopo l'anno minimo settato dall'utente
@@ -568,9 +567,13 @@ def register_callbacks(app):
             # Fornisci feedback all'utente e salva i dati nel Store
             portfolio_con_benchmark.reset_index(inplace=True)
 
-            return warnings_data_string, portfolio_con_benchmark.to_dict('records'), dati.to_dict('records'), dynamic_years_start, dynamic_years_end
+            # Convert pesi_correnti to a format suitable for dcc.Store
+            pesi_correnti_dict = {'weights': pesi_correnti.tolist()}
 
-        return "", "","", dash.no_update, dash.no_update
+            return warnings_data_string, portfolio_con_benchmark.to_dict('records'), dati.to_dict(
+                'records'), dynamic_years_start, dynamic_years_end, pesi_correnti_dict
+
+        return "", "", "", dash.no_update, dash.no_update, dash.no_update
 
     # Callback per elaborare i dati del portafoglio e fornire feedback aggiuntivo
     def match_asset_name(nomi_assets):
@@ -696,10 +699,10 @@ def register_callbacks(app):
     @app.callback(
         Output('additional-feedback', 'children'),  # Output to display the charts
         [Input('portfolio-data', 'data'),
-         Input('assets-data', 'data')]
+         Input('assets-data', 'data'),
+         Input('pesi-correnti', 'data')]
     )
-    def plot_data(portfolio_data, dati):  # ----------- KING #TODO Esportare tutti i grafici con un bottone
-        # Convert data back to DataFrame
+    def plot_data(portfolio_data, dati,pesi_correnti):  # ----------- KING
 
         portfolio_df = pd.DataFrame(portfolio_data)
         dati_df = pd.DataFrame(dati) #Sto ricevendo un DICT e non un DataFrame, quindi le colonne duplicate erano state rimosse
@@ -755,8 +758,7 @@ def register_callbacks(app):
         sharpe_data = metrics_melted[metrics_melted["Metric"] == "Sharpe Ratio"]
 
         correlation_matrix = dati_df.corr()
-
-        scatter_fig,pie_fig = ef.calcola_frontiera_efficente(dati_df) # TODO non plottare gli indici ma i nomi degli etf
+        scatter_fig,pie_fig = ef.calcola_frontiera_efficente(dati_df,pesi_correnti) # TODO non plottare gli indici ma i nomi degli etf
 
         custom_colorscale = [
             [0, BENCHMARK_COLOR],  # Start of the scale

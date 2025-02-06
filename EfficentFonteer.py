@@ -11,7 +11,7 @@ custom_colorscale = [
     [1, portfolio_color]     # End of the scale
 ]
 
-def calcola_frontiera_efficente(dati): # TODO non plottare gli indici ma i nomi degli etf
+def calcola_frontiera_efficente(dati, pesi_correnti):
     if dati is None or dati.empty:
         raise ValueError("Input data is missing or empty.")
 
@@ -63,6 +63,13 @@ def calcola_frontiera_efficente(dati): # TODO non plottare gli indici ma i nomi 
     all_model_portfolios = pd.DataFrame(key_portfolios).reset_index(drop=True)
     all_model_portfolios['Portfolio'] = ['Max Sharpe', 'Min Volatility', 'Max Return']
 
+    # Extract current weights from the dictionary
+    current_weights_array = np.array(pesi_correnti['weights'])
+
+    # Calculate current portfolio metrics
+    current_return = np.dot(current_weights_array, annual_returns)
+    current_volatility = np.sqrt(np.dot(current_weights_array.T, np.dot(cov_matrix, current_weights_array)))
+
     # Scatter Plot using Plotly
     scatter_fig = go.Figure()
 
@@ -80,8 +87,9 @@ def calcola_frontiera_efficente(dati): # TODO non plottare gli indici ma i nomi 
         name='Portfolios'
     ))
 
-    colors = ['red', 'blue', 'green']
-    markers = ['circle', 'star', 'triangle-up']
+    # Add key portfolios to the scatter plot
+    colors = ['red', 'blue', 'green']  # Colors for Max Sharpe, Min Volatility, Max Return
+    markers = ['circle', 'star', 'triangle-up']  # Markers for Max Sharpe, Min Volatility, Max Return
     for i, (_, portfolio) in enumerate(all_model_portfolios.iterrows()):
         scatter_fig.add_trace(go.Scatter(
             x=[portfolio['Annual Volatility']],
@@ -96,6 +104,21 @@ def calcola_frontiera_efficente(dati): # TODO non plottare gli indici ma i nomi 
             textposition='top center',
             name=portfolio['Portfolio']
         ))
+
+    # Add current portfolio to the scatter plot
+    scatter_fig.add_trace(go.Scatter(
+        x=[current_volatility],
+        y=[current_return],
+        mode='markers+text',
+        marker=dict(
+            size=12,
+            color='purple',  # Color for the current portfolio
+            symbol='diamond'  # Marker for the current portfolio
+        ),
+        text=['Current Portfolio'],
+        textposition='top center',
+        name='Current Portfolio'
+    ))
 
     # Update layout to move the legend inside the figure
     scatter_fig.update_layout(
