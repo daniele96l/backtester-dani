@@ -119,6 +119,7 @@ def calcola_frontiera_efficente(dati): # TODO non plottare gli indici ma i nomi 
             borderwidth=1  # Optional: Set border width
         )
     )
+
     # Pie Charts for Asset Allocation using Plotly
     weight_columns = [col for col in all_model_portfolios.columns if 'Weight' in col]
     pie_fig = go.Figure()
@@ -126,14 +127,14 @@ def calcola_frontiera_efficente(dati): # TODO non plottare gli indici ma i nomi 
     if weight_columns:
         all_assets = [col.replace(' Weight', '') for col in weight_columns]
 
+        # Create a color mapping for each asset (using original asset names)
         pastel_colors = [
             "#FFB3BA", "#FFDFBA", "#FFFFBA", "#BAFFC9", "#BAE1FF",
             "#FFC4C4", "#FFE4C4", "#FFFFC4", "#C4FFC9", "#C4E1FF",
             "#FFB3BA", "#FFDFBA", "#FFFFBA", "#BAFFC9", "#BAE1FF",
             "#FFC4C4", "#FFE4C4", "#FFFFC4", "#C4FFC9", "#C4E1FF",
         ]
-        while len(pastel_colors) < len(all_assets):
-            pastel_colors += pastel_colors  # Repeat the colors if there are more assets
+        asset_color_map = {asset: pastel_colors[i % len(pastel_colors)] for i, asset in enumerate(all_assets)}
 
         for i, (_, portfolio) in enumerate(all_model_portfolios.iterrows()):
             weights = portfolio[weight_columns]
@@ -146,19 +147,24 @@ def calcola_frontiera_efficente(dati): # TODO non plottare gli indici ma i nomi 
                 scaling_factor = 1 / total_significant
                 significant_weights = significant_weights * scaling_factor
 
-            labels = significant_weights.index.str.replace(' Weight', '')
-            labels = [label.replace(" ", "<br>") if len(label) > 20 else label for label in
-                      labels]  # Add line breaks if label is too long
-            values = significant_weights.values
+            # Get the original asset names (keys for asset_color_map)
+            original_labels = significant_weights.index.str.replace(' Weight', '')
+
+            # Modify labels for display (add <br> tags for long labels)
+            display_labels = [str(label).replace(" ", "<br>") if len(str(label)) > 20 else str(label) for label in
+                              original_labels]
+
+            # Assign colors based on the original asset names
+            colors = [asset_color_map[asset] for asset in original_labels]
 
             pie_fig.add_trace(go.Pie(
-                labels=labels,
-                values=values.astype(float).round(2),
+                labels=display_labels,  # Use modified labels for display
+                values=significant_weights.values.astype(float).round(2),
                 name=portfolio['Portfolio'],
                 title=f"{portfolio['Portfolio']}<br>Ritorno: {portfolio['Annual Return']:.2%}<br>Volatilità: {portfolio['Annual Volatility']:.2%}<br>Sharpe: {portfolio['Sharpe Ratio']:.2f}",
                 textinfo='label+percent',
                 hoverinfo='label+value',
-                marker=dict(colors=pastel_colors[:len(labels)]),
+                marker=dict(colors=colors),  # Use colors mapped to original asset names
                 domain=dict(row=i // 3, column=i % 3)
             ))
 
@@ -166,7 +172,6 @@ def calcola_frontiera_efficente(dati): # TODO non plottare gli indici ma i nomi 
             title='Portafogli Efficenti usando gli indici dei tuoi ETF',
             grid=dict(rows=1, columns=3, pattern="independent"),
         )
-
 
     else:
         pie_fig = None

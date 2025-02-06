@@ -307,13 +307,16 @@ def create_layout(asset_list, initial_table_data):
                                     children=[
                                         # Contributors section
                                         html.Div([
-                                            html.H4("Contributors", className="mb-3"),
+                                            html.H4("By Dani & Dati", className="mb-3"),
+                                            html.H5("Contributors", className="mt-4"),
                                             html.Ul([
-                                                html.Li("Dani & Dati - Founder"),
                                                 html.Li("Koki - Server Backend"),
                                                 html.Li("Marco Zeuli - Developer"),
-                                            ], className="list-unstyled"),
-                                        ], className="col-md-4 mx-auto"),
+                                                html.Li("Matteo Veroni - Developer"),
+                                            ], className="list-unstyled text-muted"),
+                                            # Making contributors appear less prominent
+                                        ], className="col-md-4 mx-auto")
+                                        ,
 
                                         # Link to contribute
                                         html.Div(
