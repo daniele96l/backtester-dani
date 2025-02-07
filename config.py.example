@@ -1,3 +1,4 @@
+#Esempio, aggiusta secondo il tuo path e i tuoi dati
 from pathlib import Path
 
 APP_TITLE = "PortfolioPilot"
