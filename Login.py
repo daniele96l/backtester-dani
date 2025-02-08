@@ -1,6 +1,8 @@
 import requests
 import firebase_admin
 from firebase_admin import credentials, firestore
+from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH, PUBLIC_KEY
+
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate("/Users/danieleligato/PycharmProjects/DaniBacktester/portfoliopilot-99523-firebase-adminsdk-fbsvc-e645929e12.json")  # Use your service account key
@@ -91,9 +93,8 @@ class FirebaseAuthTest:
 
 # Example usage
 if __name__ == '__main__':
-    public_key = "AIzaSyBX_AH1_hAdmnzDHKcGW83tcHHJKat1Lps"
 
-    firebase_auth = FirebaseAuthTest(public_key)
+    firebase_auth = FirebaseAuthTest(PUBLIC_KEY)
 
     action = input("Enter 'register' to register a new user or 'login' to login: ").strip().lower()
 
