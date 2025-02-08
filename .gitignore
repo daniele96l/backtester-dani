@@ -8,3 +8,4 @@ config.py
 __pycache__/
 assets/external/
 venv/
+data/.DS_Store data/ETFs/.DS_Store
