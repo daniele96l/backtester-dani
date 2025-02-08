@@ -91,9 +91,9 @@ class FirebaseAuthTest:
 
 # Example usage
 if __name__ == '__main__':
-    firebase_api_key = "x"  #
+    public_key = "AIzaSyBX_AH1_hAdmnzDHKcGW83tcHHJKat1Lps"
 
-    firebase_auth = FirebaseAuthTest(firebase_api_key)
+    firebase_auth = FirebaseAuthTest(public_key)
 
     action = input("Enter 'register' to register a new user or 'login' to login: ").strip().lower()
 
