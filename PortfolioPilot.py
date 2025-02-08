@@ -498,7 +498,7 @@ def register_callbacks(app):
             ))
 
         factor_exposure_fig.update_layout(
-            title="Esposizione ai Fattori",
+            title="Esposizione ai Fattori globali di Fama-French",
             xaxis_title="Fattori",
             yaxis_title="Esposizione",
             template='plotly_white',
