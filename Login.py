@@ -91,7 +91,7 @@ class FirebaseAuthTest:
 
 # Example usage
 if __name__ == '__main__':
-    firebase_api_key = "AIzaSyBX_AH1_hAdmnzDHKcGW83tcHHJKat1Lps"  # Replace with your Firebase Web API Key
+    firebase_api_key = "x"  #
 
     firebase_auth = FirebaseAuthTest(firebase_api_key)
 
