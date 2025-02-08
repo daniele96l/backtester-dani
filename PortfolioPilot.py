@@ -65,21 +65,38 @@ def register_callbacks(app):
         return False  # Non mostrare il toast se l'allocazione non è 100%
 
     @app.callback(
-        Output("url", "href"),
-        Input("floating-button", "n_clicks"),
-        Input("floating-button2", "n_clicks"),
+        [Output("login-modal", "is_open"),
+         Output("url", "href"),
+         Output("Work-in-progress-toast", "is_open")],  # Add the Toast's visibility as an output
+        [Input("tutorial-button", "n_clicks"),
+         Input("donate-button", "n_clicks"),
+         Input("account-button", "n_clicks"),
+         Input("close-modal", "n_clicks")],
         prevent_initial_call=True
     )
-    def redirect_to_link(n_clicks, n_clicks2):
+    def handle_button_click(n_clicks1, n_clicks2, n_clicks3, close_n_clicks):
+        wip = True
         ctx = dash.callback_context
+
+        # If no button was clicked, do nothing
         if not ctx.triggered:
-            return dash.no_update
+            return dash.no_update, dash.no_update, dash.no_update
         else:
             button_id = ctx.triggered[0]["prop_id"].split(".")[0]
-            if button_id == "floating-button":
-                return "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577"
-            elif button_id == "floating-button2":
-                return "https://www.paypal.com/donate/?hosted_button_id=M378MEXMSSQT6"
+
+            if button_id == "tutorial-button":
+                return False, "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577", dash.no_update
+            elif button_id == "donate-button":
+                return False, "https://www.paypal.com/donate/?hosted_button_id=M378MEXMSSQT6", dash.no_update  # Redirect to PayPal
+            elif button_id == "account-button":
+                if not wip:
+                    return True, dash.no_update, dash.no_update  # Handle third button logic if needed
+                else:
+                    return False, dash.no_update, True  # Show the toast if wip is True
+            elif button_id == "close-modal":
+                return False, dash.no_update, dash.no_update  # Close the modal when the user clicks close
+
+        return dash.no_update, dash.no_update, dash.no_update
 
     app.clientside_callback(
         """

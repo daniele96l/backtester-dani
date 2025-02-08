@@ -176,6 +176,14 @@ class LayoutManager:
                     is_open=False,  # Nascondi inizialmente
                     style={"position": "fixed", "top": 10, "right": 10, "zIndex": 1000},  # Posizionamento
                 ),
+                dbc.Toast(
+                    id="Work-in-progress-toast",
+                    header="Funzione in sviluppo, Arriverà presto!",
+                    dismissable=True,
+                    duration=3000,  # Durata in millisecondi (2 secondi)
+                    is_open=False,  # Nascondi inizialmente
+                    style={"position": "fixed", "top": 10, "right": 10, "zIndex": 1000},  # Posizionamento
+                ),
 
                 dbc.Toast(
                     [
@@ -215,7 +223,7 @@ class LayoutManager:
                 # Floating Button
                 dbc.Button(
                     children="Tutorial",  # Text on the button
-                    id="floating-button",
+                    id="tutorial-button",
                     style={
                         "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
                         "color": "#000",  # Text color (adjust for contrast)
@@ -227,13 +235,26 @@ class LayoutManager:
                 # Floating Button
                 dbc.Button(
                     children="Donate",  # Text on the button
-                    id="floating-button2",
+                    id="donate-button",
                     style={
                         "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
                         "color": "#000",  # Text color (adjust for contrast)
 
                     },
                     className="btn-donating",  # Use the CSS class defined in styles.css
+                ),
+
+
+                # Floating Button
+                dbc.Button(
+                    children="Account\n(Soon)",  # Text on the button
+                    id="account-button",
+                    style={
+                        "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
+                        "color": "#000",  # Text color (adjust for contrast)
+
+                    },
+                    className="btn-account",  # Use the CSS class defined in styles.css
                 ),
 
                 dbc.Button(
@@ -252,6 +273,8 @@ class LayoutManager:
                 dcc.Location(id="url", refresh=True),
 
             ], className='px-4', style={'backgroundColor': '#FFFFFF'}),
+
+            modal,
 
             dbc.Container([
                 dbc.Row([
@@ -308,4 +331,29 @@ class LayoutManager:
             ], fluid=True)
 
         ])
+
+
+modal = dbc.Modal(
+    [
+        dbc.ModalHeader("Login / Register"),
+        dbc.ModalBody(
+            html.Div([
+                html.Label("Username"),
+                dcc.Input(id="username", type="text", placeholder="Enter username"),
+                html.Br(),
+                html.Label("Password"),
+                dcc.Input(id="password", type="password", placeholder="Enter password"),
+                html.Br(),
+                dbc.Button("Submit", id="submit-login", color="primary", className="mt-2")
+            ])
+        ),
+        dbc.ModalFooter(
+            dbc.Button("Close", id="close-modal", className="ml-auto", n_clicks=0)
+        ),
+    ],
+    id="login-modal",
+    is_open=False,
+)
+
+
 
