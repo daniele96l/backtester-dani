@@ -28,7 +28,7 @@ def plot_line_chart(column_except_date, portfolio_df, portfolio_color, benchmark
     # Update layout for better visuals
     portfolio_fig.update_layout(
         title={
-            'text': "Performance del Portafoglio e degli Asset",
+            'text': "Performance del Portafoglio e del benckmark",
             'y': 0.9,  # Vertical alignment of the title
             'x': 0.5,  # Center align the title
             'xanchor': 'center',
@@ -182,8 +182,3 @@ def plot_drawdown(portfolio_df, portfolio_color,benchmark_color, column_except_d
     )
 
     return drawdown_fig
-
-
-def plot_efficent_fronteer(portfolio_df,column_except_date):
-    print("Plotting efficient frontier")
-    return None
