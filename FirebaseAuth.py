@@ -1,7 +1,7 @@
 import requests
 import firebase_admin
 from firebase_admin import credentials, firestore
-from config import PUBLIC_KEY
+PUBLIC_KEY = "AIzaSyBX_AH1_hAdmnzDHKcGW83tcHHJKat1Lps"
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate(
