@@ -261,7 +261,7 @@ def register_callbacks(app):
             pct_change = dati.pct_change()
             pct_change = pct_change.dropna()
             # Scala i ritorni per il peso e poi fanne la media
-            dati_scalati = pct_change * df['Percentuale'].values / 100
+            dati_scalati = pct_change * df['Percentuale'].values / 100 #Moltiplica i ritorni di ogni per il loro peso nel portafoglio in modo da trovare il ritorno del portafoglio
 
             pesi_correnti = df['Percentuale'].values / 100
 
@@ -387,11 +387,16 @@ def register_callbacks(app):
             volatility[column] = portfolio_df[column].pct_change().std() * (12 ** 0.5) * 100
             sharpe_ratio[column] = cagr[column] / volatility[column] if volatility[column] != 0 else 0
 
-        #Set the CAGR portfolio = current_return
-
-
         # Round the values
-        cagr['Portfolio'] = portfolio_returns * 100
+        #ig cagr is longer than 2 columns, it means that the benchmark is present, so we need to adjust the values
+        #BAD BAD BAD CODE
+        if len(cagr) >= 2:
+            diff = cagr['Portfolio'] - portfolio_returns* 100
+            cagr['Portfolio'] = portfolio_returns * 100
+            cagr["Benchmark"] = cagr['Benchmark'] - diff
+        else:
+            cagr['Portfolio'] = portfolio_returns * 100
+
         cagr = {k: round(v, 2) for k, v in cagr.items()}
         volatility = {k: round(v, 2) for k, v in volatility.items()}
         sharpe_ratio = {k: round(v, 2) for k, v in sharpe_ratio.items()}
@@ -498,7 +503,7 @@ def register_callbacks(app):
 
         ))
         cagr_fig.update_layout(
-            title="Ritorno per Portafoglio",
+            title="Ritorno Aritmetico Dei Portafogli",
             xaxis_title="Portafogli",
             yaxis_title="Ritorno (%)",
             template='plotly_white',
