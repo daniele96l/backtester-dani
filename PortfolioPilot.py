@@ -9,7 +9,9 @@ import EfficentFonteer as ef
 import logging
 import warnings
 import statsmodels.api as sm
-from layout import LayoutManager
+from Layout import LayoutManager
+from Factor_regression import calculate_factor_exposure
+from ImportsHandler import match_asset_name, importa_dati,load_asset_list
 
 from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
 
@@ -17,30 +19,16 @@ warnings.filterwarnings("ignore", category=UserWarning)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)  # Show only errors
 
-def load_asset_list(file_path):
-    """Carica e processa la lista degli asset da un file CSV."""
-    try:
-        data = pd.read_csv(file_path)
-        asset_list = [
-            {
-                "label": row["Fund"],
-                "value": row["Fund"],
-                "search": f"{row['Fund']} {row['ISIN']} {row['Tickers']}",
-            }
-            for _, row in data.iterrows()
-        ]
-        return asset_list
-    except FileNotFoundError:
-        print(f"Errore: Il file {file_path} non è stato trovato.")
-        return []
-    except Exception as e:
-        print(f"Si è verificato un errore durante il caricamento della lista degli asset: {e}")
-        return []
-
-
-def initialize_table():
-    """Crea un DataFrame iniziale vuoto per la tabella del portafoglio."""
-    return pd.DataFrame(columns=['ETF', 'Percentuale'])
+# Define style constant
+LOGIN_INDICATOR_STYLE = {
+    "position": "fixed",
+    "top": "20px",
+    "right": "20px",
+    "fontSize": "24px",
+    "zIndex": 1500,
+    "cursor": "default",
+    "transition": "opacity 0.3s ease"
+}
 
 
 def register_callbacks(app):
@@ -69,21 +57,83 @@ def register_callbacks(app):
         return False  # Non mostrare il toast se l'allocazione non è 100%
 
     @app.callback(
-        Output("url", "href"),
-        Input("floating-button", "n_clicks"),
-        Input("floating-button2", "n_clicks"),
+        [
+            Output("url", "href", allow_duplicate=True),
+        ],
+        [
+            Input("tutorial-button", "n_clicks"),
+            Input("donate-button", "n_clicks"),
+        ],
         prevent_initial_call=True
     )
-    def redirect_to_link(n_clicks, n_clicks2):
+    def handle_tutorial_and_donate(n_tutorial, n_donate):
+        """Handles button clicks for tutorial and donation actions."""
+
         ctx = dash.callback_context
+
+        # If no button was clicked, do nothing
         if not ctx.triggered:
-            return dash.no_update
-        else:
-            button_id = ctx.triggered[0]["prop_id"].split(".")[0]
-            if button_id == "floating-button":
-                return "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577"
-            elif button_id == "floating-button2":
-                return "https://www.paypal.com/donate/?hosted_button_id=M378MEXMSSQT6"
+            return [dash.no_update]
+
+        triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
+
+        tutorial_link = "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577"
+        donate_link = "https://www.paypal.com/donate/?hosted_button_id=M378MEXMSSQT6"
+
+        print(f"{triggered_id} clicked")  # Logging for debugging
+
+        if triggered_id == "tutorial-button":
+            return [tutorial_link]
+        elif triggered_id == "donate-button":
+            return [donate_link]
+
+        return [dash.no_update]
+
+    # Callback per gestire il modale di login
+    @app.callback(
+        [
+            Output("login-modal", "is_open"),
+            Output("Work-in-progress-toast", "is_open"),
+        ],
+        [
+            Input("account-button", "n_clicks"),
+            Input("close-modal", "n_clicks"),
+        ],
+        [State("login-state", "data")],
+    )
+    def handle_account_and_close(n_account, n_close, login_state):
+        """Handles button clicks for account and modal close actions."""
+        ctx = dash.callback_context
+
+        if not ctx.triggered:
+            return dash.no_update, dash.no_update
+
+        triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
+
+        if triggered_id == "account-button":
+            return True, dash.no_update
+        elif triggered_id == "close-modal":
+            return False, dash.no_update
+
+        return dash.no_update, dash.no_update
+
+    # Callback separato per l'emoji di login
+
+    @app.callback(
+        [
+            Output("login-indicator", "children"),
+            Output("login-indicator", "style")
+        ],
+        [
+            Input("login-state", "data"),
+            Input("url", "pathname")  # Add URL pathname as input
+        ],
+    )
+    def update_login_indicator(login_state, pathname):
+        """Updates the login indicator emoji based on login state."""
+        emoji = "👤" if login_state else "👻"
+        print(f"Login state: {login_state}")
+        return emoji, LOGIN_INDICATOR_STYLE
 
     app.clientside_callback(
         """
@@ -274,49 +324,6 @@ def register_callbacks(app):
 
         return "", "", "", dash.no_update, dash.no_update, dash.no_update
 
-    # Callback per elaborare i dati del portafoglio e fornire feedback aggiuntivo
-    def match_asset_name(nomi_assets):
-        mapping = pd.read_csv(INDEX_LIST_FILE_PATH)
-        nomi_indici = [mapping[mapping['Fund'] == asset]['Index'].values[0] for asset in nomi_assets if
-                       asset in mapping['Fund'].values]
-        return nomi_indici
-
-    def importa_dati(nomi_indici):
-        dati = None  # Initialize an empty dataframe for merging
-        latest_start_date = None  # Track the latest start date
-        latest_start_etf = None  # Track the ETF name with the latest start date
-
-        for i in nomi_indici:
-            # Read the data and set Date as the index
-            temp_data = pd.read_csv(
-                f"{ETF_BASE_PATH}/{i}.csv",  # Use the base path
-                parse_dates=['Date'],
-            ).set_index('Date')
-
-            # Get the first date available for the current ETF
-            first_date = temp_data.index.min()
-
-            # Check if this ETF has a later start date than the current latest
-            if latest_start_date is None or first_date > latest_start_date:
-                latest_start_date = first_date
-                latest_start_etf = i
-
-            # Print the first date available for the current ETF
-            first_date = temp_data.index.min()
-            if dati is None:
-                dati = temp_data  # For the first dataframe, initialize `dati`
-            else:
-                dati = pd.concat([dati, temp_data], axis=1)  # Concatenate on index (Date)
-
-        dati.dropna(inplace=True)  # Drop rows with missing values
-        # Normalize all the columns making them start from 100
-        dati = dati / dati.iloc[0] * 100
-
-        # Prepare the warning message
-        first_date_str = latest_start_date.strftime('%Y-%m')
-        warning = [first_date_str, latest_start_etf]
-
-        return dati, warning
 
     def calculate_rolling_returns(portfolio_df, period):
         rolling_returns = portfolio_df.copy()
@@ -333,67 +340,6 @@ def register_callbacks(app):
             rolling_returns = calculate_rolling_returns(portfolio_df, period)
             return plc.plot_line_chart_rolling(column_except_date, rolling_returns, PORTFOLIO_COLOR, BENCHMARK_COLOR,period)
 
-    def import_fama_french():
-        fama_french = pd.read_csv(f"{DEV_FIVE_FACTORS_FILE_PATH}", parse_dates=['Date'])
-        fama_french = fama_french.set_index('Date')
-        fama_french = fama_french / 100
-        return fama_french
-
-    # Function to calculate factor exposure directly inside the function
-    def calculate_factor_exposure(portfolio_df):
-        # Calculate the percentage change (returns) and drop missing values
-        portfolio_df['Date'] = pd.to_datetime(portfolio_df['Date'])
-        portfolio_df.set_index('Date', inplace=True)
-
-        # Calculate returns for the portfolio and rename the column to 'Adj Close'
-        data = portfolio_df.pct_change().dropna()
-        data["Adj Close"] = data # Rename the column to 'Adj Close'
-
-        fundsret = data["Adj Close"]
-
-        # Import the Fama-French factors
-        factors = import_fama_french()
-
-        # Merge portfolio returns and factors using an inner join on the index (Date)
-        merge = pd.merge(fundsret, factors, left_index=True, right_index=True, how='inner')
-
-        # Adjust the portfolio returns by subtracting the risk-free rate (RF)
-        merge["Adj Close"] = merge["Adj Close"] - merge["RF"]
-
-        # Normalize the factors by dividing by 100
-        merge[["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]] = merge[["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]] / 100
-
-        # Set the dependent variable (y) as the portfolio excess returns
-        y = merge["Adj Close"]
-
-        # Set the independent variables (X) as the factors (Mkt-RF, SMB, HML, RMW, CMA)
-        X = merge[["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]]
-        X_sm = sm.add_constant(X)  # Add a constant to the model for the intercept
-
-        # Fit the OLS regression model
-        model = sm.OLS(y, X_sm)
-        results = model.fit()
-
-        # Extract the results summary
-        results_summary = results.summary()
-        tables = results_summary.tables
-
-        # Extract coefficients and variable names from the regression results
-        dataframes = []
-        for i, table in enumerate(tables):
-            df = pd.DataFrame(table[1:], columns=table[0])
-            dataframes.append(df)
-
-        coef_data = dataframes[1].iloc[:, 1]
-        coef_data = coef_data.apply(lambda x: float(x.data.strip()))
-        variable_names = dataframes[1].iloc[:, 0]
-
-        # Exclude first and last values for better visualization
-        coef_data_to_plot = coef_data[1:-1]
-        variable_names_to_plot = variable_names[1:-1]
-
-        # Return the coefficients (exposures) and the factor names
-        return coef_data_to_plot, variable_names_to_plot
 
     @app.callback(
         Output('additional-feedback', 'children'),  # Output to display the charts
@@ -597,10 +543,10 @@ def main():
     app.title = APP_TITLE
 
     # Inizializza i dati della tabella
-    initial_table_data = initialize_table()
+    initial_table_data = pd.DataFrame(columns=['ETF', 'Percentuale'])
 
     # Imposta il layout dell'app
-    app.layout = LayoutManager.create_layout(asset_list, initial_table_data)
+    app.layout = LayoutManager.create_layout(asset_list, initial_table_data,app)
 
     # Registra i callback
     register_callbacks(app)
