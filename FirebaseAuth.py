@@ -1,11 +1,11 @@
 import requests
 import firebase_admin
 from firebase_admin import credentials, firestore
+from config import KEY_PATH
 PUBLIC_KEY = "AIzaSyBX_AH1_hAdmnzDHKcGW83tcHHJKat1Lps"
 
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate(
-    "firebase_keys.json")
+cred = credentials.Certificate(KEY_PATH)
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
