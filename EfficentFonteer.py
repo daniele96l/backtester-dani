@@ -199,4 +199,4 @@ def calcola_frontiera_efficente(dati, pesi_correnti):
     else:
         pie_fig = None
 
-    return scatter_fig, pie_fig
+    return scatter_fig, pie_fig,current_return

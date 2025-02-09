@@ -132,7 +132,6 @@ def register_callbacks(app):
     def update_login_indicator(login_state, pathname):
         """Updates the login indicator emoji based on login state."""
         emoji = "👤" if login_state else "👻"
-        print(f"Login state: {login_state}")
         return emoji, LOGIN_INDICATOR_STYLE
 
     app.clientside_callback(
@@ -347,7 +346,7 @@ def register_callbacks(app):
          Input('assets-data', 'data'),
          Input('pesi-correnti', 'data')]
     )
-    def plot_data(portfolio_data, dati,pesi_correnti):  # ----------- KING
+    def plot_data(portfolio_data, dati, pesi_correnti):  # ----------- KING
 
         portfolio_df = pd.DataFrame(portfolio_data)
         dati_df = pd.DataFrame(dati) #Sto ricevendo un DICT e non un DataFrame, quindi le colonne duplicate erano state rimosse
@@ -372,6 +371,9 @@ def register_callbacks(app):
         if 'Benchmark' in portfolio_df.columns:
             factor_exposure_benchmark, factor_names = calculate_factor_exposure(portfolio_df[["Benchmark","Date"]])
 
+        scatter_fig,pie_fig,portfolio_returns = ef.calcola_frontiera_efficente(dati_df,pesi_correnti) # TODO non plottare gli indici ma i nomi degli etf
+
+
         # Calculate CAGR and Volatility for each column except 'Date'
         cagr = {}
         volatility = {}
@@ -385,7 +387,11 @@ def register_callbacks(app):
             volatility[column] = portfolio_df[column].pct_change().std() * (12 ** 0.5) * 100
             sharpe_ratio[column] = cagr[column] / volatility[column] if volatility[column] != 0 else 0
 
+        #Set the CAGR portfolio = current_return
+
+
         # Round the values
+        cagr['Portfolio'] = portfolio_returns * 100
         cagr = {k: round(v, 2) for k, v in cagr.items()}
         volatility = {k: round(v, 2) for k, v in volatility.items()}
         sharpe_ratio = {k: round(v, 2) for k, v in sharpe_ratio.items()}
@@ -403,7 +409,6 @@ def register_callbacks(app):
         sharpe_data = metrics_melted[metrics_melted["Metric"] == "Sharpe Ratio"]
 
         correlation_matrix = dati_df.corr()
-        scatter_fig,pie_fig = ef.calcola_frontiera_efficente(dati_df,pesi_correnti) # TODO non plottare gli indici ma i nomi degli etf
 
         custom_colorscale = [
             [0, BENCHMARK_COLOR],  # Start of the scale
