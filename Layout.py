@@ -4,12 +4,15 @@ import dash_bootstrap_components as dbc
 import dash.dash_table
 from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
 from LoginPopout import PopupManager
+from counter import PortfolioCounter
 
 class LayoutManager:
     @staticmethod
     def create_layout(asset_list, initial_table_data,app):
 
         modal = PopupManager(app)
+        counter = PortfolioCounter("/Users/danieleligato/PycharmProjects/DaniBacktester/data/counter.csv")
+        counter.register_callbacks(app)
         # Emoji login indicator
         login_indicator = html.Div(
             "👤",  # Emoji utente
@@ -309,29 +312,47 @@ class LayoutManager:
                                 fluid=True,
                                 style={'maxWidth': '100%', 'paddingLeft': '0', 'paddingRight': '0'},
                                 children=[
+                                    # Container per titolo e contatore
+                                    html.Div(
+                                        style={'position': 'relative'},  # Per il posizionamento assoluto del contatore
+                                        children=[
+                                            # Titolo centrato
+                                            html.Div(
+                                                html.H4("By Dani & Dati", className="mb-3"),
+                                                className="text-center"
+                                            ),
+                                            # Contatore posizionato assolutamente
+                                            html.Div(
+                                                counter.get_counter_component(),
+                                                style={
+                                                    'position': 'absolute',
+                                                    'right': '20px',
+                                                    'top': '0'
+                                                }
+                                            )
+                                        ]
+                                    ),
+
+                                    # Resto del contenuto
                                     html.Div(
                                         className="text-center",
                                         style={'marginLeft': 'auto', 'marginRight': 'auto', 'maxWidth': '1200px'},
                                         children=[
-                                            # Contributors section
                                             html.Div([
-                                                html.H4("By Dani & Dati", className="mb-3"),
                                                 html.H5("Contributors", className="mt-4"),
                                                 html.Ul([
                                                     html.Li("Koki - Server Backend"),
                                                     html.Li("Marco Zeuli - Developer"),
                                                     html.Li("Matteo Veroni - Developer"),
                                                 ], className="list-unstyled text-muted"),
-                                                # Making contributors appear less prominent
-                                            ], className="col-md-4 mx-auto")
-                                            ,
-                                            # Link to contribute
+                                            ], className="col-md-4 mx-auto"),
+
                                             html.Div(
                                                 [
                                                     html.Span(
                                                         "PortfolioPilot è un progetto open-source, sotto licenza non commerciale."
                                                     ),
-                                                    html.Br(),  # Adds a line break
+                                                    html.Br(),
                                                     html.Span(
                                                         "Tutti possono contribuire allo sviluppo del progetto: "
                                                     ),
@@ -351,6 +372,7 @@ class LayoutManager:
                     )
                 ], className='mt-5'),
             ], fluid=True)
+
 
         ])
 
