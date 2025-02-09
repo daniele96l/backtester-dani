@@ -5,7 +5,7 @@ PUBLIC_KEY = "AIzaSyBX_AH1_hAdmnzDHKcGW83tcHHJKat1Lps"
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate(
-    "portfoliopilot-99523-firebase-adminsdk-fbsvc-e645929e12.json")
+    "firebase_keys.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
