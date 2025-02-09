@@ -3,3 +3,6 @@ dash-bootstrap-components
 pandas
 plotly
 statsmodels
+numpy
+requests
+firebase-admin
