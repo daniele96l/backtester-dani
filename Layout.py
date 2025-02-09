@@ -325,12 +325,16 @@ class LayoutManager:
                                                 # Making contributors appear less prominent
                                             ], className="col-md-4 mx-auto")
                                             ,
-
                                             # Link to contribute
                                             html.Div(
                                                 [
                                                     html.Span(
-                                                        "Se vuoi contribuire al progetto open source il codice è pubblico "),
+                                                        "PortfolioPilot è un progetto open-source, sotto licenza non commerciale."
+                                                    ),
+                                                    html.Br(),  # Adds a line break
+                                                    html.Span(
+                                                        "Tutti possono contribuire allo sviluppo del progetto: "
+                                                    ),
                                                     html.A(
                                                         "QUI",
                                                         href="https://github.com/daniele96l/backtester-dani",
