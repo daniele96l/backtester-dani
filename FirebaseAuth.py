@@ -21,14 +21,12 @@ class FirebaseAuth:
         response = requests.post(self.auth_url, json=payload)
 
         if response.status_code == 200:
-            id_token = response.json().get('idToken')
-            print(f"Login effettuato con successo per {email}. Token restituito.")
-            return id_token
+            return f"Login effettuato con successo per {email}. Token restituito.", True
         else:
             error_message = response.json().get('error', {}).get('message', 'Errore sconosciuto')
             detailed_error = self.get_error_details(error_message)
             print(f"Login fallito: {detailed_error}")
-            return detailed_error
+            return detailed_error, False
 
     def register(self, email, password, mode="mode 2"):
         """Registra un nuovo utente e salva i suoi dati in Firestore, con un messaggio di successo."""
@@ -37,14 +35,11 @@ class FirebaseAuth:
 
         if response.status_code == 200:
             self.save_user_data(email, mode)
-            id_token = response.json().get('idToken')
-            print(f"Registrazione effettuata con successo per {email}. Token restituito.")
-            return id_token
+            return f"Registrazione effettuata con successo per {email}.", True
         else:
             error_message = response.json().get('error', {}).get('message', 'Errore sconosciuto')
             detailed_error = self.get_error_details(error_message)
-            print(f"Registrazione fallita: {detailed_error}")
-            return detailed_error
+            return detailed_error,False
 
     def save_user_data(self, email, mode):
         """Saves user data to Firestore."""
@@ -81,24 +76,3 @@ class FirebaseAuth:
         }
 
         return error_dict.get(error_message, "Errore sconosciuto: " + error_message)
-
-
-# Example usage
-if __name__ == '__main__':
-    firebase_auth = FirebaseAuth(PUBLIC_KEY)
-
-    # Example of calling login and register externally
-    def authenticate_user(action, email, password):
-        if action == 'register':
-            return firebase_auth.register(email, password)
-        elif action == 'login':
-            return firebase_auth.login(email, password)
-        return None
-
-
-    # Sample call
-    user_email = "test2@example.com"
-    user_password = "securepassword"
-    token = authenticate_user("register", user_email, user_password)
-    if token:
-        print(f"User {user_email} registered successfully with token: {token}")

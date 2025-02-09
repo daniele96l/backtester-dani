@@ -88,9 +88,10 @@ def register_callbacks(app):
             Input("account-button", "n_clicks"),
             Input("close-modal", "n_clicks"),
         ],
+        [State("login-state", "data")],  # Add State to access login-state
         prevent_initial_call=True
     )
-    def handle_account_and_close(n_account, n_close):
+    def handle_account_and_close(n_account, n_close, login_state):
         """Handles button clicks for account and modal close actions."""
 
         ctx = dash.callback_context
@@ -102,6 +103,7 @@ def register_callbacks(app):
         triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
         print(f"{triggered_id} clicked")  # Logging for debugging
+        print(f"Login state: {login_state}")  # Debugging the login state
 
         if triggered_id == "account-button":
             return True, dash.no_update  # Open the login modal

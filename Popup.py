@@ -8,6 +8,7 @@ from config import PUBLIC_KEY
 def PopupManager(app):
     modal = dbc.Modal(
         [
+            dcc.Store(id='login-state', storage_type='local'),
             dbc.ModalHeader("Accesso / Registrazione"),
             dbc.ModalBody(
                 html.Div([
@@ -51,6 +52,7 @@ def PopupManager(app):
         is_open=False,
     )
 
+
     # Callback per gestire la visibilità del checkbox e lo stato del bottone
     @app.callback(
         [Output("gdpr-checkbox", "style"), Output("submit-auth", "disabled")],
@@ -62,9 +64,9 @@ def PopupManager(app):
         bottone_disabilitato = not gdpr_selezionato if tipo_auth == "register" else False
         return stile_gdpr, bottone_disabilitato
 
-    # Nuovo callback per gestire l'invio del form
+
     @app.callback(
-        Output("auth-feedback", "children"),
+        [Output("auth-feedback", "children"), Output("login-state", "data")],  #
         [Input("submit-auth", "n_clicks")],
         [
             State("toggle-auth", "value"),
@@ -78,24 +80,33 @@ def PopupManager(app):
 
         """Gestisce l'invio del form di login/registrazione."""
         if n_clicks is None:
-            return ""
+            return "", None  # Se il pulsante non è stato premuto, non fare nulla
 
         if not username or not password:
-            return html.Div("Per favore, compila tutti i campi", style={"color": "red"})
+            return html.Div("Per favore, compila tutti i campi", style={"color": "red"}), None
 
         # Gestione Login
         if tipo_auth == "login":
-            stato_login = firebase_auth.login(username, password)
-            return html.Div(stato_login, style={"color": "green"})
+            stato_login, logged = firebase_auth.login(username, password)
+            if logged:
+                # Imposta lo stato di login
+                return html.Div(stato_login, style={"color": "green"}), {"logged_in": True, "username": username}
+            else:
+                return html.Div(stato_login, style={"color": "red"}), None
 
         # Gestione Registrazione
         elif tipo_auth == "register":
             if not gdpr_accettato:
-                return html.Div("Devi accettare i termini GDPR per registrarti", style={"color": "red"})
+                return html.Div("Devi accettare i termini GDPR per registrarti", style={"color": "red"}), None
             else:
-                stato_registrazione = firebase_auth.register(username, password)
-
-            return html.Div(stato_registrazione, style={"color": "green"})
+                stato_registrazione, registered = firebase_auth.register(username, password)
+                if registered:
+                    return html.Div(stato_registrazione, style={"color": "green"}), {"logged_in": True,
+                                                                                     "username": username}
+                else:
+                    return html.Div(stato_registrazione, style={"color": "red"}), None
 
     return modal
+
+
 

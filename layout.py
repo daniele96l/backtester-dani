@@ -4,10 +4,10 @@ import dash_bootstrap_components as dbc
 import dash.dash_table
 from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
 from Popup import PopupManager
+
 class LayoutManager:
     @staticmethod
     def create_layout(asset_list, initial_table_data,app):
-
 
         modal = PopupManager(app)
         """Definisce il layout dell'app Dash utilizzando componenti Bootstrap."""
@@ -249,7 +249,7 @@ class LayoutManager:
 
                 # Floating Button
                 dbc.Button(
-                    children="Account\n(Soon)",  # Text on the button
+                    children="Account",  # Text on the button
                     id="account-button",
                     style={
                         "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
