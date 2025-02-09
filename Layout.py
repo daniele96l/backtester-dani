@@ -2,7 +2,7 @@
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 import dash.dash_table
-from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
+from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH, COUNTER_FILE_PATH
 from LoginPopout import PopupManager
 from counter import PortfolioCounter
 
@@ -11,7 +11,7 @@ class LayoutManager:
     def create_layout(asset_list, initial_table_data,app):
 
         modal = PopupManager(app)
-        counter = PortfolioCounter("/Users/danieleligato/PycharmProjects/DaniBacktester/data/counter.csv")
+        counter = PortfolioCounter(COUNTER_FILE_PATH)
         counter.register_callbacks(app)
         # Emoji login indicator
         login_indicator = html.Div(
