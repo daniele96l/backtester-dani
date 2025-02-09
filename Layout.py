@@ -1,9 +1,9 @@
-# layout.py
+# Layout.py
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 import dash.dash_table
 from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
-from Popup import PopupManager
+from LoginPopout import PopupManager
 
 class LayoutManager:
     @staticmethod

@@ -28,8 +28,8 @@ def PopupManager(app):
                             className="mb-3",
                         ),
                         # Campo Username
-                        html.Label("Nome utente"),
-                        dcc.Input(id="username", type="text", placeholder="Inserisci il nome utente"),
+                        html.Label("Email"),
+                        dcc.Input(id="username", type="text", placeholder="Inserisci la tua email"),
                         html.Br(),
                         # Campo Password
                         html.Label("Password"),
@@ -87,7 +87,7 @@ def PopupManager(app):
             return (
                 {"display": "none"},  # Hide login form
                 {"display": "block"},  # Show logout button
-                f"Logged in as: {login_state.get('username')}"  # Show username
+                f"Account di: {login_state.get('username')}"  # Show username
             )
         return (
             {"display": "block"},  # Show login form

@@ -9,7 +9,7 @@ import EfficentFonteer as ef
 import logging
 import warnings
 import statsmodels.api as sm
-from layout import LayoutManager
+from Layout import LayoutManager
 from Factor_regression import calculate_factor_exposure
 from ImportsHandler import match_asset_name, importa_dati,load_asset_list
 
@@ -109,8 +109,6 @@ def register_callbacks(app):
             return dash.no_update, dash.no_update
 
         triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
-        print(f"{triggered_id} clicked")
-        print(f"Login state: {login_state}")
 
         if triggered_id == "account-button":
             return True, dash.no_update

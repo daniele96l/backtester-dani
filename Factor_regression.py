@@ -9,7 +9,7 @@ import EfficentFonteer as ef
 import logging
 import warnings
 import statsmodels.api as sm
-from layout import LayoutManager
+from Layout import LayoutManager
 from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
 
 def import_fama_french():
