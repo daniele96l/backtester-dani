@@ -10,9 +10,25 @@ class LayoutManager:
     def create_layout(asset_list, initial_table_data,app):
 
         modal = PopupManager(app)
+        # Emoji login indicator
+        login_indicator = html.Div(
+            "👤",  # Emoji utente
+            id="login-indicator",
+            style={
+                "position": "fixed",
+                "top": "20px",
+                "right": "20px",  # Cambiato da "right" a "left"
+                "fontSize": "24px",
+                "zIndex": 1500,
+                "cursor": "default",
+                "transition": "opacity 0.3s ease"
+            }
+        )
         """Definisce il layout dell'app Dash utilizzando componenti Bootstrap."""
         return html.Div([
-            # Header Container - Occupa tutta la larghezza dello schermo
+            dcc.Store(id='login-state', storage_type='local'),  # Login state available to all components
+            #dcc.Location(id="url", refresh=True),
+            login_indicator,  # Aggiungi l'indicatore emoji utente
             dbc.Container([
                 dbc.Row(
                     dbc.Col(
@@ -170,25 +186,6 @@ class LayoutManager:
                 dcc.Store(id='portfolio-data', storage_type='memory'),  # Aggiungi questo componente
                 dcc.Store(id='assets-data', storage_type='memory'),  # Aggiungi questo componente
                 dcc.Store(id='pesi-correnti', storage_type='memory'),
-                dbc.Toast(
-                    id="welcome-toast",
-                    header="🎉 Benvenuto!",
-                    is_open=False,  # Il toast è inizialmente nascosto
-                    dismissable=True,  # Permette di chiuderlo manualmente
-                    duration=4000,  # Si chiude dopo 4 secondi
-                    icon="success",  # Mostra un'icona di successo
-                    style={
-                        "position": "fixed",
-                        "top": 20,
-                        "right": 20,
-                        "zIndex": 1500,  # Assicura che sia sopra gli altri elementi
-                        "backgroundColor": "#28a745",  # Verde per messaggi positivi
-                        "color": "#fff",
-                        "padding": "15px",
-                        "borderRadius": "10px"
-                    }
-                ),
-
                 dbc.Toast(
                     id="allocation-error-toast",
                     header="Stai superando il 100% di allocazione del tuo portafoglio, rimuovi o modifica le percentuali.",

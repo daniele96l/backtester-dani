@@ -8,7 +8,7 @@ from config import PUBLIC_KEY
 def PopupManager(app):
     modal = dbc.Modal(
         [
-            dcc.Store(id='login-state', storage_type='local'),
+            #dcc.Store(id='login-state', storage_type='local'),
             dbc.ModalHeader("Accesso / Registrazione"),
             dbc.ModalBody(
                 html.Div([

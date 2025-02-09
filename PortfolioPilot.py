@@ -13,12 +13,22 @@ from layout import LayoutManager
 from Factor_regression import calculate_factor_exposure
 from ImportsHandler import match_asset_name, importa_dati,load_asset_list
 
-
 from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
 
 warnings.filterwarnings("ignore", category=UserWarning)
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)  # Show only errors
+
+# Define style constant
+LOGIN_INDICATOR_STYLE = {
+    "position": "fixed",
+    "top": "20px",
+    "right": "20px",
+    "fontSize": "24px",
+    "zIndex": 1500,
+    "cursor": "default",
+    "transition": "opacity 0.3s ease"
+}
 
 
 def register_callbacks(app):
@@ -79,17 +89,7 @@ def register_callbacks(app):
 
         return [dash.no_update]
 
-    @app.callback(
-        Output("welcome-toast", "is_open"),  # Mostra il toast
-        Output("welcome-toast", "children"),  # Modifica il testo del toast
-        Input("login-state", "data"),  # Controlla lo stato di login
-    )
-    def show_welcome_toast(login_data):
-        if login_data and login_data.get("logged_in"):
-            username = login_data.get("username", "utente")  # Usa il nome dell'utente se disponibile
-            return True, f"Benvenuto, {username}! 🚀"
-        return False, ""  # Se non loggato, nasconde il toast
-
+    # Callback per gestire il modale di login
     @app.callback(
         [
             Output("login-modal", "is_open"),
@@ -99,28 +99,43 @@ def register_callbacks(app):
             Input("account-button", "n_clicks"),
             Input("close-modal", "n_clicks"),
         ],
-        [State("login-state", "data")],  # Add State to access login-state
+        [State("login-state", "data")],
     )
     def handle_account_and_close(n_account, n_close, login_state):
         """Handles button clicks for account and modal close actions."""
-
         ctx = dash.callback_context
 
-        # If no button was clicked, do nothing
         if not ctx.triggered:
             return dash.no_update, dash.no_update
 
         triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
-
-        print(f"{triggered_id} clicked")  # Logging for debugging
-        print(f"Login state: {login_state}")  # Debugging the login state
+        print(f"{triggered_id} clicked")
+        print(f"Login state: {login_state}")
 
         if triggered_id == "account-button":
-            return True, dash.no_update  # Open the login modal
+            return True, dash.no_update
         elif triggered_id == "close-modal":
-            return False, dash.no_update  # Close the login modal
+            return False, dash.no_update
 
         return dash.no_update, dash.no_update
+
+    # Callback separato per l'emoji di login
+
+    @app.callback(
+        [
+            Output("login-indicator", "children"),
+            Output("login-indicator", "style")
+        ],
+        [
+            Input("login-state", "data"),
+            Input("url", "pathname")  # Add URL pathname as input
+        ],
+    )
+    def update_login_indicator(login_state, pathname):
+        """Updates the login indicator emoji based on login state."""
+        emoji = "👤" if login_state else "👻"
+        print(f"Login state: {login_state}")
+        return emoji, LOGIN_INDICATOR_STYLE
 
     app.clientside_callback(
         """
