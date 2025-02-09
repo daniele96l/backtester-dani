@@ -47,38 +47,68 @@ def register_callbacks(app):
         return False  # Non mostrare il toast se l'allocazione non è 100%
 
     @app.callback(
-        [Output("login-modal", "is_open"),
-         Output("url", "href"),
-         Output("Work-in-progress-toast", "is_open")],  # Add the Toast's visibility as an output
-        [Input("tutorial-button", "n_clicks"),
-         Input("donate-button", "n_clicks"),
-         Input("account-button", "n_clicks"),
-         Input("close-modal", "n_clicks")],
+        [
+            Output("url", "href", allow_duplicate=True),
+        ],
+        [
+            Input("tutorial-button", "n_clicks"),
+            Input("donate-button", "n_clicks"),
+        ],
         prevent_initial_call=True
     )
-    def handle_button_click(n_clicks1, n_clicks2, n_clicks3, close_n_clicks):
-        wip = True
+    def handle_tutorial_and_donate(n_tutorial, n_donate):
+        """Handles button clicks for tutorial and donation actions."""
+
         ctx = dash.callback_context
 
         # If no button was clicked, do nothing
         if not ctx.triggered:
-            return dash.no_update, dash.no_update, dash.no_update
-        else:
-            button_id = ctx.triggered[0]["prop_id"].split(".")[0]
+            return [dash.no_update]
 
-            if button_id == "tutorial-button":
-                return False, "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577", dash.no_update
-            elif button_id == "donate-button":
-                return False, "https://www.paypal.com/donate/?hosted_button_id=M378MEXMSSQT6", dash.no_update  # Redirect to PayPal
-            elif button_id == "account-button":
-                if not wip:
-                    return True, dash.no_update, dash.no_update  # Handle third button logic if needed
-                else:
-                    return False, dash.no_update, True  # Show the toast if wip is True
-            elif button_id == "close-modal":
-                return False, dash.no_update, dash.no_update  # Close the modal when the user clicks close
+        triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
-        return dash.no_update, dash.no_update, dash.no_update
+        tutorial_link = "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577"
+        donate_link = "https://www.paypal.com/donate/?hosted_button_id=M378MEXMSSQT6"
+
+        print(f"{triggered_id} clicked")  # Logging for debugging
+
+        if triggered_id == "tutorial-button":
+            return [tutorial_link]
+        elif triggered_id == "donate-button":
+            return [donate_link]
+
+        return [dash.no_update]
+
+    @app.callback(
+        [
+            Output("login-modal", "is_open"),
+            Output("Work-in-progress-toast", "is_open"),
+        ],
+        [
+            Input("account-button", "n_clicks"),
+            Input("close-modal", "n_clicks"),
+        ],
+        prevent_initial_call=True
+    )
+    def handle_account_and_close(n_account, n_close):
+        """Handles button clicks for account and modal close actions."""
+
+        ctx = dash.callback_context
+
+        # If no button was clicked, do nothing
+        if not ctx.triggered:
+            return dash.no_update, dash.no_update
+
+        triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
+
+        print(f"{triggered_id} clicked")  # Logging for debugging
+
+        if triggered_id == "account-button":
+            return True, dash.no_update  # Open the login modal
+        elif triggered_id == "close-modal":
+            return False, dash.no_update  # Close the login modal
+
+        return dash.no_update, dash.no_update
 
     app.clientside_callback(
         """
@@ -268,8 +298,6 @@ def register_callbacks(app):
                 'records'), dynamic_years_start, dynamic_years_end, pesi_correnti_dict
 
         return "", "", "", dash.no_update, dash.no_update, dash.no_update
-
-
 
 
     def calculate_rolling_returns(portfolio_df, period):
@@ -493,7 +521,7 @@ def main():
     initial_table_data = pd.DataFrame(columns=['ETF', 'Percentuale'])
 
     # Imposta il layout dell'app
-    app.layout = LayoutManager.create_layout(asset_list, initial_table_data)
+    app.layout = LayoutManager.create_layout(asset_list, initial_table_data,app)
 
     # Registra i callback
     register_callbacks(app)

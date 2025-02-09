@@ -3,11 +3,13 @@ from dash import dcc, html
 import dash_bootstrap_components as dbc
 import dash.dash_table
 from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
-
+from Popup import PopupManager
 class LayoutManager:
     @staticmethod
-    def create_layout(asset_list, initial_table_data):
-        year_range = list(range(1990, 2025))
+    def create_layout(asset_list, initial_table_data,app):
+
+
+        modal = PopupManager(app)
         """Definisce il layout dell'app Dash utilizzando componenti Bootstrap."""
         return html.Div([
             # Header Container - Occupa tutta la larghezza dello schermo
@@ -126,7 +128,7 @@ class LayoutManager:
                             style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
                         )
                     ], md=6),  # Specifica la larghezza della colonna
-                    # Colonna per la selezione degli anni
+                    #  per la selezione degli anni
                     dbc.Col([
                         dbc.Label("Anno Inizio (Opzionale):", style={'color': '#000000'}),
                         dcc.Dropdown(
@@ -333,27 +335,6 @@ class LayoutManager:
         ])
 
 
-modal = dbc.Modal(
-    [
-        dbc.ModalHeader("Login / Register"),
-        dbc.ModalBody(
-            html.Div([
-                html.Label("Username"),
-                dcc.Input(id="username", type="text", placeholder="Enter username"),
-                html.Br(),
-                html.Label("Password"),
-                dcc.Input(id="password", type="password", placeholder="Enter password"),
-                html.Br(),
-                dbc.Button("Submit", id="submit-login", color="primary", className="mt-2")
-            ])
-        ),
-        dbc.ModalFooter(
-            dbc.Button("Close", id="close-modal", className="ml-auto", n_clicks=0)
-        ),
-    ],
-    id="login-modal",
-    is_open=False,
-)
 
 
 
