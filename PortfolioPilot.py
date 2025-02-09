@@ -80,6 +80,17 @@ def register_callbacks(app):
         return [dash.no_update]
 
     @app.callback(
+        Output("welcome-toast", "is_open"),  # Mostra il toast
+        Output("welcome-toast", "children"),  # Modifica il testo del toast
+        Input("login-state", "data"),  # Controlla lo stato di login
+    )
+    def show_welcome_toast(login_data):
+        if login_data and login_data.get("logged_in"):
+            username = login_data.get("username", "utente")  # Usa il nome dell'utente se disponibile
+            return True, f"Benvenuto, {username}! 🚀"
+        return False, ""  # Se non loggato, nasconde il toast
+
+    @app.callback(
         [
             Output("login-modal", "is_open"),
             Output("Work-in-progress-toast", "is_open"),
@@ -89,7 +100,6 @@ def register_callbacks(app):
             Input("close-modal", "n_clicks"),
         ],
         [State("login-state", "data")],  # Add State to access login-state
-        prevent_initial_call=True
     )
     def handle_account_and_close(n_account, n_close, login_state):
         """Handles button clicks for account and modal close actions."""

@@ -171,6 +171,25 @@ class LayoutManager:
                 dcc.Store(id='assets-data', storage_type='memory'),  # Aggiungi questo componente
                 dcc.Store(id='pesi-correnti', storage_type='memory'),
                 dbc.Toast(
+                    id="welcome-toast",
+                    header="🎉 Benvenuto!",
+                    is_open=False,  # Il toast è inizialmente nascosto
+                    dismissable=True,  # Permette di chiuderlo manualmente
+                    duration=4000,  # Si chiude dopo 4 secondi
+                    icon="success",  # Mostra un'icona di successo
+                    style={
+                        "position": "fixed",
+                        "top": 20,
+                        "right": 20,
+                        "zIndex": 1500,  # Assicura che sia sopra gli altri elementi
+                        "backgroundColor": "#28a745",  # Verde per messaggi positivi
+                        "color": "#fff",
+                        "padding": "15px",
+                        "borderRadius": "10px"
+                    }
+                ),
+
+                dbc.Toast(
                     id="allocation-error-toast",
                     header="Stai superando il 100% di allocazione del tuo portafoglio, rimuovi o modifica le percentuali.",
                     dismissable=True,
