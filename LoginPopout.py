@@ -2,21 +2,75 @@ from dash import dcc, html, callback_context
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from FirebaseAuth import FirebaseAuth
+
 PUBLIC_KEY = "AIzaSyBX_AH1_hAdmnzDHKcGW83tcHHJKat1Lps"
 
 
 def PopupManager(app):
+    # Stili personalizzati
+    CUSTOM_STYLES = {
+        "modal": {
+            "max-width": "450px",
+            "border-radius": "12px",
+            "box-shadow": "0 4px 6px rgba(0, 0, 0, 0.1)",
+            "position": "absolute",
+            "top": "50%",
+            "left": "50%",
+            "transform": "translate(-50%, -50%)",
+            "margin": "0",
+        },
+        "header": {
+            "background-color": "#f8f9fa",
+            "border-bottom": "1px solid #e9ecef",
+            "border-radius": "12px 12px 0 0",
+            "padding": "1.5rem",
+        },
+        "input": {
+            "width": "100%",
+            "padding": "0.75rem",
+            "margin": "0.5rem 0",
+            "border": "1px solid #ced4da",
+            "border-radius": "6px",
+            "font-size": "1rem",
+        },
+        "button": {
+            "width": "100%",
+            "padding": "0.75rem",
+            "font-weight": "500",
+            "text-transform": "uppercase",
+            "letter-spacing": "0.5px",
+        },
+        "label": {
+            "font-weight": "500",
+            "color": "#495057",
+            "margin-top": "1rem",
+        },
+        "radio": {
+            "background-color": "#f8f9fa",
+            "padding": "1rem",
+            "border-radius": "8px",
+            "margin-bottom": "1.5rem",
+        },
+    }
+
     modal = dbc.Modal(
         [
-            #dcc.Store(id='login-state', storage_type='local'),
-            dbc.ModalHeader("Accesso / Registrazione"),
+            dbc.ModalHeader(
+                "Accesso / Registrazione",
+                style=CUSTOM_STYLES["header"],
+                close_button=False,
+            ),
             dbc.ModalBody(
                 html.Div([
-                    # Login status message
-                    html.Div(id="login-status"),
-                    # Container for login/register form
+                    # Status di login con stile
+                    html.Div(
+                        id="login-status",
+                        style={"text-align": "center", "margin-bottom": "1rem", "color": "#0d6efd"},
+                    ),
+
+                    # Form di autenticazione
                     html.Div([
-                        # Alterna tra Login e Registrazione
+                        # Radio buttons per login/register
                         dbc.RadioItems(
                             id="toggle-auth",
                             options=[
@@ -26,54 +80,119 @@ def PopupManager(app):
                             value="login",
                             inline=True,
                             className="mb-3",
+                            style=CUSTOM_STYLES["radio"],
+                            inputClassName="btn-check",
+                            labelClassName="btn btn-outline-primary mx-1",
                         ),
-                        # Campo Username
-                        html.Label("Email"),
-                        dcc.Input(id="username", type="text", placeholder="Inserisci la tua email"),
-                        html.Br(),
-                        # Campo Password
-                        html.Label("Password"),
-                        dcc.Input(id="password", type="password", placeholder="Inserisci la password"),
-                        html.Br(),
-                        # Checkbox GDPR (solo per Registrazione)
-                        dbc.Checkbox(
-                            id="gdpr-checkbox",
-                            label="Accetto i termini GDPR",
-                            className="mt-2",
-                        ),
-                        html.Br(),
-                        # Bottone di invio
-                        dbc.Button("Invia", id="submit-auth", color="primary", className="mt-2"),
-                        # Div per messaggi di feedback
-                        html.Div(id="auth-feedback", className="mt-2")
+
+                        # Campi del form
+                        html.Div([
+                            html.Label("Email", style=CUSTOM_STYLES["label"]),
+                            dcc.Input(
+                                id="username",
+                                type="email",
+                                placeholder="Inserisci la tua email",
+                                style=CUSTOM_STYLES["input"],
+                            ),
+
+                            html.Label("Password", style=CUSTOM_STYLES["label"]),
+                            dcc.Input(
+                                id="password",
+                                type="password",
+                                placeholder="Inserisci la password",
+                                style=CUSTOM_STYLES["input"],
+                            ),
+
+                            # Container GDPR e Termini
+                            html.Div([
+                                dbc.Checkbox(
+                                    id="gdpr-checkbox",
+                                    label=html.Span([
+                                        "Ho letto e accetto l'",
+                                        html.A(
+                                            "informativa sulla privacy",
+                                            href="#",
+                                            className="text-primary",
+                                            style={"text-decoration": "none"},
+                                        ),
+                                        " e il trattamento dei dati personali"
+                                    ]),
+                                    className="mb-3",
+                                ),
+                                html.A(
+                                    "Termini e Condizioni",
+                                    href="https://danieleligato-eng.notion.site/Termini-e-Condizioni-196922846a1680ab8686d1a817717ae2",
+                                    target="_blank",
+                                    className="d-block text-primary mb-3",
+                                    style={"text-decoration": "none"},
+                                ),
+                            ], id="gdpr-terms-container", style={"margin": "1rem 0"}),
+
+                            # Feedback per errori/successi
+                            html.Div(
+                                id="auth-feedback",
+                                style={"margin": "1rem 0", "text-align": "center"},
+                            ),
+
+                            # Bottone di invio
+                            dbc.Button(
+                                "Invia",
+                                id="submit-auth",
+                                color="primary",
+                                style=CUSTOM_STYLES["button"],
+                            ),
+                        ], style={"padding": "1rem 0"}),
                     ], id="auth-form"),
-                    # Logout button container
+
+                    # Container logout
                     html.Div([
-                        html.H5("Benvenuto!", className="mb-3"),
-                        dbc.Button("Logout", id="logout-button", color="danger", className="mt-2"),
+                        html.H5(
+                            "Benvenuto!",
+                            className="text-center mb-4",
+                            style={"color": "#0d6efd"},
+                        ),
+                        dbc.Button(
+                            "Logout",
+                            id="logout-button",
+                            color="danger",
+                            style=CUSTOM_STYLES["button"],
+                        ),
                     ], id="logout-container", style={"display": "none"}),
-                ], id="contenuto-modale")
+                ], id="contenuto-modale", style={"padding": "1rem"}),
             ),
             dbc.ModalFooter(
-                dbc.Button("Chiudi", id="close-modal", className="ml-auto", n_clicks=0)
+                dbc.Button(
+                    "Chiudi",
+                    id="close-modal",
+                    color="secondary",
+                    style={"width": "auto"},
+                ),
+                style={"background-color": "#f8f9fa", "border-top": "1px solid #e9ecef"},
             ),
         ],
         id="login-modal",
         is_open=False,
+        style=CUSTOM_STYLES["modal"],
     )
 
-    # Callback per gestire la visibilità del checkbox e lo stato del bottone
+    # Callbacks rimangono gli stessi
     @app.callback(
-        [Output("gdpr-checkbox", "style"), Output("submit-auth", "disabled")],
+        [
+            Output("gdpr-terms-container", "style"),
+            Output("submit-auth", "disabled")
+        ],
         [Input("toggle-auth", "value"), Input("gdpr-checkbox", "value")]
     )
     def aggiorna_elementi(tipo_auth, gdpr_selezionato):
-        """Mostra il checkbox GDPR solo per la registrazione e abilita il bottone di invio se selezionato."""
-        stile_gdpr = {"display": "block"} if tipo_auth == "register" else {"display": "none"}
-        bottone_disabilitato = not gdpr_selezionato if tipo_auth == "register" else False
-        return stile_gdpr, bottone_disabilitato
+        stile_base = {"margin": "1rem 0"}
+        if tipo_auth == "register":
+            stile_base["display"] = "block"
+        else:
+            stile_base["display"] = "none"
 
-    # Callback to handle form visibility based on login state
+        bottone_disabilitato = not gdpr_selezionato if tipo_auth == "register" else False
+        return stile_base, bottone_disabilitato
+
     @app.callback(
         [
             Output("auth-form", "style"),
@@ -85,14 +204,14 @@ def PopupManager(app):
     def update_auth_view(login_state):
         if login_state and login_state.get("logged_in"):
             return (
-                {"display": "none"},  # Hide login form
-                {"display": "block"},  # Show logout button
-                f"Account di: {login_state.get('username')}"  # Show username
+                {"display": "none"},
+                {"display": "block"},
+                f"Account di: {login_state.get('username')}"
             )
         return (
-            {"display": "block"},  # Show login form
-            {"display": "none"},  # Hide logout button
-            ""  # Clear login status
+            {"display": "block"},
+            {"display": "none"},
+            ""
         )
 
     @app.callback(
@@ -115,36 +234,51 @@ def PopupManager(app):
 
         trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
-        # Handle logout
         if trigger_id == "logout-button":
-            return html.Div("Logout effettuato con successo", style={"color": "green"}), None
+            return html.Div(
+                "Logout effettuato con successo",
+                style={"color": "green", "font-weight": "500"}
+            ), None
 
-        # Handle login/register
         if trigger_id == "submit-auth":
             if not username or not password:
-                return html.Div("Per favore, compila tutti i campi", style={"color": "red"}), None
+                return html.Div(
+                    "Per favore, compila tutti i campi",
+                    style={"color": "#dc3545", "font-weight": "500"}
+                ), None
 
-            # Gestione Login
             if tipo_auth == "login":
                 stato_login, logged = firebase_auth.login(username, password)
                 if logged:
-                    return html.Div(stato_login, style={"color": "green"}), {"logged_in": True, "username": username}
+                    return html.Div(
+                        stato_login,
+                        style={"color": "#198754", "font-weight": "500"}
+                    ), {"logged_in": True, "username": username}
                 else:
-                    return html.Div(stato_login, style={"color": "red"}), None
+                    return html.Div(
+                        stato_login,
+                        style={"color": "#dc3545", "font-weight": "500"}
+                    ), None
 
-            # Gestione Registrazione
             elif tipo_auth == "register":
                 if not gdpr_accettato:
-                    return html.Div("Devi accettare i termini GDPR per registrarti", style={"color": "red"}), None
+                    return html.Div(
+                        "Devi accettare i termini GDPR per registrarti",
+                        style={"color": "#dc3545", "font-weight": "500"}
+                    ), None
                 else:
                     stato_registrazione, registered = firebase_auth.register(username, password)
                     if registered:
-                        return html.Div(stato_registrazione, style={"color": "green"}), {"logged_in": True,
-                                                                                         "username": username}
+                        return html.Div(
+                            stato_registrazione,
+                            style={"color": "#198754", "font-weight": "500"}
+                        ), {"logged_in": True, "username": username}
                     else:
-                        return html.Div(stato_registrazione, style={"color": "red"}), None
+                        return html.Div(
+                            stato_registrazione,
+                            style={"color": "#dc3545", "font-weight": "500"}
+                        ), None
 
         return "", current_login_state
 
     return modal
-
