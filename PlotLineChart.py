@@ -28,7 +28,7 @@ def plot_line_chart(column_except_date, portfolio_df, portfolio_color, benchmark
     # Update layout for better visuals
     portfolio_fig.update_layout(
         title={
-            'text': "Performance del Portafoglio e del benckmark",
+            'text': "Performance Composta del Portafoglio e del benckmark",
             'y': 0.9,  # Vertical alignment of the title
             'x': 0.5,  # Center align the title
             'xanchor': 'center',
