@@ -1,97 +1,58 @@
-/* Keyframes for fading out */
-@keyframes fadeOut {
-    0% {
-        opacity: 1; /* Fully visible */
-    }
-    100% {
-        opacity: 0.2; /* Fade out to 50% opacity */
-    }
-}
-
-/* Floating button styles */
+/* Base styles per tutti i bottoni fluttuanti */
+.btn-floating,
+.btn-donating,
 .btn-account {
-    animation: fadeOut 15s ease-in-out 5s forwards; /* Only fade out */
     position: fixed;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.95) !important; /* Leggermente più opaco */
+    border: 1px solid rgba(0, 0, 0, 0.1) !important; /* Sottile bordo */
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    padding: 0;
+}
+
+/* Posizioni specifiche per ogni bottone */
+.btn-account {
     bottom: 160px;
-    left: 20px;
-    border-radius: 10px; /* Make the button squared */
-    width: 60px; /* Fixed width */
-    height: 60px; /* Fixed height */
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-    background-color: #FF5722;
-    border: 2px solid white;
-    z-index: 1000;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    opacity: 1; /* Start fully visible */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px; /* Adjust text size to fit */
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    padding: 0; /* Remove padding to maintain shape */
-    overflow: hidden; /* Prevent overflow from breaking shape */
+    color: #0d6efd !important;
 }
 
-/* Floating button styles */
-.btn-floating {
-    animation: fadeOut 15s ease-in-out 5s forwards; /* Only fade out */
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    border-radius: 10px; /* Make the button squared */
-    width: 60px; /* Fixed width */
-    height: 60px; /* Fixed height */
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-    background-color: #FF5722;
-    border: 2px solid white;
-    z-index: 1000;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    opacity: 1; /* Start fully visible */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px; /* Adjust text size to fit */
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    padding: 0; /* Remove padding to maintain shape */
-    overflow: hidden; /* Prevent overflow from breaking shape */
-}
-
-/* Floating button styles */
 .btn-donating {
-    animation: fadeOut 15s ease-in-out 5s forwards; /* Only fade out */
-    position: fixed;
     bottom: 90px;
-    left: 20px;
-    border-radius: 10px; /* Make the button squared */
-    width: 60px; /* Fixed width */
-    height: 60px; /* Fixed height */
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-    background-color: #FF5722;
-    border: 2px solid white;
-    z-index: 1000;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    opacity: 1; /* Start fully visible */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px; /* Adjust text size to fit */
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    padding: 0; /* Remove padding to maintain shape */
-    overflow: hidden; /* Prevent overflow from breaking shape */
+    color: #198754 !important;
 }
 
-/* Glow effect on hover (restore full visibility) */
-.btn-floating:hover {
-    opacity: 1; /* Fully visible on hover */
-    transform: scale(1.05); /* Slightly enlarge on hover */
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+.btn-floating {
+    bottom: 20px;
+    color: #dc3545 !important;
+}
+
+/* Effetti hover */
+.btn-floating:hover,
+.btn-donating:hover,
+.btn-account:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background-color: rgba(255, 255, 255, 1) !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Effetto click */
+.btn-floating:active,
+.btn-donating:active,
+.btn-account:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.9) !important;
 }

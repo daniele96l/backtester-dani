@@ -45,18 +45,15 @@ def PopupManager(app):
             "color": "#495057",
             "margin-top": "1rem",
         },
-        "radio": {
-            "background-color": "#f8f9fa",
-            "padding": "1rem",
-            "border-radius": "8px",
+        "tabs": {
             "margin-bottom": "1.5rem",
-        },
+        }
     }
 
     modal = dbc.Modal(
         [
             dbc.ModalHeader(
-                "Accesso / Registrazione",
+                html.H4("Accesso / Registrazione", style={"margin-bottom": "0"}),
                 style=CUSTOM_STYLES["header"],
                 close_button=False,
             ),
@@ -67,22 +64,23 @@ def PopupManager(app):
                         id="login-status",
                         style={"text-align": "center", "margin-bottom": "1rem", "color": "#0d6efd"},
                     ),
+                    html.H6(
+                        "Registradoti nel futuro avrai la possibilità di salvare i tuoi portafogli personalizzati, registrati ora per avere questa features non appena diventa disponibile",
+                        id="registration-info",
+                        style={"color": "#6c757d"}
+                    ),
 
                     # Form di autenticazione
                     html.Div([
-                        # Radio buttons per login/register
-                        dbc.RadioItems(
-                            id="toggle-auth",
-                            options=[
-                                {"label": "Accedi", "value": "login"},
-                                {"label": "Registrati", "value": "register"},
+                        # Tabs per login/register
+                        dbc.Tabs(
+                            [
+                                dbc.Tab(label="Accedi", tab_id="login"),
+                                dbc.Tab(label="Registrati", tab_id="register"),
                             ],
-                            value="login",
-                            inline=True,
-                            className="mb-3",
-                            style=CUSTOM_STYLES["radio"],
-                            inputClassName="btn-check",
-                            labelClassName="btn btn-outline-primary mx-1",
+                            id="toggle-auth",
+                            active_tab="login",
+                            style=CUSTOM_STYLES["tabs"],
                         ),
 
                         # Campi del form
@@ -108,14 +106,7 @@ def PopupManager(app):
                                 dbc.Checkbox(
                                     id="gdpr-checkbox",
                                     label=html.Span([
-                                        "Ho letto e accetto l'",
-                                        html.A(
-                                            "informativa sulla privacy",
-                                            href="#",
-                                            className="text-primary",
-                                            style={"text-decoration": "none"},
-                                        ),
-                                        " e il trattamento dei dati personali"
+                                        "Ho letto e accetto l'informativa sulla privacy e il trattamento dei dati personali",
                                     ]),
                                     className="mb-3",
                                 ),
@@ -175,13 +166,12 @@ def PopupManager(app):
         style=CUSTOM_STYLES["modal"],
     )
 
-    # Callbacks rimangono gli stessi
     @app.callback(
         [
             Output("gdpr-terms-container", "style"),
             Output("submit-auth", "disabled")
         ],
-        [Input("toggle-auth", "value"), Input("gdpr-checkbox", "value")]
+        [Input("toggle-auth", "active_tab"), Input("gdpr-checkbox", "value")]
     )
     def aggiorna_elementi(tipo_auth, gdpr_selezionato):
         stile_base = {"margin": "1rem 0"}
@@ -197,7 +187,8 @@ def PopupManager(app):
         [
             Output("auth-form", "style"),
             Output("logout-container", "style"),
-            Output("login-status", "children")
+            Output("login-status", "children"),
+            Output("registration-info", "style"),  # New output for H6 visibility
         ],
         [Input("login-state", "data")]
     )
@@ -206,19 +197,21 @@ def PopupManager(app):
             return (
                 {"display": "none"},
                 {"display": "block"},
-                f"Account di: {login_state.get('username')}"
+                f"Account di: {login_state.get('username')}",
+                {"display": "none"}  # Hide H6 when logged in
             )
         return (
             {"display": "block"},
             {"display": "none"},
-            ""
+            "",
+            {"display": "block", "color": "#6c757d"}  # Show H6 when not logged in
         )
 
     @app.callback(
         [Output("auth-feedback", "children"), Output("login-state", "data")],
         [Input("submit-auth", "n_clicks"), Input("logout-button", "n_clicks")],
         [
-            State("toggle-auth", "value"),
+            State("toggle-auth", "active_tab"),
             State("username", "value"),
             State("password", "value"),
             State("gdpr-checkbox", "value"),

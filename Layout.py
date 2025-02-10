@@ -245,11 +245,6 @@ class LayoutManager:
                 dbc.Button(
                     children="Tutorial",  # Text on the button
                     id="tutorial-button",
-                    style={
-                        "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
-                        "color": "#000",  # Text color (adjust for contrast)
-
-                    },
                     className="btn-floating",  # Use the CSS class defined in styles.css
                 ),
 
@@ -257,11 +252,6 @@ class LayoutManager:
                 dbc.Button(
                     children="Donate",  # Text on the button
                     id="donate-button",
-                    style={
-                        "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
-                        "color": "#000",  # Text color (adjust for contrast)
-
-                    },
                     className="btn-donating",  # Use the CSS class defined in styles.css
                 ),
 
@@ -270,11 +260,6 @@ class LayoutManager:
                 dbc.Button(
                     children="Account",  # Text on the button
                     id="account-button",
-                    style={
-                        "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
-                        "color": "#000",  # Text color (adjust for contrast)
-
-                    },
                     className="btn-account",  # Use the CSS class defined in styles.css
                 ),
 
@@ -350,20 +335,21 @@ class LayoutManager:
                                             html.Div(
                                                 [
                                                     html.Span(
-                                                        "PortfolioPilot è un progetto open-source, sotto licenza non commerciale."
-                                                    ),
+                                                        "PortfolioPilot è un progetto open-source non commerciale."),
                                                     html.Br(),
-                                                    html.Span(
-                                                        "Tutti possono contribuire allo sviluppo del progetto: "
-                                                    ),
-                                                    html.A(
-                                                        "QUI",
-                                                        href="https://github.com/daniele96l/backtester-dani",
-                                                        style={'color': 'gray', 'textDecoration': 'none'}
-                                                    )
+                                                    html.A("Contribuisci allo sviluppo", href="https://github.com/daniele96l/backtester-dani",
+                                                           style={ 'textDecoration': 'none'})
                                                 ],
                                                 style={'color': 'gray', 'marginTop': '1rem'}
                                             ),
+                                            html.A(
+                                                "Termini e Condizioni",
+                                                href="https://danieleligato-eng.notion.site/Termini-e-Condizioni-196922846a1680ab8686d1a817717ae2",
+                                                target="_blank",
+                                                className="d-block text-primary mb-3",
+                                                style={"text-decoration": "none"},
+                                            ),
+
                                         ]
                                     )
                                 ]

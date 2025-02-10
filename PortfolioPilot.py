@@ -24,10 +24,17 @@ LOGIN_INDICATOR_STYLE = {
     "position": "fixed",
     "top": "20px",
     "right": "20px",
-    "fontSize": "24px",
+    "fontSize": "16px",  # Reduced font size to better fit text
     "zIndex": 1500,
     "cursor": "default",
-    "transition": "opacity 0.3s ease"
+    "transition": "opacity 0.3s ease",
+    "display": "flex",  # Added flex display for emoji and text alignment
+    "alignItems": "center",  # Center align items vertically
+    "gap": "8px",  # Space between emoji and text
+    "backgroundColor": "rgba(255, 255, 255, 0.9)",  # Semi-transparent white background
+    "padding": "8px 12px",  # Padding around the content
+    "borderRadius": "20px",  # Rounded corners
+    "boxShadow": "0 2px 4px rgba(0, 0, 0, 0.1)"  # Subtle shadow
 }
 
 
@@ -130,9 +137,29 @@ def register_callbacks(app):
         ],
     )
     def update_login_indicator(login_state, pathname):
-        """Updates the login indicator emoji based on login state."""
-        emoji = "👤" if login_state else "👻"
-        return emoji, LOGIN_INDICATOR_STYLE
+        """Updates the login indicator with emoji and text based on login state."""
+        if login_state and login_state.get("logged_in"):
+            emoji = "👤"
+            text = f"Accesso effettuato: {login_state.get('username')}"
+            style = {
+                **LOGIN_INDICATOR_STYLE,
+                "color": "#198754"  # Green color for logged in state
+            }
+        else:
+            emoji = "👻"
+            text = "Accesso non effettuato"
+            style = {
+                **LOGIN_INDICATOR_STYLE,
+                "color": "#6c757d"  # Gray color for logged out state
+            }
+
+        return [
+            html.Div([
+                html.Span(emoji, style={"fontSize": "24px"}),  # Larger emoji
+                html.Span(text)  # Text next to emoji
+            ], style={"display": "flex", "alignItems": "center", "gap": "8px"}),
+            style
+        ]
 
     app.clientside_callback(
         """
