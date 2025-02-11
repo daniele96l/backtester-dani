@@ -10,7 +10,7 @@ import logging
 import warnings
 import statsmodels.api as sm
 from Layout import LayoutManager
-from Factor_regression import calculate_factor_exposure
+from FactorRegression import calculate_factor_exposure
 from ImportsHandler import match_asset_name, importa_dati,load_asset_list
 
 from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
@@ -53,7 +53,7 @@ def register_callbacks(app):
         if n_clicks is None or not table_data:
             return False  # Non aprire il toast se non ci sono dati
 
-        start_year = start_year or 1990
+        start_year = start_year or 1970
         end_year = end_year or 2024
         start_date = pd.Timestamp(f'{start_year}-01-01')
         end_date = pd.Timestamp(f'{end_year}-12-31')
@@ -152,7 +152,7 @@ def register_callbacks(app):
         """Updates the login indicator with emoji and text based on login state."""
         if login_state and login_state.get("logged_in"):
             emoji = "👤"
-            text = f"Accesso effettuato: {login_state.get('username')}"
+            text = f"Bentornato: {login_state.get('username')}"
             style = {
                 **LOGIN_INDICATOR_STYLE,
                 "color": "#198754",  # Green color for logged in state
@@ -240,7 +240,6 @@ def register_callbacks(app):
             # Controlla se l'aggiunta della nuova percentuale supera il 100%
             total_allocated = current_df['Percentuale'].sum() if not current_df.empty else 0
             if total_allocated + selected_percentage > 100:
-
                 return current_data, True  # Mostra il toast di errore
 
             # Aggiungi il nuovo ETF alla tabella
@@ -297,7 +296,7 @@ def register_callbacks(app):
     def create_portfolio(n_clicks, table_data, benchmark, start_year, end_year):
         # Set default years if not provided
         warnings_data_benchmark = []
-        start_year = start_year or 1990
+        start_year = start_year or 1970
         end_year = end_year or 2024
         start_date = pd.Timestamp(f'{start_year}-01-01')
         end_date = pd.Timestamp(f'{end_year}-12-31')

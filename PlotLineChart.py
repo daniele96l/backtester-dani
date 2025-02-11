@@ -1,5 +1,13 @@
 import plotly.graph_objects as go
-
+empedded_logo = [dict(
+            source="assets/newlogo.png",  # Percorso relativo
+            x=0.98,  # Bottom right
+            y=0.02,
+            xref="paper", yref="paper",
+            sizex=0.15, sizey=0.15,  # Adjust size
+            xanchor="right", yanchor="bottom",
+            opacity = 0.5
+        )]
 def plot_line_chart(column_except_date, portfolio_df, portfolio_color, benchmark_color):
     # Line chart for portfolio and assets with enhancements and pastel colors
     portfolio_fig = go.Figure()
@@ -55,57 +63,39 @@ def plot_line_chart(column_except_date, portfolio_df, portfolio_color, benchmark
 
 
 def plot_line_chart_rolling(column_except_date, portfolio_df, portfolio_color, benchmark_color, rolling_window):
-    # Line chart for portfolio and assets with enhancements and pastel colors
     portfolio_fig = go.Figure()
-    color_palette = [portfolio_color,benchmark_color]
+    color_palette = [portfolio_color, benchmark_color]
 
     # Loop through columns and assign appropriate colors
     for i, column in enumerate(column_except_date):
         line_color = color_palette[i % len(color_palette)]
         portfolio_fig.add_trace(go.Scatter(
             x=portfolio_df["Date"],
-            y=portfolio_df[column]*100,
-            mode='lines+markers',  # Add markers for better readability
+            y=portfolio_df[column] * 100,
+            mode='lines+markers',
             name=column,
-            line=dict(
-                color=line_color,  # Assign specific or fallback color
-                width=3  # Thicker lines
-            ),
-            marker=dict(
-                size=6,  # Marker size
-                symbol='circle'  # Marker shape
-            ),
+            line=dict(color=line_color, width=3),
+            marker=dict(size=6, symbol='circle'),
             hovertemplate="<b>%{fullData.name}</b><br>Date: %{x|%Y-%m-%d}<br>Value: %{y:.2f}<extra></extra>"
-
         ))
 
-    # Update layout for better visuals
+    # Aggiungere il logo
     portfolio_fig.update_layout(
+        #images=empedded_logo,
         title={
             'text': f"Performance del Portafoglio e degli Asset con Rolling Window di {rolling_window} mesi",
-            'y': 0.9,  # Vertical alignment of the title
-            'x': 0.5,  # Center align the title
-            'xanchor': 'center',
-            'yanchor': 'top'
+            'y': 0.9, 'x': 0.5, 'xanchor': 'center', 'yanchor': 'top'
         },
         xaxis_title="Data",
         yaxis_title="Ritorni totali % nel periodo",
-        xaxis=dict(showgrid=True, gridcolor='lightgrey'),
-        yaxis=dict(showgrid=True, gridcolor='lightgrey'),
-        template='plotly_white',  # Clean background style
-        legend=dict(
-            title="Legenda",
-            orientation="h",  # Horizontal legend
-            yanchor="bottom",
-            y=-0.2,  # Position legend below the chart
-            xanchor="center",
-            x=0.5
-        ),
-        margin=dict(l=40, r=40, t=60, b=60),  # Balanced margins
-        hovermode='x unified'  # Combine hover labels for easier comparison
+        template='plotly_white',
+        legend=dict(title="Legenda", orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5),
+        margin=dict(l=40, r=40, t=60, b=60),
+        hovermode='x unified'
     )
 
     return portfolio_fig
+
 
 def calculate_drawdown(series):
     """
