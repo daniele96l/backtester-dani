@@ -67,21 +67,13 @@ class PortfolioCounter:
     def register_callbacks(self, app):
         @app.callback(
             Output("portfolio-count", "children"),
-            Input("create-portfolio-button", "n_clicks"),
+            Input("portfolio-toast", "is_open"),
             State("portfolio-count", "children"),
             prevent_initial_call=True
         )
-        def update_counter(n_clicks, current_count):
-            if n_clicks is None:
-                try:
-                    df = pd.read_csv(self.counter_file_path)
-                    if 'count' not in df.columns or df.empty:
-                        self._create_new_counter_file()
-                        return "0"
-                    return str(df['count'].iloc[0])
-                except:
-                    self._create_new_counter_file()
-                    return "0"
+        def update_counter(is_open, current_count):
+            if not is_open:  # If is_open is False, don't update the counter
+                return current_count or "0"
 
             try:
                 df = pd.read_csv(self.counter_file_path)

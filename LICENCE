@@ -1,80 +1,95 @@
-Licenza Creative Commons Attribuzione - Non Commerciale 4.0 Internazionale
+**Non-Commercial Software License - Daniele Ligato 2025**
 
-Esercitando i Diritti Licenziati (definiti di seguito), Lei accetta e acconsente a essere vincolato dai termini e dalle condizioni della presente Licenza Creative Commons Attribuzione - Non Commerciale 4.0 Internazionale ("Licenza Pubblica"). Nella misura in cui la presente Licenza Pubblica possa essere interpretata come un contratto, i Diritti Licenziati Le sono concessi in considerazione dell'accettazione dei termini e delle condizioni previsti, e il Licenziante conferisce tali diritti in considerazione dei benefici che il Licenziante trae dal mettere a disposizione il Materiale Licenziato secondo le modalità stabilite dalla Licenza stessa.
+**1. Definitions**
+- "Licensor": Daniele Ligato, owner of the code and all rights.
+- "Licensee": Any individual or entity using, modifying, or distributing the Software.
+- "Software": The source code, executable files, and any associated material covered by this license.
+- "Commercial Use": Any use intended to generate direct or indirect monetary profit.
 
-Sezione 1 – Definizioni
+**2. License Grant**
+The Licensor grants the Licensee a non-exclusive, worldwide, non-transferable, and non-sublicensable license to:
+- Use, copy, and modify the Software for **non-commercial purposes**;
+- Share modified or unmodified versions of the Software, provided that credit is given to the original author and this same license is maintained.
 
-a. "Materiale Licenziato" indica l'opera artistica o letteraria, il database o qualsiasi altro materiale al quale il Licenziante ha applicato la presente Licenza Pubblica.
+**3. Restrictions**
+- **No Commercial Use:** The Licensee may not use the Software, in whole or in part, for commercial purposes without the Licensor's written permission.
+- **Attribution:** The Licensee must maintain any copyright notices and clearly acknowledge the Licensor in any distribution of the Software.
+- **No Sublicensing:** The Licensee may not grant additional licenses for the Software.
+- **Code Protection:** The Licensee may not apply technical measures that restrict the sharing of the Software under the terms of this license.
 
-b. "Licenziante" indica l'individuo o l'entità che concede i diritti in virtù della presente Licenza Pubblica.
+**4. Ownership and External Contributions**
+- The Licensor remains the sole owner of the Software.
+- Any external contributions to the code shall be considered granted to the Licensor without rights of claim by contributors, unless specific agreements state otherwise.
+- **Contributors waive all rights** over any code they submit to the Software. Any contributions are transferred fully to the Licensor, who retains exclusive ownership and rights over the entire Software.
 
-c. "Non Commerciale" si intende qualsiasi utilizzo che non sia principalmente diretto ad ottenere un vantaggio commerciale o una remunerazione monetaria.
+**5. Limitation of Liability**
+THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. THE LICENSOR SHALL NOT BE LIABLE FOR ANY DAMAGES RESULTING FROM THE USE OF THE SOFTWARE.
 
-Sezione 2 – Termini della Licenza
+**6. License Modification Terms**
+The Licensor reserves the right to modify this license for future versions of the Software, while previous versions shall remain under their original terms.
 
-Fermo restando quanto previsto dai termini e dalle condizioni della presente Licenza Pubblica, il Licenziante concede a Lei una licenza mondiale, gratuita, non sublicenziabile e non esclusiva per:
+---
+**Licenza Software Non Commerciale - Daniele Ligato 2025**
 
-a. Utilizzare, copiare, modificare e condividere il Materiale Licenziato, ma esclusivamente per scopi non commerciali.
+**1. Definizioni**
+- "Licenziante": Daniele Ligato, proprietario del codice e di tutti i diritti.
+- "Licenziatario": Qualsiasi individuo o entità che utilizza, modifica o distribuisce il Software.
+- "Software": Il codice sorgente, i file eseguibili e qualsiasi materiale associato coperto da questa licenza.
+- "Uso Commerciale": Qualsiasi utilizzo finalizzato a generare un profitto monetario diretto o indiretto.
 
-b. Fornire corretta attribuzione all'autore originale (È necessario fornire il dovuto credito, un link alla licenza e specificare se sono stati effettuati dei cambiamenti).
+**2. Concessione della Licenza**
+Il Licenziante concede al Licenziatario una licenza non esclusiva, mondiale, non trasferibile e non sublicenziabile per:
+- Utilizzare, copiare e modificare il Software per **scopi non commerciali**;
+- Condividere versioni modificate o non modificate del Software, a condizione che venga attribuito il credito all'autore originale e venga mantenuta questa stessa licenza.
 
-Sezione 3 – Restrizioni
+**3. Restrizioni**
+- **Nessun Uso Commerciale:** Il Licenziatario non può utilizzare il Software, in tutto o in parte, per scopi commerciali senza il permesso scritto del Licenziante.
+- **Attribuzione:** Il Licenziatario deve mantenere tutte le note sul copyright e riconoscere chiaramente il Licenziante in qualsiasi distribuzione del Software.
+- **Nessuna Sublicenza:** Il Licenziatario non può concedere licenze aggiuntive per il Software.
+- **Protezione del Codice:** Il Licenziatario non può applicare misure tecniche che limitino la condivisione del Software secondo i termini di questa licenza.
 
-a. Divieto di Uso Commerciale: È vietato l'uso del Materiale Licenziato per finalità commerciali.
+**4. Proprietà e Contributi Esterni**
+- Il Licenziante rimane l'unico proprietario del Software.
+- Qualsiasi contributo esterno al codice sarà considerato concesso al Licenziante senza diritti di rivendicazione da parte dei contributori, salvo accordi specifici.
+- **I contributori rinunciano a tutti i diritti** su qualsiasi codice che inviano al Software. Tutti i contributi sono trasferiti integralmente al Licenziante, che mantiene la proprietà esclusiva e i diritti su tutto il Software.
 
-b. Nessuna Restrizione Aggiuntiva: Non è consentito applicare termini legali o misure tecnologiche che impediscano ad altri di compiere qualsiasi attività che la licenza permette.
+**5. Limitazione di Responsabilità**
+IL SOFTWARE VIENE FORNITO "COSÌ COM'È" SENZA ALCUNA GARANZIA DI ALCUN TIPO, ESPRESSA O IMPLICITA. IL LICENZIANTE NON SARÀ RESPONSABILE DI ALCUN DANNO DERIVANTE DALL'USO DEL SOFTWARE.
 
-Sezione 4 – Proprietà del Prodotto
+**6. Termini di Modifica della Licenza**
+Il Licenziante si riserva il diritto di modificare questa licenza per future versioni del Software, mentre le versioni precedenti rimarranno sotto i termini originali.
 
-Pur consentendo contributi da parte di terzi per lo sviluppo del progetto, il Licenziante rimane l'unico proprietario dei diritti esclusivi sul 100% del prodotto. I contributi esterni non implicano alcun trasferimento di proprietà sul Materiale Licenziato, che continua ad appartenere integralmente al Licenziante.
+---
+**Neobchodní Licenční Smlouva pro Software - Daniele Ligato 2025**
 
-Sezione 5 – Esclusione di Garanzie e Limitazione di Responsabilità
+**1. Definice**
+- "Poskytovatel licence": Daniele Ligato, vlastník kódu a všech práv.
+- "Držitel licence": Jakákoli osoba nebo subjekt, který používá, upravuje nebo distribuuje Software.
+- "Software": Zdrojový kód, spustitelné soubory a jakýkoli přidružený materiál, na který se vztahuje tato licence.
+- "Obchodní použití": Jakékoli použití určené k získání přímého nebo nepřímého finančního zisku.
 
-IL MATERIALE LICENZIATO VIENE FORNITO "COSÌ COM'È" E SENZA GARANZIE DI ALCUN TIPO.
+**2. Udělení Licence**
+Poskytovatel licence uděluje Držiteli licence nevýhradní, celosvětovou, nepřenosnou a nepodlicencovatelnou licenci k:
+- Použití, kopírování a úpravě Softwaru pro **nekomerční účely**;
+- Sdílení upravených nebo neupravených verzí Softwaru za podmínky, že bude uveden původní autor a zachována tato licence.
 
-Licenza rilasciata sotto la Licenza Creative Commons Attribuzione - Non Commerciale 4.0 Internazionale.
-Per visualizzare una copia di questa licenza, La invitiamo a consultare https://creativecommons.org/licenses/by-nc/4.0/.
+**3. Omezení**
+- **Žádné obchodní použití:** Držitel licence nesmí Software, ani jeho část, používat pro komerční účely bez písemného souhlasu Poskytovatele licence.
+- **Připsání autorství:** Držitel licence musí zachovat jakékoli oznámení o autorských právech a v jakékoli distribuci Softwaru jasně uvést Poskytovatele licence.
+- **Žádné podlicencování:** Držitel licence nesmí udělovat další licence na Software.
+- **Ochrana kódu:** Držitel licence nesmí zavádět technická opatření, která by omezovala sdílení Softwaru podle podmínek této licence.
 
-2025 Daniele Ligato
+**4. Vlastnictví a externí příspěvky**
+- Poskytovatel licence zůstává jediným vlastníkem Softwaru.
+- Jakékoli externí příspěvky do kódu budou považovány za poskytnuté Poskytovateli licence bez nároku přispěvatelů.
+- **Přispěvatelé se vzdávají všech práv** na jakýkoli kód, který přispějí do Softwaru.
 
-Creative Commons Attribution-NonCommercial 4.0 International License
+**5. Omezení odpovědnosti**
+SOFTWARE JE POSKYTOVÁN "TAK JAK JE" BEZ JAKÝCHKOLI ZÁRUK.
 
-By exercising the Licensed Rights (defined below), You accept and agree to be bound by the terms and conditions of this Creative Commons Attribution-NonCommercial 4.0 International Public License ("Public License"). To the extent this Public License may be interpreted as a contract, You are granted the Licensed Rights in consideration of Your acceptance of these terms and conditions, and the Licensor grants You such rights in consideration of benefits the Licensor receives from making the Licensed Material available under these terms and conditions.
+**6. Podmínky změny licence**
+Poskytovatel licence si vyhrazuje právo upravit tuto licenci pro budoucí verze Softwaru.
 
-Section 1 – Definitions
-
-a. "Licensed Material" means the artistic or literary work, database, or other material to which the Licensor applied this Public License.
-
-b. "Licensor" means the individual(s) or entity(ies) granting rights under this Public License.
-
-c. "NonCommercial" means not primarily intended for or directed towards commercial advantage or monetary compensation.
-
-Section 2 – License Terms
-
-Subject to the terms and conditions of this Public License, the Licensor grants You a worldwide, royalty-free, non-sublicensable, non-exclusive license to:
-
-a. Use, copy, modify, and share the Licensed Material, but only for non-commercial purposes.
-
-b. Attribute the original creator (You must give appropriate credit, provide a link to the license, and indicate if changes were made).
-
-Section 3 – Restrictions
-
-a. No Commercial Use: You may not use the Licensed Material for commercial purposes.
-
-b. No Additional Restrictions: You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
-
-Section 4 – Ownership of the Product
-
-While external contributions may be made to the development of the project, the Licensor remains the sole owner of 100% of the product. External contributions do not transfer ownership of the Licensed Material to the contributor.
-
-Section 5 – Disclaimer of Warranties and Limitation of Liability
-
-THE LICENSED MATERIAL IS PROVIDED "AS-IS" WITHOUT WARRANTIES OF ANY KIND.
-
-Licensed under the Creative Commons Attribution-NonCommercial 4.0 International License.
-To view a copy of this license, visit https://creativecommons.org/licenses/by-nc/4.0/.
-
-2025 Daniele Ligato
 
 
 

@@ -1,97 +1,351 @@
-/* Keyframes for fading out */
-@keyframes fadeOut {
+/* Base styles per tutti i bottoni fluttuanti */
+.btn-floating,
+.btn-donating,
+.btn-account {
+    position: fixed;
+    left: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.95) !important; /* Leggermente più opaco */
+    border: 1px solid rgba(0, 0, 0, 0.1) !important; /* Sottile bordo */
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    padding: 0;
+}
+
+/* Posizioni specifiche per ogni bottone */
+.btn-account {
+    bottom: 160px;
+    color: #0d6efd !important;
+}
+
+.btn-donating {
+    bottom: 90px;
+    color: #198754 !important;
+}
+
+.btn-floating {
+    bottom: 20px;
+    color: #dc3545 !important;
+}
+
+/* Effetti hover */
+.btn-floating:hover,
+.btn-donating:hover,
+.btn-account:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background-color: rgba(255, 255, 255, 1) !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Effetto click */
+.btn-floating:active,
+.btn-donating:active,
+.btn-account:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.custom-button {
+    background-color: #FA8072 !important;
+    border-color: #FA8072 !important;
+    min-width: 100px;
+    min-height: 40px;
+    transition: all 0.2s ease-in-out !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.custom-button:hover {
+    background-color: #FF6B5B !important;
+    border-color: #FF6B5B !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-button:active {
+    transform: translateY(0);
+    background-color: #E5675B !important;
+    border-color: #E5675B !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Effetto ripple al click */
+.custom-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.custom-button:focus:not(:active)::after {
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
     0% {
-        opacity: 1; /* Fully visible */
+        transform: scale(0, 0);
+        opacity: 0.5;
     }
     100% {
-        opacity: 0.2; /* Fade out to 50% opacity */
+        transform: scale(40, 40);
+        opacity: 0;
     }
 }
 
-/* Floating button styles */
-.btn-account {
-    animation: fadeOut 15s ease-in-out 5s forwards; /* Only fade out */
-    position: fixed;
-    bottom: 160px;
-    left: 20px;
-    border-radius: 10px; /* Make the button squared */
-    width: 60px; /* Fixed width */
-    height: 60px; /* Fixed height */
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-    background-color: #FF5722;
-    border: 2px solid white;
-    z-index: 1000;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    opacity: 1; /* Start fully visible */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px; /* Adjust text size to fit */
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    padding: 0; /* Remove padding to maintain shape */
-    overflow: hidden; /* Prevent overflow from breaking shape */
+.portfolio-button {
+    background-color: #8B4513 !important;
+    border-color: #8B4513 !important;
+    min-height: 40px;
+    transition: all 0.2s ease-in-out !important;
+    position: relative;
+    overflow: hidden;
 }
 
-/* Floating button styles */
-.btn-floating {
-    animation: fadeOut 15s ease-in-out 5s forwards; /* Only fade out */
-    position: fixed;
-    bottom: 20px;
-    left: 20px;
-    border-radius: 10px; /* Make the button squared */
-    width: 60px; /* Fixed width */
-    height: 60px; /* Fixed height */
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-    background-color: #FF5722;
-    border: 2px solid white;
-    z-index: 1000;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    opacity: 1; /* Start fully visible */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px; /* Adjust text size to fit */
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    padding: 0; /* Remove padding to maintain shape */
-    overflow: hidden; /* Prevent overflow from breaking shape */
+.portfolio-button:hover {
+    background-color: #A0522D !important;
+    border-color: #A0522D !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Floating button styles */
-.btn-donating {
-    animation: fadeOut 15s ease-in-out 5s forwards; /* Only fade out */
-    position: fixed;
-    bottom: 90px;
-    left: 20px;
-    border-radius: 10px; /* Make the button squared */
-    width: 60px; /* Fixed width */
-    height: 60px; /* Fixed height */
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.2);
-    background-color: #FF5722;
-    border: 2px solid white;
-    z-index: 1000;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
-    opacity: 1; /* Start fully visible */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px; /* Adjust text size to fit */
-    font-weight: bold;
-    color: white;
-    text-align: center;
-    padding: 0; /* Remove padding to maintain shape */
-    overflow: hidden; /* Prevent overflow from breaking shape */
+.portfolio-button:active {
+    transform: translateY(0);
+    background-color: #733A0F !important;
+    border-color: #733A0F !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Glow effect on hover (restore full visibility) */
-.btn-floating:hover {
-    opacity: 1; /* Fully visible on hover */
-    transform: scale(1.05); /* Slightly enlarge on hover */
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow */
+/* Effetto ripple al click */
+.portfolio-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.portfolio-button:focus:not(:active)::after {
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(40, 40);
+        opacity: 0;
+    }
+}
+
+/* Stili per il container della tabella */
+.table-container {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+}
+
+/* Stili per il card della percentuale rimanente */
+.percentage-remaining-card {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Stili per il testo nella card della percentuale */
+.percentage-label {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.percentage-value {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+/* Colori per la percentuale */
+.percentage-complete {
+    color: #198754;  /* verde per 100% */
+}
+
+.percentage-incomplete {
+    color: #dc3545;  /* rosso per <100% */
+}
+
+/* Stili esistenti... */
+
+/* Stile specifico per il bottone portfolio */
+.portfolio-button {
+    background-color: #8B4513 !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 0.375rem !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease-in-out !important;
+    height: 100% !important;
+    min-height: 2.5rem;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.portfolio-button:hover {
+    background-color: #A0522D !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
+
+.portfolio-button:active {
+    transform: translateY(0) !important;
+    background-color: #733A0F !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Aggiustamento del layout della griglia */
+.settings-grid {
+    margin-top: 1rem;
+}
+
+/* Stile per l'icona nel bottone */
+.portfolio-button i {
+    transition: transform 0.2s ease-in-out;
+}
+
+.portfolio-button:hover i {
+    transform: rotate(180deg);
+}
+
+/* Container dei dropdown */
+.dropdown-container {
+    position: relative;
+    margin-bottom: 0;  /* Rimuove il margin bottom per allineare con il bottone */
+}
+
+/* Allineamento verticale degli elementi */
+.align-items-end {
+    align-items: flex-end !important;
+}
+
+/* Container principale con sfondo grigio chiaro */
+.settings-container {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+}
+
+/* Griglia principale */
+.settings-grid {
+    margin-top: 1rem;
+    gap: 1.5rem;
+}
+
+/* Label degli input */
+.settings-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.75rem;
+}
+
+/* Container dei dropdown */
+.dropdown-container {
+    position: relative;
+    margin-bottom: 0;
+}
+
+/* Icona nel dropdown */
+.dropdown-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
+}
+
+/* Stile per i dropdown modernizzati */
+.modern-dropdown .Select-control {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    min-height: 2.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.modern-dropdown .Select-control:hover {
+    border-color: #d1d5db;
+}
+
+.modern-dropdown .is-focused:not(.is-open) > .Select-control {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Portfolio button */
+.portfolio-button {
+    background-color: #8B4513 !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 500 !important;
+    height: 100% !important;
+    width: 100% !important;
+    transition: background-color 0.2s ease-in-out !important;
+}
+
+.portfolio-button:hover {
+    background-color: #A0522D !important;
+}
+
+/* Stile per l'icona nel bottone */
+.portfolio-button i {
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Allineamento verticale */
+.align-items-end {
+    align-items: flex-end !important;
+}
+
+/* Settings Summary */
+.settings-summary {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }

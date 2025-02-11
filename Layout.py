@@ -58,17 +58,26 @@ class LayoutManager:
             dbc.Container([
                 # Riga di Selezione: Dropdown ETF e Slider Percentuale
                 dbc.Row([
+                    # ETF Dropdown
                     dbc.Col([
                         dbc.Label("Seleziona un ETF (Nome, ISIN, Ticker):", style={'color': '#000000'}),
-                        dcc.Dropdown(
-                            id='etf-dropdown',
-                            options=asset_list,
-                            placeholder="Seleziona un ETF",
-                            className='mb-3',
-                            style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
-                        )
+                        html.Div([
+                            dcc.Dropdown(
+                                id='etf-dropdown',
+                                options=asset_list,
+                                placeholder="Seleziona un ETF",
+                                className='modern-dropdown',
+                                style={
+                                    'backgroundColor': '#FFFFFF',
+                                    'color': '#000000',
+                                    'height': '40px'  # Altezza esplicita
+                                }
+                            ),
+                            html.I(className="fas fa-chart-line dropdown-icon")
+                        ], className="dropdown-container")
                     ], md=6),
 
+                    # Percentuale
                     dbc.Col([
                         dbc.Label("Percentuale di Allocazione:", style={'color': '#000000'}),
                         dbc.Input(
@@ -76,99 +85,166 @@ class LayoutManager:
                             type='number',
                             min=0.1,
                             value=100,
-                            style={'width': '100%'},
+                            style={
+                                'width': '100%',
+                                'height': '40px'  # Stessa altezza del dropdown
+                            }
                         )
-                    ], md=6),
-                ], className='mb-4'),
+                    ], md=4),
 
-                # Pulsante Aggiungi ETF
-                dbc.Row(
-                    dbc.Col(
+                    # Bottone
+                    dbc.Col([
                         dbc.Button(
                             "Aggiungi ETF",
                             id='add-etf-button',
                             color='danger',
-                            className='w-100',
                             style={
-                                'backgroundColor': '#FA8072',
-                                'borderColor': '#FA8072',
-                                'minWidth': '100px',  # Minimum width
-                                'minHeight': '40px'  # Minimum height
+                                "height": "40px",  # Stessa altezza degli altri elementi
+                                "margin-top": "32px",
+                                "width": "100%",
+                                "line-height": "40px",  # Per centrare il testo verticalmente
+                                "padding": "0px"
                             }
                         ),
-                        width=2
-                    ),
-                    className='mb-4'
-                ),
+                    ], md=2, className="d-flex align-items-end"),
+                ], className='mb-4'),
 
                 # Tabella del Portafoglio
-                dbc.Row(
-                    dbc.Col(
-                        dash.dash_table.DataTable(
-                            id='portfolio-table',
-                            columns=[
-                                {"name": "ETF", "id": "ETF", "editable": False},
-                                {"name": "Percentuale (%)", "id": "Percentuale", "editable": True, 'type': 'numeric',
-                                 'format': {'specifier': '.2f'}},
-                            ],
-                            data=initial_table_data.to_dict('records'),  # Ensure your data includes "Inizio storia"
-                            editable=True,
-                            row_deletable=True,
-                            style_table={'width': '100%', 'overflowX': 'auto', 'backgroundColor': '#FFFFFF'},
-                            style_cell={'textAlign': 'left', 'padding': '10px', 'color': '#000000'},
-                            style_header={
-                                'backgroundColor': '#F0F0F0',
-                                'fontWeight': 'bold',
-                                'color': '#000000'
-                            },
-                            style_as_list_view=True,
-                        ),
-                        width=12
-                    ),
-                    className='mb-4'
-                ),
+                dbc.Row([
+                    dbc.Col([
+                        # Table container with shadow and rounded corners
+                        html.Div([
+                            #Add a title
+                            html.H5("Tabella Portafoglio", className="table-title"),
+                            dash.dash_table.DataTable(
+                                id='portfolio-table',
+                                columns=[
+                                    {"name": "ETF", "id": "ETF", "editable": False},
+                                    {"name": "Percentuale (%)", "id": "Percentuale", "editable": True,
+                                     'type': 'numeric',
+                                     'format': {'specifier': '.2f'}},
+                                ],
+                                data=initial_table_data.to_dict('records'),
+                                editable=True,
+                                row_deletable=True,
+                                style_table={
+                                    'overflowX': 'auto',
+                                },
+                                style_cell={
+                                    'textAlign': 'left',
+                                    'padding': '16px',
+                                    'fontFamily': '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                                },
+                                style_header={
+                                    'backgroundColor': '#f8f9fa',
+                                    'fontWeight': '600',
+                                    'borderBottom': '2px solid #dee2e6',
+                                    'color': '#6c757d',
+                                    'textTransform': 'uppercase',
+                                    'fontSize': '0.75rem',
+                                    'letterSpacing': '0.05em'
+                                },
+                                style_data={
+                                    'color': '#212529',
+                                    'backgroundColor': 'white',
+                                    'fontSize': '0.875rem'
+                                },
+                                style_data_conditional=[
+                                    {
+                                        'if': {'row_index': 'odd'},
+                                        'backgroundColor': '#f8f9fa',
+                                    }
+                                ],
+                            ),
+                            # Percentage remaining card
+                            html.Div(
+                                id='remaining-percentage',
+                                className='percentage-remaining-card'
+                            )
+                        ], className='table-container')
+                    ], width=12)
+                ], className='mb-4'),
 
                 dbc.Row([
-                    # Colonna per il pulsante
-                    dbc.Col(
-                        dbc.Button("Crea/Aggiorna Portafoglio", id='create-portfolio-button', color='danger',
-                                   className='w-100 mt-4',
-                                   style={'backgroundColor': '#8B4513', 'borderColor': '#8B4513'}),
-                        md=2,  # Specifica la larghezza della colonna
-                    ),
-                    # Colonna per il dropdown
                     dbc.Col([
-                        dbc.Label("Scegli il tuo Benchmark (Opzionale):", style={'color': '#000000'}),
-                        dcc.Dropdown(
-                            id='benchmark-dropdown',
-                            options=asset_list,
-                            placeholder="Seleziona un Benchmark",
-                            className='mb-3',
-                            style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
-                        )
-                    ], md=6),  # Specifica la larghezza della colonna
-                    #  per la selezione degli anni
-                    dbc.Col([
-                        dbc.Label("Anno Inizio (Opzionale):", style={'color': '#000000'}),
-                        dcc.Dropdown(
-                            id='start-year-dropdown',
-                            options=[{'label': str(year), 'value': year} for year in range(1990, 2025)],
-                            placeholder="Seleziona Anno Inizio",
-                            className='mb-3',
-                            style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
-                        )
-                    ], md=2),  # Specifica la larghezza della colonna per Anno Inizio
+                        html.Div([
+                            # Prima riga: Solo Benchmark
+                            dbc.Row([
+                                dbc.Col([
+                                    html.Label(
+                                        "Benchmark (Opzionale)",
+                                        className="settings-label"
+                                    ),
+                                    html.Div([
+                                        dcc.Dropdown(
+                                            id='benchmark-dropdown',
+                                            options=asset_list,
+                                            placeholder="Seleziona un benchmark",
+                                            clearable=True,
+                                            className="modern-dropdown"
+                                        ),
+                                        html.I(className="fas fa-chart-line dropdown-icon")
+                                    ], className="dropdown-container")
+                                ], width=12),
+                            ], className="mb-4"),
 
-                    dbc.Col([
-                        dbc.Label("Anno Fine (Opzionale):", style={'color': '#000000'}),
-                        dcc.Dropdown(
-                            id='end-year-dropdown',
-                            options=[{'label': str(year), 'value': year} for year in range(1990, 2025)],
-                            placeholder="Seleziona Anno Fine",
-                            className='mb-3',
-                            style={'backgroundColor': '#FFFFFF', 'color': '#000000'}
-                        )
-                    ], md=2)  # Specifica la larghezza della colonna per Anno Fine
+                            # Seconda riga: Periodo e Bottone affiancati
+                            dbc.Row([
+                                # Periodo di Analisi
+                                dbc.Col([
+                                    html.Label(
+                                        "Periodo di Analisi (Opzionale)",
+                                        className="settings-label"
+                                    ),
+                                    dbc.Row([
+                                        # Start Year
+                                        dbc.Col([
+                                            html.Div([
+                                                dcc.Dropdown(
+                                                    id='start-year-dropdown',
+                                                    options=[{'label': str(year), 'value': year}
+                                                             for year in range(1990, 2025)],
+                                                    placeholder="Anno Inizio",
+                                                    clearable=True,
+                                                    className="modern-dropdown"
+                                                ),
+                                                html.I(className="far fa-calendar dropdown-icon")
+                                            ], className="dropdown-container")
+                                        ], width=6, className="pe-2"),
+
+                                        # End Year
+                                        dbc.Col([
+                                            html.Div([
+                                                dcc.Dropdown(
+                                                    id='end-year-dropdown',
+                                                    options=[{'label': str(year), 'value': year}
+                                                             for year in range(1990, 2025)],
+                                                    placeholder="Anno Fine",
+                                                    clearable=True,
+                                                    className="modern-dropdown"
+                                                ),
+                                                html.I(className="far fa-calendar dropdown-icon")
+                                            ], className="dropdown-container")
+                                        ], width=6, className="ps-2"),
+                                    ], className="g-0")
+                                ], md=8),
+
+                                # Create/Update Portfolio Button - allineato sulla stessa riga
+                                dbc.Col([
+                                    dbc.Button(
+                                        [
+                                            html.I(className="fas fa-sync-alt me-2"),
+                                            "Crea/Aggiorna Portafoglio"
+                                        ],
+                                        id='create-portfolio-button',
+                                        className='portfolio-button',
+                                        style={"height": "38px"}  # Altezza fissa per allinearsi con i dropdown
+                                    ),
+                                ], md=4, className="d-flex align-items-end"),
+                            ], className="align-items-end"),
+
+                        ], className="settings-container")
+                    ], width=12)
                 ], className='mt-5'),
 
                 # Sommario Allocazione e Feedback
@@ -195,7 +271,7 @@ class LayoutManager:
                     dismissable=True,
                     duration=3000,  # Durata in millisecondi (2 secondi)
                     is_open=False,  # Nascondi inizialmente
-                    style={"position": "fixed", "top": 10, "right": 10, "zIndex": 1000},  # Posizionamento
+                    style={"position": "fixed", "top": 10, "left": 10, "zIndex": 1000},  # Posizionamento
                 ),
                 dbc.Toast(
                     id="Work-in-progress-toast",
@@ -245,11 +321,6 @@ class LayoutManager:
                 dbc.Button(
                     children="Tutorial",  # Text on the button
                     id="tutorial-button",
-                    style={
-                        "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
-                        "color": "#000",  # Text color (adjust for contrast)
-
-                    },
                     className="btn-floating",  # Use the CSS class defined in styles.css
                 ),
 
@@ -257,24 +328,13 @@ class LayoutManager:
                 dbc.Button(
                     children="Donate",  # Text on the button
                     id="donate-button",
-                    style={
-                        "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
-                        "color": "#000",  # Text color (adjust for contrast)
-
-                    },
                     className="btn-donating",  # Use the CSS class defined in styles.css
                 ),
-
 
                 # Floating Button
                 dbc.Button(
                     children="Account",  # Text on the button
                     id="account-button",
-                    style={
-                        "backgroundColor": PORTFOLIO_COLOR,  # Use the color variable
-                        "color": "#000",  # Text color (adjust for contrast)
-
-                    },
                     className="btn-account",  # Use the CSS class defined in styles.css
                 ),
 
@@ -349,21 +409,19 @@ class LayoutManager:
 
                                             html.Div(
                                                 [
-                                                    html.Span(
-                                                        "PortfolioPilot è un progetto open-source, sotto licenza non commerciale."
-                                                    ),
-                                                    html.Br(),
-                                                    html.Span(
-                                                        "Tutti possono contribuire allo sviluppo del progetto: "
-                                                    ),
-                                                    html.A(
-                                                        "QUI",
-                                                        href="https://github.com/daniele96l/backtester-dani",
-                                                        style={'color': 'gray', 'textDecoration': 'none'}
-                                                    )
+                                                    html.A("Contribuisci allo sviluppo", href="https://github.com/daniele96l/backtester-dani",
+                                                           style={ 'textDecoration': 'none'})
                                                 ],
                                                 style={'color': 'gray', 'marginTop': '1rem'}
                                             ),
+                                            html.A(
+                                                "Termini e Condizioni",
+                                                href="https://danieleligato-eng.notion.site/Termini-e-Condizioni-196922846a1680ab8686d1a817717ae2",
+                                                target="_blank",
+                                                className="d-block text-primary mb-3",
+                                                style={"text-decoration": "none"},
+                                            ),
+
                                         ]
                                     )
                                 ]

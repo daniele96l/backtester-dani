@@ -22,12 +22,19 @@ log.setLevel(logging.ERROR)  # Show only errors
 # Define style constant
 LOGIN_INDICATOR_STYLE = {
     "position": "fixed",
-    "top": "20px",
-    "right": "20px",
-    "fontSize": "24px",
+    "top": "15px",  # Ridotto da 20px
+    "right": "15px",  # Ridotto da 20px
+    "fontSize": "14px",  # Ridotto da 16px
     "zIndex": 1500,
     "cursor": "default",
-    "transition": "opacity 0.3s ease"
+    "transition": "opacity 0.3s ease",
+    "display": "flex",
+    "alignItems": "center",
+    "gap": "6px",  # Ridotto da 8px
+    "backgroundColor": "rgba(255, 255, 255, 0.9)",
+    "padding": "6px 10px",  # Ridotto da 8px 12px
+    "borderRadius": "15px",  # Ridotto da 20px
+    "boxShadow": "0 2px 4px rgba(0, 0, 0, 0.1)"
 }
 
 
@@ -38,11 +45,22 @@ def register_callbacks(app):
         Output("portfolio-toast", "is_open"),
         Input("create-portfolio-button", "n_clicks"),
         State("portfolio-table", "data"),
+        State('start-year-dropdown', 'value'),
+        State('end-year-dropdown', 'value'),
         prevent_initial_call=True
     )
-    def show_calculation_message(n_clicks, table_data):
+    def show_calculation_message(n_clicks, table_data, start_year, end_year):
         if n_clicks is None or not table_data:
             return False  # Non aprire il toast se non ci sono dati
+
+        start_year = start_year or 1990
+        end_year = end_year or 2024
+        start_date = pd.Timestamp(f'{start_year}-01-01')
+        end_date = pd.Timestamp(f'{end_year}-12-31')
+
+        # Validate the date range
+        if start_date > end_date:
+            return False
 
         # Calcola l'allocazione totale
         try:
@@ -130,9 +148,29 @@ def register_callbacks(app):
         ],
     )
     def update_login_indicator(login_state, pathname):
-        """Updates the login indicator emoji based on login state."""
-        emoji = "👤" if login_state else "👻"
-        return emoji, LOGIN_INDICATOR_STYLE
+        """Updates the login indicator with emoji and text based on login state."""
+        if login_state and login_state.get("logged_in"):
+            emoji = "👤"
+            text = f"Accesso effettuato: {login_state.get('username')}"
+            style = {
+                **LOGIN_INDICATOR_STYLE,
+                "color": "#198754"  # Green color for logged in state
+            }
+        else:
+            emoji = "👻"
+            text = "Accesso non effettuato"
+            style = {
+                **LOGIN_INDICATOR_STYLE,
+                "color": "#6c757d"  # Gray color for logged out state
+            }
+
+        return [
+            html.Div([
+                html.Span(emoji, style={"fontSize": "16px"}),  # Larger emoji
+                html.Span(text)  # Text next to emoji
+            ], style={"display": "flex", "alignItems": "center", "gap": "8px"}),
+            style
+        ]
 
     app.clientside_callback(
         """
@@ -203,6 +241,33 @@ def register_callbacks(app):
             current_data.append(new_row)  # Aggiungi la nuova riga ai dati della tabella
 
         return current_data, False
+
+    @app.callback(
+        Output('remaining-percentage', 'children'),
+        [Input('portfolio-table', 'data')]
+    )
+    def update_remaining_percentage(table_data):
+        if not table_data:
+            return html.Div([
+                html.Span("Totale corrente: ", style={'fontSize': '0.85rem', 'color': '#6c757d'}),
+                html.Span("0.00%", style={'fontSize': '0.85rem', 'fontWeight': '600', 'marginRight': '15px'}),
+                html.Span("Percentuale rimanente: ", style={'fontSize': '0.85rem', 'color': '#6c757d'}),
+                html.Span("100.00%", style={'fontSize': '0.85rem', 'fontWeight': '600', 'color': '#dc3545'})
+            ])
+
+        # Calcola la somma delle percentuali
+        total = sum(float(row.get('Percentuale', 0)) for row in table_data)
+        remaining = 100 - total
+
+        # Determina il colore della percentuale rimanente
+        color = '#198754' if remaining == 0 else '#dc3545'  # Verde se 0, rosso altrimenti
+
+        return html.Div([
+            html.Span("Totale corrente: ", style={'fontSize': '0.85rem', 'color': '#6c757d'}),
+            html.Span(f"{total:.2f}%", style={'fontSize': '0.85rem', 'fontWeight': '600', 'marginRight': '15px'}),
+            html.Span("Percentuale rimanente: ", style={'fontSize': '0.85rem', 'color': '#6c757d'}),
+            html.Span(f"{remaining:.2f}%", style={'fontSize': '0.85rem', 'fontWeight': '600', 'color': color})
+        ])
 
 
     # Callback per gestire la creazione del portafoglio
