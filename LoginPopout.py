@@ -106,18 +106,36 @@ def PopupManager(app):
                                 dbc.Checkbox(
                                     id="gdpr-checkbox",
                                     label=html.Span([
-                                        "Ho letto e accetto l'informativa sulla privacy e il trattamento dei dati personali",
+                                        "Ho letto e accetto l' ",
+                                        html.A(
+                                            "Informativa sulla Privacy",
+                                            href="https://danieleligato-eng.notion.site/Informativa-sulla-privacy-197922846a1680d5bc0fc50711843137",
+                                            target="_blank",
+                                            className="text-primary",
+                                            style={"text-decoration": "none"}
+                                        ),
+                                        " e autorizzo il trattamento dei miei dati personali secondo il GDPR."
                                     ]),
                                     className="mb-3",
                                 ),
-                                html.A(
-                                    "Termini e Condizioni",
-                                    href="https://danieleligato-eng.notion.site/Termini-e-Condizioni-196922846a1680ab8686d1a817717ae2",
-                                    target="_blank",
-                                    className="d-block text-primary mb-3",
-                                    style={"text-decoration": "none"},
+                                dbc.Checkbox(
+                                    id="terms-checkbox",
+                                    label=html.Span([
+                                        "Ho letto e accetto i ",
+                                        html.A(
+                                            "Termini e Condizioni",
+                                            href="https://danieleligato-eng.notion.site/Termini-e-Condizioni-196922846a1680ab8686d1a817717ae2?pvs=74",
+                                            target="_blank",
+                                            className="text-primary",
+                                            style={"text-decoration": "none"},
+
+                                        ),
+                                    ]),
+                                    className="mb-3",
+                                    value=True
                                 ),
                             ], id="gdpr-terms-container", style={"margin": "1rem 0"}),
+
 
                             # Feedback per errori/successi
                             html.Div(
@@ -215,12 +233,16 @@ def PopupManager(app):
             State("username", "value"),
             State("password", "value"),
             State("gdpr-checkbox", "value"),
+            State("terms-checkbox", "value"),  # Added marketing checkbox
             State("login-state", "data")
         ]
     )
-    def gestisci_auth(submit_clicks, logout_clicks, tipo_auth, username, password, gdpr_accettato, current_login_state):
+    def gestisci_auth(submit_clicks, logout_clicks, tipo_auth, username, password, gdpr_accettato, terms_conditions,
+                      current_login_state):
         firebase_auth = FirebaseAuth(PUBLIC_KEY)
         ctx = callback_context
+        if terms_conditions is None:
+            terms_conditions = False
 
         if not ctx.triggered:
             return "", current_login_state
@@ -260,7 +282,7 @@ def PopupManager(app):
                         style={"color": "#dc3545", "font-weight": "500"}
                     ), None
                 else:
-                    stato_registrazione, registered = firebase_auth.register(username, password)
+                    stato_registrazione, registered = firebase_auth.register(username, password, terms_conditions)
                     if registered:
                         return html.Div(
                             stato_registrazione,

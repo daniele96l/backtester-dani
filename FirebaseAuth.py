@@ -28,23 +28,27 @@ class FirebaseAuth:
             print(f"Login fallito: {detailed_error}")
             return detailed_error, False
 
-    def register(self, email, password, mode="mode 2"):
+    def register(self, email, password, terms_conditions, mode="mode 2"):
         """Registra un nuovo utente e salva i suoi dati in Firestore, con un messaggio di successo."""
         payload = {"email": email, "password": password, "returnSecureToken": True}
         response = requests.post(self.signup_url, json=payload)
 
         if response.status_code == 200:
-            self.save_user_data(email, mode)
+            # Save user data, including the marketing consent
+            self.save_user_data(email, mode, terms_conditions)
             return f"Registrazione effettuata con successo per {email}.", True
         else:
             error_message = response.json().get('error', {}).get('message', 'Errore sconosciuto')
             detailed_error = self.get_error_details(error_message)
-            return detailed_error,False
+            return detailed_error, False
 
-    def save_user_data(self, email, mode):
-        """Saves user data to Firestore."""
-        db.collection('users').document(email).set({'mode': mode})
-        print(f"User {email} saved with mode {mode}.")
+    def save_user_data(self, email, mode, terms_conditions):
+        """Saves user data to Firestore, including terms_conditions consent."""
+        db.collection('users').document(email).set({
+            'mode': mode,
+            'marketing': terms_conditions  # Store the marketing consent here
+        })
+        print(f"User {email} saved with mode {mode} and terms_conditions consent {terms_conditions}.")
 
     def get_user_status(self, email):
         """Retrieves the user's mode from Firestore, creating a new document if necessary."""

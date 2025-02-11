@@ -425,8 +425,8 @@ class LayoutManager:
                                                 style={'color': 'gray', 'marginTop': '1rem'}
                                             ),
                                             html.A(
-                                                "Termini e Condizioni",
-                                                href="https://danieleligato-eng.notion.site/Termini-e-Condizioni-196922846a1680ab8686d1a817717ae2",
+                                                "Informativa sulla privacy",
+                                                href="https://danieleligato-eng.notion.site/Informativa-sulla-privacy-197922846a1680d5bc0fc50711843137",
                                                 target="_blank",
                                                 className="d-block text-primary mb-3",
                                                 style={"text-decoration": "none"},
