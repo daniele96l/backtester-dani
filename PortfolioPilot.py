@@ -115,27 +115,28 @@ def register_callbacks(app):
         ],
         [
             Input("account-button", "n_clicks"),
+            Input("login-trigger", "n_clicks"),
             Input("close-modal", "n_clicks"),
         ],
         [State("login-state", "data")],
+        prevent_initial_call=True
     )
-    def handle_account_and_close(n_account, n_close, login_state):
+    def handle_account_and_close(n_account, n_emoji, n_close, login_state):
         """Handles button clicks for account and modal close actions."""
         ctx = dash.callback_context
 
-        if not ctx.triggered:
-            return dash.no_update, dash.no_update
+        # Se nessun click è stato fatto, mantieni tutto chiuso
+        if not ctx.triggered or all(x is None for x in [n_account, n_emoji, n_close]):
+            return False, False
 
         triggered_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
-        if triggered_id == "account-button":
+        if triggered_id in ["account-button", "login-trigger"]:
             return True, dash.no_update
         elif triggered_id == "close-modal":
             return False, dash.no_update
 
-        return dash.no_update, dash.no_update
-
-    # Callback separato per l'emoji di login
+        return False, False
 
     @app.callback(
         [
@@ -144,7 +145,7 @@ def register_callbacks(app):
         ],
         [
             Input("login-state", "data"),
-            Input("url", "pathname")  # Add URL pathname as input
+            Input("url", "pathname")
         ],
     )
     def update_login_indicator(login_state, pathname):
@@ -154,21 +155,30 @@ def register_callbacks(app):
             text = f"Accesso effettuato: {login_state.get('username')}"
             style = {
                 **LOGIN_INDICATOR_STYLE,
-                "color": "#198754"  # Green color for logged in state
+                "color": "#198754",  # Green color for logged in state
+                "cursor": "pointer"  # Aggiunto per indicare cliccabilità
             }
         else:
             emoji = "👻"
             text = "Accesso non effettuato"
             style = {
                 **LOGIN_INDICATOR_STYLE,
-                "color": "#6c757d"  # Gray color for logged out state
+                "color": "#6c757d",  # Gray color for logged out state
+                "cursor": "pointer"  # Aggiunto per indicare cliccabilità
             }
 
         return [
             html.Div([
-                html.Span(emoji, style={"fontSize": "16px"}),  # Larger emoji
-                html.Span(text)  # Text next to emoji
-            ], style={"display": "flex", "alignItems": "center", "gap": "8px"}),
+                html.Span(emoji, style={"fontSize": "16px"}),
+                html.Span(text, className="login-text")
+            ],
+                id="login-trigger",  # Aggiunto ID per il trigger
+                style={
+                    "display": "flex",
+                    "alignItems": "center",
+                    "gap": "8px",
+                    "cursor": "pointer"  # Aggiunto per indicare cliccabilità
+                }),
             style
         ]
 
