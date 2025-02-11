@@ -135,48 +135,6 @@
     }
 }
 
-.portfolio-button {
-    background-color: #8B4513 !important;
-    border-color: #8B4513 !important;
-    min-height: 40px;
-    transition: all 0.2s ease-in-out !important;
-    position: relative;
-    overflow: hidden;
-}
-
-.portfolio-button:hover {
-    background-color: #A0522D !important;
-    border-color: #A0522D !important;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.portfolio-button:active {
-    transform: translateY(0);
-    background-color: #733A0F !important;
-    border-color: #733A0F !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Effetto ripple al click */
-.portfolio-button::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 255, 255, 0.5);
-    opacity: 0;
-    border-radius: 100%;
-    transform: scale(1, 1) translate(-50%);
-    transform-origin: 50% 50%;
-}
-
-.portfolio-button:focus:not(:active)::after {
-    animation: ripple 0.6s ease-out;
-}
-
 @keyframes ripple {
     0% {
         transform: scale(0, 0);
