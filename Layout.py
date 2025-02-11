@@ -36,23 +36,25 @@ class LayoutManager:
                 dbc.Row(
                     dbc.Col(
                         html.Img(
-                            src="/assets/newlogo.png",  # Path to the logo in the assets folder
+                            src="/assets/newlogo.png",
+                            className="responsive-logo",  # Aggiungiamo una classe per il CSS
                             style={
-                                'maxHeight': '50px',  # Set max height for the logo
-                                'margin': 'auto',  # Center the logo
-                                'display': 'block'
+                                'maxHeight': '50px',
+                                'margin': 'auto',
+                                'display': 'block',
+                                'transition': 'all 0.3s ease-in-out'  # Aggiunta transizione fluida
                             }
                         ),
                         width=12
                     ),
-                    className='mb-4',  # Aggiunge un margine inferiore di 1.5rem
+                    className='mb-4',
                     style={
-                        'backgroundColor': '#F8F9FA',  # Grigio chiaro
-                        'padding': '20px 20px',  # Padding verticale
-                        'boxShadow': '0 2px 4px rgba(0,0,0,0.1)'  # Ombra leggera per profondità
+                        'backgroundColor': '#F8F9FA',
+                        'padding': '20px 20px',
+                        'boxShadow': '0 2px 4px rgba(0,0,0,0.1)'
                     }
                 ),
-            ], fluid=True),  # Container fluido per estendere l'header su tutta la larghezza
+            ], fluid=True),
 
             # Main Content Container - Con margini orizzontali
             dbc.Container([

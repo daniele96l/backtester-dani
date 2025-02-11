@@ -62,22 +62,17 @@
     .btn-floating,
     .btn-donating,
     .btn-account {
-        left: -40px; /* Nasconde parzialmente i bottoni */
+        opacity: 0.5;
         transition: all 0.3s ease-in-out;
     }
 
-    /* Mostra completamente i bottoni su hover */
     .btn-floating:hover,
     .btn-donating:hover,
     .btn-account:hover,
-    .btn-floating:focus,
-    .btn-donating:focus,
-    .btn-account:focus,
     .btn-floating:active,
     .btn-donating:active,
     .btn-account:active {
-        left: 20px;
-        transform: none; /* Rimuove l'effetto translateY per evitare movimenti strani */
+        opacity: 1;
     }
 }
 
@@ -341,5 +336,11 @@
 @media screen and (max-width: 768px) {
     .counter-component {
         display: none !important;  /* !important per sovrascrivere lo style inline */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .responsive-logo {
+        max-height: 30px !important;  /* Logo più piccolo su mobile */
     }
 }
