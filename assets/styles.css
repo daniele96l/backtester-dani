@@ -8,8 +8,8 @@
     height: 60px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: rgba(255, 255, 255, 0.95) !important; /* Leggermente più opaco */
-    border: 1px solid rgba(0, 0, 0, 0.1) !important; /* Sottile bordo */
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
     z-index: 1000;
     transition: all 0.3s ease-in-out;
     cursor: pointer;
@@ -55,6 +55,30 @@
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Media query per schermi piccoli */
+@media screen and (max-width: 768px) {
+    .btn-floating,
+    .btn-donating,
+    .btn-account {
+        left: -40px; /* Nasconde parzialmente i bottoni */
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Mostra completamente i bottoni su hover */
+    .btn-floating:hover,
+    .btn-donating:hover,
+    .btn-account:hover,
+    .btn-floating:focus,
+    .btn-donating:focus,
+    .btn-account:focus,
+    .btn-floating:active,
+    .btn-donating:active,
+    .btn-account:active {
+        left: 20px;
+        transform: none; /* Rimuove l'effetto translateY per evitare movimenti strani */
+    }
 }
 
 .custom-button {
@@ -306,4 +330,16 @@
     background-color: white;
     border-radius: 0.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 768px) {  /* o qualsiasi breakpoint desideri */
+    .login-text {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .counter-component {
+        display: none !important;  /* !important per sovrascrivere lo style inline */
+    }
 }

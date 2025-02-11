@@ -62,7 +62,8 @@ class PortfolioCounter:
                 "borderRadius": "8px",
                 "boxShadow": "0 2px 4px rgba(0,0,0,0.1)",
                 "width": "fit-content"
-            }
+            },
+            className="counter-component"  # Aggiungiamo una classe per il targeting CSS
         )
     def register_callbacks(self, app):
         @app.callback(
