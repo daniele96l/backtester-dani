@@ -362,7 +362,7 @@ def register_callbacks(app):
                 if warnings_data[0] < warnings_data_benchmark[0]:
                     warnings_data = warnings_data_benchmark
 
-            warnings_data_string = f"L'analisi inizia dal {warnings_data[0]} sull'indice più recente: {warnings_data[1]}"
+            warnings_data_string = f"La data più lontana disponibile per l'analisi è {warnings_data[0]} poiché l'ETF {warnings_data[1]} ha dati disponibili solo a partire da quel momento."
 
             # Get the first and last dates of the portfolio
             first_portfolio_date = pd.to_datetime(portfolio_con_benchmark.index[0])
