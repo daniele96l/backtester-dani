@@ -36,9 +36,9 @@ class LayoutManager:
                 dbc.Row(
                     dbc.Col(
                         html.Img(
-                            src="/assets/Logo2.png",  # Path to the logo in the assets folder
+                            src="/assets/newlogo.png",  # Path to the logo in the assets folder
                             style={
-                                'maxHeight': '100px',  # Set max height for the logo
+                                'maxHeight': '50px',  # Set max height for the logo
                                 'margin': 'auto',  # Center the logo
                                 'display': 'block'
                             }
@@ -168,25 +168,7 @@ class LayoutManager:
                 dbc.Row([
                     dbc.Col([
                         html.Div([
-                            # Prima riga: Solo Benchmark
-                            dbc.Row([
-                                dbc.Col([
-                                    html.Label(
-                                        "Benchmark (Opzionale)",
-                                        className="settings-label"
-                                    ),
-                                    html.Div([
-                                        dcc.Dropdown(
-                                            id='benchmark-dropdown',
-                                            options=asset_list,
-                                            placeholder="Seleziona un benchmark",
-                                            clearable=True,
-                                            className="modern-dropdown"
-                                        ),
-                                        html.I(className="fas fa-chart-line dropdown-icon")
-                                    ], className="dropdown-container")
-                                ], width=12),
-                            ], className="mb-4"),
+
 
                             # Seconda riga: Periodo e Bottone affiancati
                             dbc.Row([
@@ -236,12 +218,38 @@ class LayoutManager:
                                             html.I(className="fas fa-sync-alt me-2"),
                                             "Crea/Aggiorna Portafoglio"
                                         ],
+                                        color = 'danger',
                                         id='create-portfolio-button',
-                                        className='portfolio-button',
-                                        style={"height": "38px"}  # Altezza fissa per allinearsi con i dropdown
+                                        style={
+                                            "height": "40px",  # Stessa altezza degli altri elementi
+                                            "margin-top": "32px",
+                                            "width": "100%",
+                                            "line-height": "40px",  # Per centrare il testo verticalmente
+                                            "padding": "0px"
+                                        }
                                     ),
-                                ], md=4, className="d-flex align-items-end"),
+                                ], md=4),
                             ], className="align-items-end"),
+
+                            # Prima riga: Solo Benchmark
+                            dbc.Row([
+                                dbc.Col([
+                                    html.Label(
+                                        "Benchmark (Opzionale)",
+                                        className="settings-label"
+                                    ),
+                                    html.Div([
+                                        dcc.Dropdown(
+                                            id='benchmark-dropdown',
+                                            options=asset_list,
+                                            placeholder="Seleziona un benchmark",
+                                            clearable=True,
+                                            className="modern-dropdown"
+                                        ),
+                                        html.I(className="fas fa-chart-line dropdown-icon")
+                                    ], className="dropdown-container")
+                                ], width=12),
+                            ], className="mb-4"),
 
                         ], className="settings-container")
                     ], width=12)
