@@ -11,4 +11,4 @@ venv/
 data/.DS_Store data/ETFs/.DS_Store
 /data/firebase_keys.json
 /data/counter.csv
-
+/data/datascraper.py
