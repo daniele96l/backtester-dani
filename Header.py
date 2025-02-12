@@ -25,7 +25,7 @@ class Header:
             dbc.Row(
                 dbc.Col(
                     html.Img(
-                        src="/assets/newlogo.png",
+                        src="/assets/portfoliopilotapp.png",
                         className="responsive-logo",
                         style={
                             'maxHeight': '50px',
