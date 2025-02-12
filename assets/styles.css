@@ -54,8 +54,20 @@
 .btn-account:active {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: rgba(255, 255, 255, 0.9) !important;
+    background-color: rgba(255, 255, 255, 1) !important; /* Fully opaque */
 }
+
+.btn-menu {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.btn-menu:not(.active) {
+    opacity: 1 !important;  /* Ensures the button stays visible */
+    visibility: visible !important;
+}
+
+
 
 /* Media query per schermi piccoli */
 @media screen and (max-width: 768px) {
