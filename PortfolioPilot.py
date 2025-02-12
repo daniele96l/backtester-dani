@@ -634,6 +634,7 @@ def register_callbacks(app):
         ])
 
 
+
 def main():
     # Carica la lista degli asset
     asset_list = load_asset_list(INDEX_LIST_FILE_PATH)
