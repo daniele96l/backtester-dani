@@ -62,17 +62,43 @@
     .btn-floating,
     .btn-donating,
     .btn-account {
-        opacity: 0.5;
-        transition: all 0.3s ease-in-out;
+        display: none;
     }
 
-    .btn-floating:hover,
-    .btn-donating:hover,
-    .btn-account:hover,
-    .btn-floating:active,
-    .btn-donating:active,
-    .btn-account:active {
-        opacity: 1;
+    .btn-menu {
+        position: fixed;
+        left: 20px;
+        bottom: 20px;
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        border: 1px solid rgba(0, 0, 0, 0.1) !important;
+        z-index: 1000;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: bold;
+        text-align: center;
+        padding: 0;
+        color: #000;
+    }
+
+    .btn-menu.active ~ .btn-floating,
+    .btn-menu.active ~ .btn-donating,
+    .btn-menu.active ~ .btn-account {
+        display: flex;
+    }
+}
+
+/* Hide the menu button on large screens */
+@media screen and (min-width: 769px) {
+    .btn-menu {
+        display: none;
     }
 }
 
