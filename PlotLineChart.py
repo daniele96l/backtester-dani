@@ -25,6 +25,7 @@ def plot_line_chart(column_except_date, portfolio_df, portfolio_color, benchmark
 
         ))
 
+
     # Update layout for better visuals
     portfolio_fig.update_layout(
         title={
