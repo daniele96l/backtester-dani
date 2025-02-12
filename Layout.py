@@ -323,7 +323,7 @@ class LayoutManager:
                         interval=3 * 1000,  # in milliseconds
                         n_intervals=0,
                         disabled=True
-                    ),
+                    )
                 ]),
 
                 dbc.Button(
