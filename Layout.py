@@ -297,25 +297,34 @@ class LayoutManager:
                     )
                 ]),
                 # Floating Button
-                dbc.Button(
-                    children="Tutorial",  # Text on the button
-                    id="tutorial-button",
-                    className="btn-floating",  # Use the CSS class defined in styles.css
-                ),
-
-                # Floating Button
-                dbc.Button(
-                    children="Donate",  # Text on the button
-                    id="donate-button",
-                    className="btn-donating",  # Use the CSS class defined in styles.css
-                ),
-
-                # Floating Button
-                dbc.Button(
-                    children="Account",  # Text on the button
-                    id="account-button",
-                    className="btn-account",  # Use the CSS class defined in styles.css
-                ),
+                html.Div([
+                    dbc.Button(
+                        children="Menu",
+                        id="menu-button",
+                        className="btn-menu",
+                    ),
+                    dbc.Button(
+                        children="Tutorial",
+                        id="tutorial-button",
+                        className="btn-floating",
+                    ),
+                    dbc.Button(
+                        children="Donate",
+                        id="donate-button",
+                        className="btn-donating",
+                    ),
+                    dbc.Button(
+                        children="Account",
+                        id="account-button",
+                        className="btn-account",
+                    ),
+                    dcc.Interval(
+                        id='interval-component',
+                        interval=3 * 1000,  # in milliseconds
+                        n_intervals=0,
+                        disabled=True
+                    ),
+                ]),
 
                 dbc.Button(
                     "Esporta il Report in PDF.",

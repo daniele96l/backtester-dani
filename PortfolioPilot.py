@@ -413,6 +413,22 @@ def register_callbacks(app):
             rolling_returns = calculate_rolling_returns(portfolio_df, period)
             return plc.plot_line_chart_rolling(column_except_date, rolling_returns, PORTFOLIO_COLOR, BENCHMARK_COLOR,period)
 
+    @app.callback(
+        [Output("menu-button", "className"),
+         Output("interval-component", "disabled")],
+        [Input("menu-button", "n_clicks"),
+         Input("interval-component", "n_intervals")],
+        [State("menu-button", "className")]
+    )
+    def toggle_buttons(n_clicks, n_intervals, current_class):
+        if n_clicks:
+            if "active" in current_class:
+                return "btn-menu", True
+            else:
+                return "btn-menu active", False
+        elif n_intervals > 0:
+            return "btn-menu", True
+        return "btn-menu", True
 
     @app.callback(
         Output('additional-feedback', 'children'),  # Output to display the charts
