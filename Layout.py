@@ -5,6 +5,9 @@ import dash.dash_table
 from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH, COUNTER_FILE_PATH
 from LoginPopout import PopupManager
 from counter import PortfolioCounter
+from Header import Header
+from Footer import Footer
+
 
 class LayoutManager:
     @staticmethod
@@ -14,47 +17,13 @@ class LayoutManager:
         counter = PortfolioCounter(COUNTER_FILE_PATH)
         counter.register_callbacks(app)
         # Emoji login indicator
-        login_indicator = html.Div(
-            "👤",  # Emoji utente
-            id="login-indicator",
-            style={
-                "position": "fixed",
-                "top": "20px",
-                "right": "20px",  # Cambiato da "right" a "left"
-                "fontSize": "24px",
-                "zIndex": 1500,
-                "cursor": "default",
-                "transition": "opacity 0.3s ease"
-            }
-        )
+
         """Definisce il layout dell'app Dash utilizzando componenti Bootstrap."""
         return html.Div([
             dcc.Store(id='login-state', storage_type='local'),  # Login state available to all components
             #dcc.Location(id="url", refresh=True),
-            login_indicator,  # Aggiungi l'indicatore emoji utente
-            dbc.Container([
-                dbc.Row(
-                    dbc.Col(
-                        html.Img(
-                            src="/assets/newlogo.png",
-                            className="responsive-logo",  # Aggiungiamo una classe per il CSS
-                            style={
-                                'maxHeight': '50px',
-                                'margin': 'auto',
-                                'display': 'block',
-                                'transition': 'all 0.3s ease-in-out'  # Aggiunta transizione fluida
-                            }
-                        ),
-                        width=12
-                    ),
-                    className='mb-4',
-                    style={
-                        'backgroundColor': '#F8F9FA',
-                        'padding': '20px 20px',
-                        'boxShadow': '0 2px 4px rgba(0,0,0,0.1)'
-                    }
-                ),
-            ], fluid=True),
+
+            Header.create(),
 
             # Main Content Container - Con margini orizzontali
             dbc.Container([
@@ -187,7 +156,7 @@ class LayoutManager:
                                                 dcc.Dropdown(
                                                     id='start-year-dropdown',
                                                     options=[{'label': str(year), 'value': year}
-                                                             for year in range(1990, 2025)],
+                                                             for year in range(1970, 2025)],
                                                     placeholder="Anno Inizio",
                                                     clearable=True,
                                                     className="modern-dropdown"
@@ -218,7 +187,7 @@ class LayoutManager:
                                     dbc.Button(
                                         [
                                             html.I(className="fas fa-sync-alt me-2"),
-                                            "Crea/Aggiorna Portafoglio"
+                                            "Avvia o aggiorna l'analisi"
                                         ],
                                         color = 'danger',
                                         id='create-portfolio-button',
@@ -367,79 +336,8 @@ class LayoutManager:
 
             modal,
 
-            dbc.Container([
-                dbc.Row([
-                    html.Footer(
-                        className="mt-5",
-                        style={
-                            'width': '100%',
-                            'backgroundColor': '#f8f9fa',
-                            'borderTop': '1px solid #dee2e6',
-                            'padding': '2rem 0',
-                        },
-                        children=[
-                            dbc.Container(
-                                fluid=True,
-                                style={'maxWidth': '100%', 'paddingLeft': '0', 'paddingRight': '0'},
-                                children=[
-                                    # Container per titolo e contatore
-                                    html.Div(
-                                        style={'position': 'relative'},  # Per il posizionamento assoluto del contatore
-                                        children=[
-                                            # Titolo centrato
-                                            html.Div(
-                                                html.H4("By Dani & Dati", className="mb-3"),
-                                                className="text-center"
-                                            ),
-                                            # Contatore posizionato assolutamente
-                                            html.Div(
-                                                counter.get_counter_component(),
-                                                style={
-                                                    'position': 'absolute',
-                                                    'right': '20px',
-                                                    'top': '0'
-                                                }
-                                            )
-                                        ]
-                                    ),
-
-                                    # Resto del contenuto
-                                    html.Div(
-                                        className="text-center",
-                                        style={'marginLeft': 'auto', 'marginRight': 'auto', 'maxWidth': '1200px'},
-                                        children=[
-                                            html.Div([
-                                                html.H5("Contributors", className="mt-4"),
-                                                html.Ul([
-                                                    html.Li("Koki - Server Backend"),
-                                                    html.Li("Marco Zeuli - Developer"),
-                                                    html.Li("Matteo Veroni - Developer"),
-                                                ], className="list-unstyled text-muted"),
-                                            ], className="col-md-4 mx-auto"),
-
-                                            html.Div(
-                                                [
-                                                    html.A("Contribuisci allo sviluppo", href="https://github.com/daniele96l/backtester-dani",
-                                                           style={ 'textDecoration': 'none'})
-                                                ],
-                                                style={'color': 'gray', 'marginTop': '1rem'}
-                                            ),
-                                            html.A(
-                                                "Informativa sulla privacy",
-                                                href="https://danieleligato-eng.notion.site/Informativa-sulla-privacy-197922846a1680d5bc0fc50711843137",
-                                                target="_blank",
-                                                className="d-block text-primary mb-3",
-                                                style={"text-decoration": "none"},
-                                            ),
-
-                                        ]
-                                    )
-                                ]
-                            )
-                        ],
-                    )
-                ], className='mt-5'),
-            ], fluid=True)
+            # Use Footer component
+            Footer.create(counter)
 
 
         ])

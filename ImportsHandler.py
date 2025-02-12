@@ -10,16 +10,14 @@ import logging
 import warnings
 import statsmodels.api as sm
 from Layout import LayoutManager
-from Factor_regression import calculate_factor_exposure
+from FactorRegression import calculate_factor_exposure
 from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
-
 
 def match_asset_name(nomi_assets):
     mapping = pd.read_csv(INDEX_LIST_FILE_PATH)
     nomi_indici = [mapping[mapping['Fund'] == asset]['Index'].values[0] for asset in nomi_assets if
                    asset in mapping['Fund'].values]
     return nomi_indici
-
 
 def importa_dati(nomi_indici):
     dati = None  # Initialize an empty dataframe for merging
