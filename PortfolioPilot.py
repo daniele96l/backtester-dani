@@ -12,6 +12,7 @@ import statsmodels.api as sm
 from Layout import LayoutManager
 from FactorRegression import calculate_factor_exposure
 from ImportsHandler import match_asset_name, importa_dati,load_asset_list
+from portfolio_allocation import PortfolioAllocation
 
 from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
 
@@ -442,11 +443,13 @@ def register_callbacks(app):
         dati_df = pd.DataFrame(dati) #Sto ricevendo un DICT e non un DataFrame, quindi le colonne duplicate erano state rimosse
         # Questo vuol dire che se metto due ETF uguali nella lista, uno dei due verrà rimosso
 
+        indici_usati = dati_df.columns
+        country_allocation = PortfolioAllocation().calculate_country_allocation(indici_usati, pesi_correnti)
+        sector_allocation = PortfolioAllocation().calculate_sector_allocation(indici_usati, pesi_correnti)
+
         # Ensure 'Date' column is datetime for calculations
         portfolio_df['Date'] = pd.to_datetime(portfolio_df['Date'])
-
         rolling_periods = [36, 60, 120]
-
         column_except_date = [col for col in portfolio_df.columns if col != 'Date']
 
         rolling1 = add_rolling_traces(portfolio_df, rolling_periods[0], PORTFOLIO_COLOR,column_except_date)
@@ -615,23 +618,102 @@ def register_callbacks(app):
             margin=dict(l=40, r=40, t=40, b=40)
         )
 
-        portfolio_fig = plc.plot_line_chart(column_except_date, portfolio_df, PORTFOLIO_COLOR, BENCHMARK_COLOR)
+        titolo_warning = html.Div(
+            children="Funzione sperimentale, potrebbero esserci errori o dati mancanti",
+            style={
+                'textAlign': 'center',
+                'fontSize': '20px',
+                'fontWeight': 'bold',
+                'color': 'darkred',
+                'marginBottom': '20px'
+            }
+        )
 
-        # Return both graphs side by side, and the line chart below
-        return html.Div([
+        # Define pastel colors
+        pastel_colors = [
+            '#AEC6CF', '#FFD1DC', '#FFB3DE', '#B5EAEA', '#C2F0C2',
+            '#FFBCB3', '#FFCC99', '#D9EAD3', '#D5A6BD', '#FF6666'
+        ]
+
+        # Create a pie chart for the country allocation
+        country_fig = go.Figure()
+        country_fig.add_trace(go.Pie(
+            labels=country_allocation['Paese'],
+            values=country_allocation['Peso'],
+            hole=0.3,
+            textinfo='percent+label',  # Show both the percentage and label
+            insidetextorientation='horizontal',  # Make text horizontal inside the pie
+            textfont=dict(size=14, color='black'),  # Style text for better visibility
+            marker=dict(
+                colors=pastel_colors,  # Use pastel color palette
+                line=dict(color='white', width=2)  # Add white border to make slices pop
+            ),
+            hoverinfo='label+percent',  # Display label and percentage on hover
+            pull=[0.1, 0, 0, 0, 0, 0, 0, 0],  # Slightly "explode" the first slice for emphasis (optional)
+        ))
+
+        country_fig.update_layout(
+            title="Allocazione geografica (Azioni & Obbligazioni)",
+            title_x=0.5,  # Center the title
+            plot_bgcolor='rgba(0,0,0,0)',  # Remove the background color for a cleaner look
+            margin=dict(t=40, b=40, l=40, r=40),  # Adjust the margins for better spacing
+        )
+
+        # Create a pie chart for the sector allocation
+        sector_fig = go.Figure()
+        sector_fig.add_trace(go.Pie(
+            labels=sector_allocation['Settore'],
+            values=sector_allocation['Peso'],
+            hole=0.3,
+            textinfo='percent+label',  # Show both the percentage and label
+            insidetextorientation='horizontal',  # Make text horizontal inside the pie
+            textfont=dict(size=14, color='black'),  # Style text for better visibility
+            marker=dict(
+                colors=pastel_colors,  # Use pastel color palette
+                line=dict(color='white', width=2)  # Add white border to make slices pop
+            ),
+            hoverinfo='label+percent',  # Display label and percentage on hover
+            pull=[0, 0.1, 0, 0, 0, 0, 0, 0],  # Slightly "explode" the second slice for emphasis (optional)
+        ))
+
+        sector_fig.update_layout(
+            title="Allocazione azionaria per settore",
+            title_x=0.5,  # Center the title
+            plot_bgcolor='rgba(0,0,0,0)',  # Remove the background color for a cleaner look
+            margin=dict(t=40, b=40, l=40, r=40),  # Adjust the margins for better spacing
+        )
+
+        portfolio_fig = plc.plot_line_chart(column_except_date, portfolio_df, PORTFOLIO_COLOR, BENCHMARK_COLOR)
+        multiple_assets_plot = html.Div([
+            html.Div(dcc.Graph(figure=correlation_fig), style={'width': '100%'}),  # Correlation between assets
+            html.Div(dcc.Graph(figure=scatter_fig), style={'width': '100%'}),  # Efficient frontier
+            html.Div(dcc.Graph(figure=pie_fig), style={'width': '100%'}),  # Efficient frontier
+        ])
+
+        single_assets_plot = html.Div([
             html.Div(dcc.Graph(figure=portfolio_fig), style={'width': '100%'}),
             html.Div(dcc.Graph(figure=cagr_fig), style={'width': '33%', 'display': 'inline-block'}),
             html.Div(dcc.Graph(figure=volatility_fig), style={'width': '33%', 'display': 'inline-block'}),
             html.Div(dcc.Graph(figure=sharpe_fig), style={'width': '33%', 'display': 'inline-block'}),
-            html.Div(dcc.Graph(figure=rolling1), style={'width': '100%'}), #Rolling 3y
-            html.Div(dcc.Graph(figure=rolling2), style={'width': '100%'}), #Rolling 5y
-            html.Div(dcc.Graph(figure=rolling3), style={'width': '100%'}), #Rolling 10y
+            html.Div(dcc.Graph(figure=rolling1), style={'width': '100%'}),  # Rolling 3y
+            html.Div(dcc.Graph(figure=rolling2), style={'width': '100%'}),  # Rolling 5y
+            html.Div(dcc.Graph(figure=rolling3), style={'width': '100%'}),  # Rolling 10y
             html.Div(dcc.Graph(figure=drawdown), style={'width': '100%'}),  # Drawdown
-            html.Div(dcc.Graph(figure=correlation_fig), style={'width': '100%'}),  # Correlation between assets
-            html.Div(dcc.Graph(figure=scatter_fig), style={'width': '100%'}),  # Efficent fronteer
-            html.Div(dcc.Graph(figure=pie_fig), style={'width': '100%'}),  # Efficent fronteer
-            html.Div(dcc.Graph(figure=factor_exposure_fig), style={'width': '100%'}),  # Factor Exposure
+            html.Div(titolo_warning, style={'width': '100%'}),  # Fixed width format
+            html.Div([
+                html.Div(dcc.Graph(figure=country_fig), style={'width': '50%', 'display': 'inline-block'}),  # Country Allocation
+                html.Div(dcc.Graph(figure=sector_fig), style={'width': '50%', 'display': 'inline-block'})  # Sector Allocation
+            ], style={'width': '100%'}),
+            html.Div(dcc.Graph(figure=factor_exposure_fig), style={'width': '100%'})  # Factor Exposure
         ])
+
+        if len(pesi_correnti["weights"]) > 1:  # Return all the plots if there is more than one ETF
+            total_plot = [single_assets_plot, multiple_assets_plot]
+        else:
+            total_plot = [single_assets_plot]  # Wrap in a list for consistency
+
+        # Return both graphs side by side, and the line chart below
+        return html.Div(total_plot)
 
 
 def main():

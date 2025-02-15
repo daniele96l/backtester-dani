@@ -11,5 +11,5 @@ venv/
 data/.DS_Store data/ETFs/.DS_Store
 /data/firebase_keys.json
 /data/counter.csv
-/data/omni_scraper_countries.py
-/data/omni_scraper_sectors.py
+/DataScrapers/omni_scraper_countries.py
+/DataScrapers/omni_scraper_sectors.py
