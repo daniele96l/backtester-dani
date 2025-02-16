@@ -4,16 +4,17 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import dash.dash_table
 import plotly.graph_objects as go
-import PlotLineChart as plc
-import EfficentFonteer as ef
+from Frontend import plot_line_chart as plc
+import efficent_fronteer as ef
 import logging
 import warnings
-import statsmodels.api as sm
-from Layout import LayoutManager
-from FactorRegression import calculate_factor_exposure
-from ImportsHandler import match_asset_name, importa_dati,load_asset_list
+from Frontend.layout import LayoutManager
+from factor_regression import calculate_factor_exposure
+from imports_handler import match_asset_name, importa_dati,load_asset_list
+from portfolio_allocation import PortfolioAllocation
+from math_logic import MathLogic
 
-from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
+from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, INDEX_LIST_FILE_PATH
 
 warnings.filterwarnings("ignore", category=UserWarning)
 log = logging.getLogger('werkzeug')
@@ -97,8 +98,6 @@ def register_callbacks(app):
 
         tutorial_link = "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577"
         donate_link = "https://www.paypal.com/donate/?hosted_button_id=M378MEXMSSQT6"
-
-        print(f"{triggered_id} clicked")  # Logging for debugging
 
         if triggered_id == "tutorial-button":
             return [tutorial_link]
@@ -398,20 +397,6 @@ def register_callbacks(app):
         return "", "", "", dash.no_update, dash.no_update, dash.no_update
 
 
-    def calculate_rolling_returns(portfolio_df, period):
-        rolling_returns = portfolio_df.copy()
-        rolling_returns = rolling_returns.set_index('Date')
-        rolling_returns = rolling_returns.pct_change().rolling(window=period).sum()
-        rolling_returns = rolling_returns.dropna()
-        rolling_returns = rolling_returns.reset_index()
-        return rolling_returns
-    def add_rolling_traces(portfolio_df, period, PORTFOLIO_COLOR,column_except_date):
-        if(len(portfolio_df) < period):
-            rolling = go.Figure()
-            return rolling.add_trace(go.Scatter(x=[0], y=[0], mode='text', text=f'Non ci sono abbastanza dati per calcolare i rendimenti rolling per {period} mesi'))
-        else:
-            rolling_returns = calculate_rolling_returns(portfolio_df, period)
-            return plc.plot_line_chart_rolling(column_except_date, rolling_returns, PORTFOLIO_COLOR, BENCHMARK_COLOR,period)
 
     @app.callback(
         [Output("menu-button", "className"),
@@ -442,66 +427,27 @@ def register_callbacks(app):
         dati_df = pd.DataFrame(dati) #Sto ricevendo un DICT e non un DataFrame, quindi le colonne duplicate erano state rimosse
         # Questo vuol dire che se metto due ETF uguali nella lista, uno dei due verrà rimosso
 
+        indici_usati = dati_df.columns
+        country_allocation = PortfolioAllocation().calculate_country_allocation(indici_usati, pesi_correnti)
+        sector_allocation = PortfolioAllocation().calculate_sector_allocation(indici_usati, pesi_correnti)
+
         # Ensure 'Date' column is datetime for calculations
         portfolio_df['Date'] = pd.to_datetime(portfolio_df['Date'])
-
         rolling_periods = [36, 60, 120]
-
         column_except_date = [col for col in portfolio_df.columns if col != 'Date']
 
-        rolling1 = add_rolling_traces(portfolio_df, rolling_periods[0], PORTFOLIO_COLOR,column_except_date)
-        rolling2 = add_rolling_traces(portfolio_df, rolling_periods[1], PORTFOLIO_COLOR,column_except_date)
-        rolling3 = add_rolling_traces(portfolio_df, rolling_periods[2], PORTFOLIO_COLOR,column_except_date)
+        rolling1, rolling2, rolling3 = MathLogic.calculate_3_rolling_returns(portfolio_df, rolling_periods,column_except_date)
 
         drawdown = plc.plot_drawdown(portfolio_df, PORTFOLIO_COLOR,BENCHMARK_COLOR,column_except_date)
 
         # Calculate factor exposure for the portfolio
         factor_exposure_portfolio, factor_names = calculate_factor_exposure(portfolio_df[["Portfolio","Date"]])
-        #If the benchmark column exists calculate the factor exposure for the benchmark
-        if 'Benchmark' in portfolio_df.columns:
+        if 'Benchmark' in portfolio_df.columns:    #If the benchmark column exists calculate the factor exposure for the benchmark
             factor_exposure_benchmark, factor_names = calculate_factor_exposure(portfolio_df[["Benchmark","Date"]])
 
-        scatter_fig,pie_fig,portfolio_returns = ef.calcola_frontiera_efficente(dati_df,pesi_correnti) # TODO non plottare gli indici ma i nomi degli etf
+        scatter_fig,pie_fig,portfolio_returns = ef.calcola_frontiera_efficente(dati_df,pesi_correnti)
 
-
-        # Calculate CAGR and Volatility for each column except 'Date'
-        cagr = {}
-        volatility = {}
-        sharpe_ratio = {}
-
-        for column in column_except_date:
-            start_value = portfolio_df[column].iloc[0]
-            end_value = portfolio_df[column].iloc[-1]
-            num_years = (portfolio_df['Date'].iloc[-1] - portfolio_df['Date'].iloc[0]).days / 365.25
-            cagr[column] = ((end_value / start_value) ** (1 / num_years) - 1) * 100  # CAGR as percentage
-            volatility[column] = portfolio_df[column].pct_change().std() * (12 ** 0.5) * 100
-            sharpe_ratio[column] = cagr[column] / volatility[column] if volatility[column] != 0 else 0
-
-        # Round the values
-        #ig cagr is longer than 2 columns, it means that the benchmark is present, so we need to adjust the values
-        #BAD BAD BAD CODE
-        if len(cagr) >= 2:
-            diff = cagr['Portfolio'] - portfolio_returns* 100
-            cagr['Portfolio'] = portfolio_returns * 100
-            cagr["Benchmark"] = cagr['Benchmark'] - diff
-        else:
-            cagr['Portfolio'] = portfolio_returns * 100
-
-        cagr = {k: round(v, 2) for k, v in cagr.items()}
-        volatility = {k: round(v, 2) for k, v in volatility.items()}
-        sharpe_ratio = {k: round(v, 2) for k, v in sharpe_ratio.items()}
-
-        # Create a DataFrame for the metrics
-        metrics_df = pd.DataFrame([cagr, volatility,sharpe_ratio], index=['CAGR', 'Volatility','Sharpe Ratio']).reset_index()
-        metrics_df = metrics_df.rename(columns={'index': 'Metric'})
-
-        # Melt the DataFrame for plotting
-        metrics_melted = pd.melt(metrics_df, id_vars='Metric', var_name='Portfolio', value_name='Value')
-
-        # Split the metrics into separate DataFrames for each metric
-        cagr_data = metrics_melted[metrics_melted["Metric"] == "CAGR"]
-        volatility_data = metrics_melted[metrics_melted["Metric"] == "Volatility"]
-        sharpe_data = metrics_melted[metrics_melted["Metric"] == "Sharpe Ratio"]
+        cagr_data, volatility_data, sharpe_data = MathLogic.calculate_performance_metrics(portfolio_df, portfolio_returns,column_except_date)
 
         correlation_matrix = dati_df.corr()
 
@@ -615,23 +561,102 @@ def register_callbacks(app):
             margin=dict(l=40, r=40, t=40, b=40)
         )
 
-        portfolio_fig = plc.plot_line_chart(column_except_date, portfolio_df, PORTFOLIO_COLOR, BENCHMARK_COLOR)
+        titolo_warning = html.Div(
+            children="Funzione sperimentale, potrebbero esserci errori o dati mancanti",
+            style={
+                'textAlign': 'center',
+                'fontSize': '20px',
+                'fontWeight': 'bold',
+                'color': 'darkred',
+                'marginBottom': '20px'
+            }
+        )
 
-        # Return both graphs side by side, and the line chart below
-        return html.Div([
+        # Define pastel colors
+        pastel_colors = [
+            '#AEC6CF', '#FFD1DC', '#FFB3DE', '#B5EAEA', '#C2F0C2',
+            '#FFBCB3', '#FFCC99', '#D9EAD3', '#D5A6BD', '#FF6666'
+        ]
+
+        # Create a pie chart for the country allocation
+        country_fig = go.Figure()
+        country_fig.add_trace(go.Pie(
+            labels=country_allocation['Paese'],
+            values=country_allocation['Peso'],
+            hole=0.3,
+            textinfo='percent+label',  # Show both the percentage and label
+            insidetextorientation='horizontal',  # Make text horizontal inside the pie
+            textfont=dict(size=14, color='black'),  # Style text for better visibility
+            marker=dict(
+                colors=pastel_colors,  # Use pastel color palette
+                line=dict(color='white', width=2)  # Add white border to make slices pop
+            ),
+            hoverinfo='label+percent',  # Display label and percentage on hover
+            pull=[0.1, 0, 0, 0, 0, 0, 0, 0],  # Slightly "explode" the first slice for emphasis (optional)
+        ))
+
+        country_fig.update_layout(
+            title="Allocazione geografica (Azioni & Obbligazioni)",
+            title_x=0.5,  # Center the title
+            plot_bgcolor='rgba(0,0,0,0)',  # Remove the background color for a cleaner look
+            margin=dict(t=40, b=40, l=40, r=40),  # Adjust the margins for better spacing
+        )
+
+        # Create a pie chart for the sector allocation
+        sector_fig = go.Figure()
+        sector_fig.add_trace(go.Pie(
+            labels=sector_allocation['Settore'],
+            values=sector_allocation['Peso'],
+            hole=0.3,
+            textinfo='percent+label',  # Show both the percentage and label
+            insidetextorientation='horizontal',  # Make text horizontal inside the pie
+            textfont=dict(size=14, color='black'),  # Style text for better visibility
+            marker=dict(
+                colors=pastel_colors,  # Use pastel color palette
+                line=dict(color='white', width=2)  # Add white border to make slices pop
+            ),
+            hoverinfo='label+percent',  # Display label and percentage on hover
+            pull=[0, 0.1, 0, 0, 0, 0, 0, 0],  # Slightly "explode" the second slice for emphasis (optional)
+        ))
+
+        sector_fig.update_layout(
+            title="Allocazione azionaria per settore",
+            title_x=0.5,  # Center the title
+            plot_bgcolor='rgba(0,0,0,0)',  # Remove the background color for a cleaner look
+            margin=dict(t=40, b=40, l=40, r=40),  # Adjust the margins for better spacing
+        )
+
+        portfolio_fig = plc.plot_line_chart(column_except_date, portfolio_df, PORTFOLIO_COLOR, BENCHMARK_COLOR)
+        multiple_assets_plot = html.Div([
+            html.Div(dcc.Graph(figure=correlation_fig), style={'width': '100%'}),  # Correlation between assets
+            html.Div(dcc.Graph(figure=scatter_fig), style={'width': '100%'}),  # Efficient frontier
+            html.Div(dcc.Graph(figure=pie_fig), style={'width': '100%'}),  # Efficient frontier
+        ])
+
+        single_assets_plot = html.Div([
             html.Div(dcc.Graph(figure=portfolio_fig), style={'width': '100%'}),
             html.Div(dcc.Graph(figure=cagr_fig), style={'width': '33%', 'display': 'inline-block'}),
             html.Div(dcc.Graph(figure=volatility_fig), style={'width': '33%', 'display': 'inline-block'}),
             html.Div(dcc.Graph(figure=sharpe_fig), style={'width': '33%', 'display': 'inline-block'}),
-            html.Div(dcc.Graph(figure=rolling1), style={'width': '100%'}), #Rolling 3y
-            html.Div(dcc.Graph(figure=rolling2), style={'width': '100%'}), #Rolling 5y
-            html.Div(dcc.Graph(figure=rolling3), style={'width': '100%'}), #Rolling 10y
+            html.Div(dcc.Graph(figure=rolling1), style={'width': '100%'}),  # Rolling 3y
+            html.Div(dcc.Graph(figure=rolling2), style={'width': '100%'}),  # Rolling 5y
+            html.Div(dcc.Graph(figure=rolling3), style={'width': '100%'}),  # Rolling 10y
             html.Div(dcc.Graph(figure=drawdown), style={'width': '100%'}),  # Drawdown
-            html.Div(dcc.Graph(figure=correlation_fig), style={'width': '100%'}),  # Correlation between assets
-            html.Div(dcc.Graph(figure=scatter_fig), style={'width': '100%'}),  # Efficent fronteer
-            html.Div(dcc.Graph(figure=pie_fig), style={'width': '100%'}),  # Efficent fronteer
-            html.Div(dcc.Graph(figure=factor_exposure_fig), style={'width': '100%'}),  # Factor Exposure
+            html.Div(titolo_warning, style={'width': '100%'}),  # Fixed width format
+            html.Div([
+                html.Div(dcc.Graph(figure=country_fig), style={'width': '50%', 'display': 'inline-block'}),  # Country Allocation
+                html.Div(dcc.Graph(figure=sector_fig), style={'width': '50%', 'display': 'inline-block'})  # Sector Allocation
+            ], style={'width': '100%'}),
+            html.Div(dcc.Graph(figure=factor_exposure_fig), style={'width': '100%'})  # Factor Exposure
         ])
+
+        if len(pesi_correnti["weights"]) > 1:  # Return all the plots if there is more than one ETF
+            total_plot = [single_assets_plot, multiple_assets_plot]
+        else:
+            total_plot = [single_assets_plot]  # Wrap in a list for consistency
+
+        # Return both graphs side by side, and the line chart below
+        return html.Div(total_plot)
 
 
 def main():
