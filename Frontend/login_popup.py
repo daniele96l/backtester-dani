@@ -1,7 +1,7 @@
 from dash import dcc, html, callback_context
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
-from FirebaseAuth import FirebaseAuth
+from firebase_auth import FirebaseAuth
 
 PUBLIC_KEY = "AIzaSyBX_AH1_hAdmnzDHKcGW83tcHHJKat1Lps"
 

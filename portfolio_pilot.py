@@ -4,17 +4,17 @@ import dash_bootstrap_components as dbc
 import pandas as pd
 import dash.dash_table
 import plotly.graph_objects as go
-import PlotLineChart as plc
-import EfficentFonteer as ef
+from Frontend import plot_line_chart as plc
+import efficent_fronteer as ef
 import logging
 import warnings
-import statsmodels.api as sm
-from Layout import LayoutManager
-from FactorRegression import calculate_factor_exposure
-from ImportsHandler import match_asset_name, importa_dati,load_asset_list
+from Frontend.layout import LayoutManager
+from factor_regression import calculate_factor_exposure
+from imports_handler import match_asset_name, importa_dati,load_asset_list
 from portfolio_allocation import PortfolioAllocation
+from math_logic import MathLogic
 
-from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
+from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, INDEX_LIST_FILE_PATH
 
 warnings.filterwarnings("ignore", category=UserWarning)
 log = logging.getLogger('werkzeug')
@@ -98,8 +98,6 @@ def register_callbacks(app):
 
         tutorial_link = "https://danieleligato-eng.notion.site/Versione-in-italiano-153922846a1680d7befcd164f03fd577"
         donate_link = "https://www.paypal.com/donate/?hosted_button_id=M378MEXMSSQT6"
-
-        print(f"{triggered_id} clicked")  # Logging for debugging
 
         if triggered_id == "tutorial-button":
             return [tutorial_link]
@@ -399,20 +397,6 @@ def register_callbacks(app):
         return "", "", "", dash.no_update, dash.no_update, dash.no_update
 
 
-    def calculate_rolling_returns(portfolio_df, period):
-        rolling_returns = portfolio_df.copy()
-        rolling_returns = rolling_returns.set_index('Date')
-        rolling_returns = rolling_returns.pct_change().rolling(window=period).sum()
-        rolling_returns = rolling_returns.dropna()
-        rolling_returns = rolling_returns.reset_index()
-        return rolling_returns
-    def add_rolling_traces(portfolio_df, period, PORTFOLIO_COLOR,column_except_date):
-        if(len(portfolio_df) < period):
-            rolling = go.Figure()
-            return rolling.add_trace(go.Scatter(x=[0], y=[0], mode='text', text=f'Non ci sono abbastanza dati per calcolare i rendimenti rolling per {period} mesi'))
-        else:
-            rolling_returns = calculate_rolling_returns(portfolio_df, period)
-            return plc.plot_line_chart_rolling(column_except_date, rolling_returns, PORTFOLIO_COLOR, BENCHMARK_COLOR,period)
 
     @app.callback(
         [Output("menu-button", "className"),
@@ -452,59 +436,18 @@ def register_callbacks(app):
         rolling_periods = [36, 60, 120]
         column_except_date = [col for col in portfolio_df.columns if col != 'Date']
 
-        rolling1 = add_rolling_traces(portfolio_df, rolling_periods[0], PORTFOLIO_COLOR,column_except_date)
-        rolling2 = add_rolling_traces(portfolio_df, rolling_periods[1], PORTFOLIO_COLOR,column_except_date)
-        rolling3 = add_rolling_traces(portfolio_df, rolling_periods[2], PORTFOLIO_COLOR,column_except_date)
+        rolling1, rolling2, rolling3 = MathLogic.calculate_3_rolling_returns(portfolio_df, rolling_periods,column_except_date)
 
         drawdown = plc.plot_drawdown(portfolio_df, PORTFOLIO_COLOR,BENCHMARK_COLOR,column_except_date)
 
         # Calculate factor exposure for the portfolio
         factor_exposure_portfolio, factor_names = calculate_factor_exposure(portfolio_df[["Portfolio","Date"]])
-        #If the benchmark column exists calculate the factor exposure for the benchmark
-        if 'Benchmark' in portfolio_df.columns:
+        if 'Benchmark' in portfolio_df.columns:    #If the benchmark column exists calculate the factor exposure for the benchmark
             factor_exposure_benchmark, factor_names = calculate_factor_exposure(portfolio_df[["Benchmark","Date"]])
 
-        scatter_fig,pie_fig,portfolio_returns = ef.calcola_frontiera_efficente(dati_df,pesi_correnti) # TODO non plottare gli indici ma i nomi degli etf
+        scatter_fig,pie_fig,portfolio_returns = ef.calcola_frontiera_efficente(dati_df,pesi_correnti)
 
-
-        # Calculate CAGR and Volatility for each column except 'Date'
-        cagr = {}
-        volatility = {}
-        sharpe_ratio = {}
-
-        for column in column_except_date:
-            start_value = portfolio_df[column].iloc[0]
-            end_value = portfolio_df[column].iloc[-1]
-            num_years = (portfolio_df['Date'].iloc[-1] - portfolio_df['Date'].iloc[0]).days / 365.25
-            cagr[column] = ((end_value / start_value) ** (1 / num_years) - 1) * 100  # CAGR as percentage
-            volatility[column] = portfolio_df[column].pct_change().std() * (12 ** 0.5) * 100
-            sharpe_ratio[column] = cagr[column] / volatility[column] if volatility[column] != 0 else 0
-
-        # Round the values
-        #ig cagr is longer than 2 columns, it means that the benchmark is present, so we need to adjust the values
-        #BAD BAD BAD CODE
-        if len(cagr) >= 2:
-            diff = cagr['Portfolio'] - portfolio_returns* 100
-            cagr['Portfolio'] = portfolio_returns * 100
-            cagr["Benchmark"] = cagr['Benchmark'] - diff
-        else:
-            cagr['Portfolio'] = portfolio_returns * 100
-
-        cagr = {k: round(v, 2) for k, v in cagr.items()}
-        volatility = {k: round(v, 2) for k, v in volatility.items()}
-        sharpe_ratio = {k: round(v, 2) for k, v in sharpe_ratio.items()}
-
-        # Create a DataFrame for the metrics
-        metrics_df = pd.DataFrame([cagr, volatility,sharpe_ratio], index=['CAGR', 'Volatility','Sharpe Ratio']).reset_index()
-        metrics_df = metrics_df.rename(columns={'index': 'Metric'})
-
-        # Melt the DataFrame for plotting
-        metrics_melted = pd.melt(metrics_df, id_vars='Metric', var_name='Portfolio', value_name='Value')
-
-        # Split the metrics into separate DataFrames for each metric
-        cagr_data = metrics_melted[metrics_melted["Metric"] == "CAGR"]
-        volatility_data = metrics_melted[metrics_melted["Metric"] == "Volatility"]
-        sharpe_data = metrics_melted[metrics_melted["Metric"] == "Sharpe Ratio"]
+        cagr_data, volatility_data, sharpe_data = MathLogic.calculate_performance_metrics(portfolio_df, portfolio_returns,column_except_date)
 
         correlation_matrix = dati_df.corr()
 

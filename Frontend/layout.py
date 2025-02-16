@@ -1,12 +1,12 @@
-# Layout.py
+# layout.py
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 import dash.dash_table
 from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH, COUNTER_FILE_PATH
-from LoginPopout import PopupManager
+from Frontend.login_popup import PopupManager
 from counter import PortfolioCounter
-from Header import Header
-from Footer import Footer
+from Frontend.header import Header
+from Frontend.footer import Footer
 
 
 class LayoutManager:

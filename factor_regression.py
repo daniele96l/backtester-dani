@@ -1,16 +1,7 @@
-import dash
-from dash import dcc, html, Input, Output, State
-import dash_bootstrap_components as dbc
 import pandas as pd
-import dash.dash_table
-import plotly.graph_objects as go
-import PlotLineChart as plc
-import EfficentFonteer as ef
-import logging
-import warnings
 import statsmodels.api as sm
-from Layout import LayoutManager
-from config import APP_TITLE, BENCHMARK_COLOR, PORTFOLIO_COLOR, SERVER_HOST, SERVER_PORT, DEV_FIVE_FACTORS_FILE_PATH, INDEX_LIST_FILE_PATH, ETF_BASE_PATH
+from config import DEV_FIVE_FACTORS_FILE_PATH
+
 
 def import_fama_french():
     fama_french = pd.read_csv(f"{DEV_FIVE_FACTORS_FILE_PATH}", parse_dates=['Date'])
